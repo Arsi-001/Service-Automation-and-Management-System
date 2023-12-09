@@ -13,32 +13,42 @@ class TableInfo extends StatefulWidget {
 }
 
 class _TableInfoState extends State<TableInfo> {
+  Map<String, dynamic> json = {"gender": "male"};
   Stream readData() => FirebaseFirestore.instance
       .collection("/Platform/Gym/TestGym/Information/Members")
       .snapshots();
+
+  Stream<List> readmember() => FirebaseFirestore.instance
+      .collection("/TGym/GYM/Members")
+      .snapshots()
+      .map((event) => event.docs.map((e) => json = e.data()).toList());
 
   ScrollController con = ScrollController();
   @override
   Widget build(BuildContext context) {
     var sw = MediaQuery.of(context).size.width;
-    return ResponsiveLayout(
-      Desktop: Dtable(sw: sw, con: con),
-      Tablet: Ttable(
-        sw: sw,
-        con: con,
-      ),
-      Mobile: Mtable(sw: sw, con: con),
-    );
+    return StreamBuilder<Object>(
+        stream: readmember(),
+        builder: (context, snapshot) {
+          return ResponsiveLayout(
+            Desktop: Dtable(
+                name: (json["First name"] + json["last name"]).toString(),
+                sw: sw,
+                con: con),
+            Tablet: Ttable(
+              sw: sw,
+              con: con,
+            ),
+            Mobile: Mtable(sw: sw, con: con),
+          );
+        });
   }
 }
 
 class Dtable extends StatelessWidget {
-  const Dtable({
-    super.key,
-    required this.sw,
-    required this.con,
-  });
-
+  const Dtable(
+      {super.key, required this.sw, required this.con, required this.name});
+  final name;
   final double sw;
   final ScrollController con;
 
@@ -206,7 +216,7 @@ class Dtable extends StatelessWidget {
                                 TableRow(
                                   sw: sw,
                                   id: "TG-M-001",
-                                  member: "ARSALAN AAMIR",
+                                  member: name,
                                   gender: "MALE",
                                   package: "GOLD",
                                   feestatus: "UNPAID",

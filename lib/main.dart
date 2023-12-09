@@ -74,7 +74,7 @@ class _HomepageState extends State<Homepage> {
               Mobile: TabHeader(),
               Tablet: TabHeader(),
             )),
-        body: AddUser(),
+        body: TableInfo(),
       ),
     );
   }

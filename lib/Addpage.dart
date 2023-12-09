@@ -28,19 +28,6 @@ class _AddUserState extends State<AddUser> {
 
     DateTime selectedDate = DateTime.now();
 
-    Future<void> GetID() async {
-      print("object");
-      final docid = FirebaseFirestore.instance.collection("TGym").doc("GYM");
-      final snapshot =
-          await docid.get().then((value) => {print(value["initials"])});
-      // print(snapshot["initials"]);
-      // if (snapshot.exists) {
-      //   initials = snapshot["initials"];
-      // } else {
-      //   print("Error fecthing");
-      // }
-    }
-
     Future<void> _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
           context: context,
@@ -52,12 +39,6 @@ class _AddUserState extends State<AddUser> {
           selectedDate = picked;
         });
       }
-    }
-
-    @override
-    void initState() {
-      GetID();
-      super.initState();
     }
 
     return Container(
@@ -378,10 +359,9 @@ class _AddUserState extends State<AddUser> {
                                   fNameCont.clear();
                                   final lastname = lNameCont.text;
                                   lNameCont.clear();
-                                  final gender = genderCont.text;
 
                                   final package = selectedpackage;
-                                  final feestatus = feestatusCont.text;
+
                                   final platform = selectedplatform;
                                   final number = numberCont.text;
 
@@ -454,8 +434,8 @@ class _AddUserState extends State<AddUser> {
     required DateTime startdate,
   }) async {
     final docUser = FirebaseFirestore.instance
-        .collection("/Platform/Gym/TestGym/Information/Members")
-        .doc("TG-M-02");
+        .collection("/TGym/GYM/Members")
+        .doc("TG-M-01");
 
     final json = {
       "First name": fname,
