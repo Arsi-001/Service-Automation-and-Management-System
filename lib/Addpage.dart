@@ -2,20 +2,63 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:s_a_m_s/Constant.dart';
 
-class AddUser extends StatelessWidget {
+class AddUser extends StatefulWidget {
   const AddUser({super.key});
 
   @override
+  State<AddUser> createState() => _AddUserState();
+}
+
+class _AddUserState extends State<AddUser> {
+  String? Selectedgender = "Male";
+  String? selectedpackage = "0";
+  String? selectedplatform = "0";
+  String initials = "";
+  @override
   Widget build(BuildContext context) {
+    var genders = ["Male", "Female"];
+
     TextEditingController fNameCont = TextEditingController();
     TextEditingController lNameCont = TextEditingController();
     TextEditingController genderCont = TextEditingController();
-    TextEditingController packageCont = TextEditingController();
     TextEditingController feestatusCont = TextEditingController();
-    TextEditingController platformCont = TextEditingController();
     TextEditingController numberCont = TextEditingController();
     TextEditingController startdateCont = TextEditingController();
     TextEditingController addressCont = TextEditingController();
+
+    DateTime selectedDate = DateTime.now();
+
+    Future<void> GetID() async {
+      print("object");
+      final docid = FirebaseFirestore.instance.collection("TGym").doc("GYM");
+      final snapshot =
+          await docid.get().then((value) => {print(value["initials"])});
+      // print(snapshot["initials"]);
+      // if (snapshot.exists) {
+      //   initials = snapshot["initials"];
+      // } else {
+      //   print("Error fecthing");
+      // }
+    }
+
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: DateTime(2015, 8),
+          lastDate: DateTime(2101));
+      if (picked != null && picked != selectedDate) {
+        setState(() {
+          selectedDate = picked;
+        });
+      }
+    }
+
+    @override
+    void initState() {
+      GetID();
+      super.initState();
+    }
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 180, vertical: 40),
@@ -38,9 +81,34 @@ class AddUser extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            crudTxtfield(
-                              title: "Member ID",
-                              controller: fNameCont,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    "Member ID",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Container(
+                                    height: 40,
+                                    width: 100,
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    decoration: BoxDecoration(
+                                        color: DarkBlu,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Center(
+                                        child: Text(
+                                      "$initials" + "-" + "M-" + "3",
+                                      style: TextStyle(color: Colors.white),
+                                    )))
+                              ],
                             ),
                           ],
                         ),
@@ -48,6 +116,7 @@ class AddUser extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             crudTxtfield(
+                              widht: 250,
                               title: "First Name",
                               controller: fNameCont,
                             ),
@@ -55,6 +124,7 @@ class AddUser extends StatelessWidget {
                               width: 40,
                             ),
                             crudTxtfield(
+                              widht: 250,
                               title: "Last Name",
                               controller: lNameCont,
                             ),
@@ -64,38 +134,7 @@ class AddUser extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             crudTxtfield(
-                              title: "Gender",
-                              controller: genderCont,
-                            ),
-                            SizedBox(
-                              width: 40,
-                            ),
-                            crudTxtfield(
-                              title: "Package",
-                              controller: packageCont,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            crudTxtfield(
-                              title: "Age",
-                              controller: feestatusCont,
-                            ),
-                            SizedBox(
-                              width: 40,
-                            ),
-                            crudTxtfield(
-                              title: "Platform",
-                              controller: platformCont,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            crudTxtfield(
+                              widht: 250,
                               title: "Number",
                               controller: numberCont,
                             ),
@@ -103,7 +142,8 @@ class AddUser extends StatelessWidget {
                               width: 40,
                             ),
                             crudTxtfield(
-                              title: "Starting Date",
+                              widht: 250,
+                              title: "Email",
                               controller: startdateCont,
                             ),
                           ],
@@ -112,11 +152,215 @@ class AddUser extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             crudTxtfield(
+                              widht: 540,
                               title: "Address",
                               controller: addressCont,
                             ),
                             SizedBox(
                               width: 40,
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Package",
+                                    style: TextStyle(color: Colors.white)),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("/TGym/GYM/packages")
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      List<DropdownMenuItem> packageslist = [];
+                                      if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                      } else {
+                                        final packages =
+                                            snapshot.data?.docs.toList();
+                                        packageslist.add(DropdownMenuItem(
+                                            value: "0",
+                                            child: Text("Select Package")));
+                                        for (var data in packages!) {
+                                          packageslist.add(DropdownMenuItem(
+                                              value: data.id,
+                                              child: Text(
+                                                data["name"],
+                                              )));
+                                        }
+                                      }
+                                      return Container(
+                                        height: 40,
+                                        width: 175,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        decoration: BoxDecoration(
+                                            color: DarkBlu,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton(
+                                            value: selectedpackage,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            items: packageslist,
+                                            dropdownColor: DarkBlu,
+                                            onChanged: (clientvalue) {
+                                              setState(() {
+                                                selectedpackage = clientvalue;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 40,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Platform",
+                                    style: TextStyle(color: Colors.white)),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("/TGym")
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      List<DropdownMenuItem> packageslist = [];
+                                      if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                      } else {
+                                        final packages = snapshot
+                                            .data?.docs.reversed
+                                            .toList();
+                                        for (var data in packages!) {
+                                          packageslist.add(DropdownMenuItem(
+                                              value: "0",
+                                              child: Text("Select Platform")));
+                                          packageslist.add(DropdownMenuItem(
+                                              value: data.id,
+                                              child: Text(data.id)));
+                                        }
+                                      }
+                                      return Container(
+                                        height: 40,
+                                        width: 175,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        decoration: BoxDecoration(
+                                            color: DarkBlu,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton(
+                                            dropdownColor: DarkBlu,
+                                            value: selectedplatform,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            items: packageslist,
+                                            onChanged: (clientvalue) {
+                                              setState(() {
+                                                selectedplatform = clientvalue;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Starting Date",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Container(
+                                  width: 175,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: DarkBlu,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: DarkBlu),
+                                    onPressed: () => _selectDate(context),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("${selectedDate.toLocal()}"
+                                            .split(' ')[0]),
+                                        Icon(
+                                          Icons.calendar_month,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 40,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Gender",
+                                    style: TextStyle(color: Colors.white)),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Container(
+                                  height: 40,
+                                  width: 175,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  decoration: BoxDecoration(
+                                      color: DarkBlu,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      dropdownColor: DarkBlu,
+                                      value: Selectedgender,
+                                      style: TextStyle(color: Colors.white),
+                                      items: genders.map((String items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          Selectedgender = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         ),
@@ -135,22 +379,22 @@ class AddUser extends StatelessWidget {
                                   final lastname = lNameCont.text;
                                   lNameCont.clear();
                                   final gender = genderCont.text;
-                                  
-                                  final package = packageCont.text;
+
+                                  final package = selectedpackage;
                                   final feestatus = feestatusCont.text;
-                                  final platform = platformCont.text;
+                                  final platform = selectedplatform;
                                   final number = numberCont.text;
-                                  final startdate = startdateCont.text;
+
                                   final address = addressCont.text;
 
                                   addMember(
                                     fname: firstname,
                                     lname: lastname,
-                                    gender: gender,
+                                    gender: Selectedgender,
                                     package: package,
                                     platform: platform,
                                     number: number,
-                                    startdate: startdate,
+                                    startdate: selectedDate,
                                     address: address,
                                   );
                                 },
@@ -202,12 +446,12 @@ class AddUser extends StatelessWidget {
   Future addMember({
     required String fname,
     required String lname,
-    required String gender,
-    required String package,
-    required String platform,
+    required String? gender,
+    required String? package,
+    required String? platform,
     required String number,
     required String address,
-    required String startdate,
+    required DateTime startdate,
   }) async {
     final docUser = FirebaseFirestore.instance
         .collection("/Platform/Gym/TestGym/Information/Members")
@@ -230,8 +474,10 @@ class AddUser extends StatelessWidget {
 class crudTxtfield extends StatelessWidget {
   final controller;
   final title;
+  final widht;
   crudTxtfield({
     required this.title,
+    required this.widht,
     required this.controller,
     super.key,
   });
@@ -253,7 +499,7 @@ class crudTxtfield extends StatelessWidget {
         ),
         Container(
           height: 40,
-          width: 250,
+          width: widht,
           padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               color: DarkBlu,

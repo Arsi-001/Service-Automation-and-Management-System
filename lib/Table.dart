@@ -17,8 +17,6 @@ class _TableInfoState extends State<TableInfo> {
       .collection("/Platform/Gym/TestGym/Information/Members")
       .snapshots();
 
-
-        
   ScrollController con = ScrollController();
   @override
   Widget build(BuildContext context) {
