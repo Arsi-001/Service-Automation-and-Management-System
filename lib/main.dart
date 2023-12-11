@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:s_a_m_s/Addpage.dart';
@@ -7,18 +6,17 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
-
 import 'package:s_a_m_s/Table.dart';
 import 'package:s_a_m_s/header/THeader.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(
-      options: FirebaseOptions(
-    apiKey: "AIzaSyAeLzJRkfSHYwjupVt96SlnNTMez3yb2r4",
-    projectId: "sams-6df51",
-    messagingSenderId: "182839233683",
-    appId: "1:182839233683:web:4facdc2b8923c45f3e5166",
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+    apiKey: "AIzaSyAH-au6V0Hdbw_rdWxB3ne3p11rvMNHBfg",
+    projectId: "sams-36804",
+    messagingSenderId: "903493121484",
+    appId: "1:903493121484:web:d1310e8db6c3610cbb5969",
   ));
   runApp(const MyApp());
 }

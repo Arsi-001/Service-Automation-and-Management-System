@@ -13,10 +13,7 @@ class TableInfo extends StatefulWidget {
 }
 
 class _TableInfoState extends State<TableInfo> {
-  Map<String, dynamic> json = {"gender": "male"};
-  Stream readData() => FirebaseFirestore.instance
-      .collection("/Platform/Gym/TestGym/Information/Members")
-      .snapshots();
+  Map<String, dynamic> json = {};
 
   Stream<List> readmember() => FirebaseFirestore.instance
       .collection("/TGym/GYM/Members")
@@ -32,7 +29,16 @@ class _TableInfoState extends State<TableInfo> {
         builder: (context, snapshot) {
           return ResponsiveLayout(
             Desktop: Dtable(
-                name: (json["First name"] + json["last name"]).toString(),
+                name: (json["First name"] + json["Last name"]).toString(),
+                gender: json["Gender"],
+                package: json["Package"],
+                feestatus: json["Fee Status"],
+                id: json["id"],
+                platform: json["Platform"],
+                startingDate: json["Start Date"],
+                contact: json["Phone Number"],
+                email: json["Email"],
+                address: json["Email"],
                 sw: sw,
                 con: con),
             Tablet: Ttable(
@@ -46,9 +52,31 @@ class _TableInfoState extends State<TableInfo> {
 }
 
 class Dtable extends StatelessWidget {
-  const Dtable(
-      {super.key, required this.sw, required this.con, required this.name});
-  final name;
+  const Dtable({
+    super.key,
+    required this.sw,
+    required this.con,
+    required this.name,
+    required this.gender,
+    required this.package,
+    required this.feestatus,
+    required this.id,
+    required this.platform,
+    required this.startingDate,
+    required this.contact,
+    required this.email,
+    required this.address,
+  });
+  final name,
+      package,
+      feestatus,
+      gender,
+      id,
+      platform,
+      startingDate,
+      contact,
+      email,
+      address;
   final double sw;
   final ScrollController con;
 
@@ -215,17 +243,16 @@ class Dtable extends StatelessWidget {
                               children: [
                                 TableRow(
                                   sw: sw,
-                                  id: "TG-M-001",
+                                  id: id,
                                   member: name,
-                                  gender: "MALE",
-                                  package: "GOLD",
-                                  feestatus: "UNPAID",
-                                  platform: "GYM",
-                                  startingDate: "02-12-2022",
-                                  contact: "03222321683",
-                                  email: "arsalnaamir@gmail.com",
-                                  address:
-                                      "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
+                                  gender: gender,
+                                  package: package,
+                                  feestatus: feestatus,
+                                  platform: platform,
+                                  startingDate: startingDate,
+                                  contact: contact,
+                                  email: email,
+                                  address: email,
                                   rowColor: Colors.transparent,
                                 ),
                               ],
