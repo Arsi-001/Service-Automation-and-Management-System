@@ -28,6 +28,54 @@ class _AddUserState extends State<AddUser> {
 
     DateTime selectedDate = DateTime.now();
 
+    Future<String?> getID() async {
+      try {
+        DocumentSnapshot snapshot = await FirebaseFirestore.instance
+            .collection('TGym')
+            .doc("GYM")
+            .get();
+
+        // Check if the document exists
+        if (snapshot.exists) {
+          // Extract the specific field you want (replace 'your_field' with the actual field name)
+          return snapshot.get('initials');
+        } else {
+          return null; // Document doesn't exist
+        }
+      } catch (e) {
+        print('Error fetching data: $e');
+        return null; // Handle errors
+      }
+    }
+
+    String userID = "0";
+
+    Future<void> fetchData() async {
+      try {
+        DocumentSnapshot snapshot =
+            await FirebaseFirestore.instance.collection('TGym').doc().get();
+
+        // Check if the document exists
+        if (snapshot.exists) {
+          // Extract the specific field 'your_field' (replace 'your_field' with your actual field name)
+          String? field = snapshot.get('ID');
+
+          setState(() {
+            userID = field ?? 'N/A';
+          });
+        } else {
+          setState(() {
+            userID = 'Document not found';
+          });
+        }
+      } catch (e) {
+        print('Error fetching field value: $e');
+        setState(() {
+          userID = 'Error';
+        });
+      }
+    }
+
     Future<void> _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
           context: context,
@@ -39,6 +87,12 @@ class _AddUserState extends State<AddUser> {
           selectedDate = picked;
         });
       }
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      fetchData();
     }
 
     return Container(
@@ -75,20 +129,40 @@ class _AddUserState extends State<AddUser> {
                                 SizedBox(
                                   height: 6,
                                 ),
-                                Container(
-                                    height: 40,
-                                    width: 100,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                        color: DarkBlu,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Center(
-                                        child: Text(
-                                      "$initials" + "-" + "M-" + "3",
-                                      style: TextStyle(color: Colors.white),
-                                    )))
+                                FutureBuilder<String?>(
+                                    future: getID(),
+                                    builder: (context,
+                                        AsyncSnapshot<String?> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.waiting ||
+                                          userID == "0") {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else if (snapshot.data == null) {
+                                        return Text(
+                                            'ID not found or field is null.');
+                                      } else {
+                                        return Container(
+                                          height: 40,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              color: DarkBlu,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10))),
+                                          child: Center(
+                                            child: Text(
+                                              '${snapshot.data}' +
+                                                  "-" +
+                                                  "M-" +
+                                                  "$userID",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    })
                               ],
                             ),
                           ],
@@ -155,7 +229,7 @@ class _AddUserState extends State<AddUser> {
                                 ),
                                 StreamBuilder(
                                     stream: FirebaseFirestore.instance
-                                        .collection("/TGym/GYM/packages")
+                                        .collection("/TGym/GYM/Packages")
                                         .snapshots(),
                                     builder: (context, snapshot) {
                                       List<DropdownMenuItem> packageslist = [];
@@ -368,6 +442,7 @@ class _AddUserState extends State<AddUser> {
                                   final address = addressCont.text;
 
                                   addMember(
+                                    id: userID,
                                     fname: firstname,
                                     lname: lastname,
                                     gender: Selectedgender,
@@ -432,12 +507,13 @@ class _AddUserState extends State<AddUser> {
     required String number,
     required String address,
     required DateTime startdate,
+    required id,
   }) async {
-    final docUser = FirebaseFirestore.instance
-        .collection("/TGym/GYM/Members")
-        .doc("TG-M-01");
+    final docUser =
+        FirebaseFirestore.instance.collection("/TGym/GYM/Members").doc("1");
 
     final json = {
+      "ID": id,
       "First name": fname,
       "last name": lname,
       "gender": gender,

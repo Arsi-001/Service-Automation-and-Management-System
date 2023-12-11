@@ -27,26 +27,30 @@ class _TableInfoState extends State<TableInfo> {
     return StreamBuilder<Object>(
         stream: readmember(),
         builder: (context, snapshot) {
-          return ResponsiveLayout(
-            Desktop: Dtable(
-                name: (json["First name"] + json["Last name"]).toString(),
-                gender: json["Gender"],
-                package: json["Package"],
-                feestatus: json["Fee Status"],
-                id: json["id"],
-                platform: json["Platform"],
-                startingDate: json["Start Date"],
-                contact: json["Phone Number"],
-                email: json["Email"],
-                address: json["Email"],
+          if (snapshot.hasData) {
+            return ResponsiveLayout(
+              Desktop: Dtable(
+                  name: (json["First name"]),
+                  gender: json["Gender"],
+                  package: json["Package"],
+                  feestatus: json["Fee Status"],
+                  id: json["ID"],
+                  platform: json["Platform"],
+                  startingDate: json["Start Date"],
+                  contact: json["Phone Number"],
+                  email: json["Email"],
+                  address: json["Email"],
+                  sw: sw,
+                  con: con),
+              Tablet: Ttable(
                 sw: sw,
-                con: con),
-            Tablet: Ttable(
-              sw: sw,
-              con: con,
-            ),
-            Mobile: Mtable(sw: sw, con: con),
-          );
+                con: con,
+              ),
+              Mobile: Mtable(sw: sw, con: con),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 }
