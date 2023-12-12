@@ -4,7 +4,8 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:unicons/unicons.dart';
 
 class DesktopHeader extends StatefulWidget {
-  const DesktopHeader({super.key});
+  final Function(int i) callback;
+  DesktopHeader({super.key, required this.callback});
 
   @override
   State<DesktopHeader> createState() => _DesktopHeaderState();
@@ -21,32 +22,35 @@ class _DesktopHeaderState extends State<DesktopHeader> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Expanded(
+          //   flex: 1,
+          //   child: Text(
+          //     SizeScreenW.toString() + "DASh",
+          //     style: TextStyle(
+          //         fontFamily: "Montserrat",
+          //         fontWeight: FontWeight.w600,
+          //         color: Colors.white,
+          //         fontSize: 30),
+          //   ),
+          // ),
           Expanded(
             flex: 1,
-            child: Text(
-              SizeScreenW.toString() + "DASh",
-              style: TextStyle(
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 30),
-            ),
-          ),
-          Expanded(
-            flex: 2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   height: 50,
                   width: 350,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                       color: lightBlu,
-                      border: Border.all(color: Colors.white12),
+                      //border: Border.all(color: Colors.white12),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const GNav(
+                  child: GNav(
+                      onTabChange: (index) {
+                        widget.callback(index);
+                      },
                       selectedIndex: 2,
                       rippleColor: Colors
                           .transparent, // tab button ripple color when pressed

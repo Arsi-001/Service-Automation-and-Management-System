@@ -14,87 +14,64 @@ class _AddUserState extends State<AddUser> {
   String? selectedpackage = "0";
   String? selectedplatform = "0";
   String initials = "";
+  TextEditingController fNameCont = TextEditingController();
+  TextEditingController lNameCont = TextEditingController();
+  TextEditingController genderCont = TextEditingController();
+  TextEditingController feestatusCont = TextEditingController();
+  TextEditingController numberCont = TextEditingController();
+  TextEditingController startdateCont = TextEditingController();
+  TextEditingController addressCont = TextEditingController();
+  var genders = ["Male", "Female"];
+
+  DateTime selectedDate = DateTime.now();
+  String userIDnum = "";
+  String userID = "";
+  Future<String?> getID() async {
+    try {
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('TGym').doc("GYM").get();
+
+      var snap = await FirebaseFirestore.instance
+          .collection('/TGym/GYM/Members')
+          .get();
+      var mID = snap.docs.last.id;
+      var finalID = snapshot.get("initials") + "-M-";
+      userIDnum = mID;
+      userID = finalID;
+
+      // Check if the document exists
+      if (snapshot.exists) {
+        // Extract the specific field you want (replace 'your_field' with the actual field name)
+        return finalID + (int.parse(mID) + 1).toString();
+      } else {
+        return null; // Document doesn't exist
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      return null; // Handle errors
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var genders = ["Male", "Female"];
-
-    TextEditingController fNameCont = TextEditingController();
-    TextEditingController lNameCont = TextEditingController();
-    TextEditingController genderCont = TextEditingController();
-    TextEditingController feestatusCont = TextEditingController();
-    TextEditingController numberCont = TextEditingController();
-    TextEditingController startdateCont = TextEditingController();
-    TextEditingController addressCont = TextEditingController();
-
-    DateTime selectedDate = DateTime.now();
-
-    Future<String?> getID() async {
-      try {
-        DocumentSnapshot snapshot = await FirebaseFirestore.instance
-            .collection('TGym')
-            .doc("GYM")
-            .get();
-
-        // Check if the document exists
-        if (snapshot.exists) {
-          // Extract the specific field you want (replace 'your_field' with the actual field name)
-          return snapshot.get('initials');
-        } else {
-          return null; // Document doesn't exist
-        }
-      } catch (e) {
-        print('Error fetching data: $e');
-        return null; // Handle errors
-      }
-    }
-
-    String userID = "0";
-
-    Future<void> fetchData() async {
-      try {
-        DocumentSnapshot snapshot =
-            await FirebaseFirestore.instance.collection('TGym').doc().get();
-
-        // Check if the document exists
-        if (snapshot.exists) {
-          // Extract the specific field 'your_field' (replace 'your_field' with your actual field name)
-          String? field = snapshot.get('ID');
-
-          setState(() {
-            userID = field ?? 'N/A';
-          });
-        } else {
-          setState(() {
-            userID = 'Document not found';
-          });
-        }
-      } catch (e) {
-        print('Error fetching field value: $e');
-        setState(() {
-          userID = 'Error';
-        });
-      }
-    }
-
-    Future<void> _selectDate(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-          context: context,
-          initialDate: selectedDate,
-          firstDate: DateTime(2015, 8),
-          lastDate: DateTime(2101));
-      if (picked != null && picked != selectedDate) {
-        setState(() {
-          selectedDate = picked;
-        });
-      }
-    }
-
-    @override
-    void initState() {
-      super.initState();
-      fetchData();
-    }
-
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 180, vertical: 40),
       child: Center(
@@ -131,11 +108,9 @@ class _AddUserState extends State<AddUser> {
                                 ),
                                 FutureBuilder<String?>(
                                     future: getID(),
-                                    builder: (context,
-                                        AsyncSnapshot<String?> snapshot) {
+                                    builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
-                                              ConnectionState.waiting ||
-                                          userID == "0") {
+                                          ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
@@ -152,10 +127,7 @@ class _AddUserState extends State<AddUser> {
                                                   Radius.circular(10))),
                                           child: Center(
                                             child: Text(
-                                              '${snapshot.data}' +
-                                                  "-" +
-                                                  "M-" +
-                                                  "$userID",
+                                              '${snapshot.data}',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -238,6 +210,7 @@ class _AddUserState extends State<AddUser> {
                                       } else {
                                         final packages =
                                             snapshot.data?.docs.toList();
+
                                         packageslist.add(DropdownMenuItem(
                                             value: "0",
                                             child: Text("Select Package")));
@@ -442,6 +415,7 @@ class _AddUserState extends State<AddUser> {
                                   final address = addressCont.text;
 
                                   addMember(
+                                    idnum: userIDnum,
                                     id: userID,
                                     fname: firstname,
                                     lname: lastname,
@@ -452,6 +426,7 @@ class _AddUserState extends State<AddUser> {
                                     startdate: selectedDate,
                                     address: address,
                                   );
+                                  setState(() {});
                                 },
                                 // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
@@ -498,30 +473,33 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
-  Future addMember({
-    required String fname,
-    required String lname,
-    required String? gender,
-    required String? package,
-    required String? platform,
-    required String number,
-    required String address,
-    required DateTime startdate,
-    required id,
-  }) async {
-    final docUser =
-        FirebaseFirestore.instance.collection("/TGym/GYM/Members").doc("1");
+  Future addMember(
+      {required String fname,
+      required String lname,
+      required String? gender,
+      required String? package,
+      required String? platform,
+      required String number,
+      required String address,
+      required DateTime startdate,
+      required id,
+      required idnum}) async {
+    final docUser = FirebaseFirestore.instance
+        .collection("/TGym/GYM/Members")
+        .doc((int.parse(idnum) + 1).toString());
 
     final json = {
-      "ID": id,
+      "ID": id + (int.parse(idnum) + 1).toString(),
+      "Fee Status": "Paid",
       "First name": fname,
-      "last name": lname,
-      "gender": gender,
-      "package": package,
-      "platform": platform,
-      "number": number,
-      "address": address,
-      "startdate": startdate,
+      "Last name": lname,
+      "Gender": gender,
+      "Package": package,
+      "Platform": platform,
+      "Phone Number": number,
+      "Email": "email",
+      "Address": address,
+      "Start Date": "startdate",
     };
     await docUser.set(json);
   }

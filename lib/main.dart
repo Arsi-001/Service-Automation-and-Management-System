@@ -60,6 +60,32 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  final TableInfo _membertable = new TableInfo();
+  final AddUser _addmember = new AddUser();
+  final Dash _dash = Dash();
+
+  Widget _showPage = new Dash();
+  Widget _pageSelect(int page) {
+    switch (page) {
+      case 0:
+        return _addmember;
+      case 1:
+        return _membertable;
+      case 2:
+        return _dash;
+
+      default:
+        return new Container(
+          child: Center(
+            child: Text(
+              "Page Down, Sorry for the trouble",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -68,7 +94,13 @@ class _HomepageState extends State<Homepage> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(NavSize),
             child: ResponsiveLayout(
-              Desktop: DesktopHeader(),
+              Desktop: DesktopHeader(
+                callback: (index) {
+                  setState(() {
+                    _showPage = _pageSelect(index);
+                  });
+                },
+              ),
               Mobile: TabHeader(),
               Tablet: TabHeader(),
             )),

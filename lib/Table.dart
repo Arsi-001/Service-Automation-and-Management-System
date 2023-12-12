@@ -39,7 +39,7 @@ class _TableInfoState extends State<TableInfo> {
                   startingDate: json["Start Date"],
                   contact: json["Phone Number"],
                   email: json["Email"],
-                  address: json["Email"],
+                  address: json["Address"],
                   sw: sw,
                   con: con),
               Tablet: Ttable(
