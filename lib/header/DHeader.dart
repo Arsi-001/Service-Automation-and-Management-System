@@ -44,7 +44,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                   width: 350,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                      color: lightBlu,
+                      // color: lightBlu,
                       //border: Border.all(color: Colors.white12),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: GNav(
@@ -64,7 +64,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                       duration:
                           Duration(milliseconds: 300), // tab animation duration
                       gap: 8, // the tab button gap between icon and text
-                      color: Colors.white70, // unselected icon color
+                      color: Colors.white30, // unselected icon color
                       activeColor: Colors.white, // selected icon and text color
                       iconSize: 24, // tab button icon size
                       textSize: 14,
