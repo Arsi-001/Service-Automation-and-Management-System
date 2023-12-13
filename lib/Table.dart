@@ -122,7 +122,9 @@ class Dtable extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
                                   child: RoundedFuncButton(
-                                    func: null,
+                                    func: () {
+                                      print(name);
+                                    },
                                     buttTxt: "ADD",
                                     buttTxtcol: Colors.white,
                                     buttbordercol: Blu,
@@ -214,60 +216,125 @@ class Dtable extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                RawScrollbar(
-                  thickness: 10,
-                  thumbColor: Blu,
-                  trackColor: Colors.white12,
-                  trackBorderColor: Colors.white30,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  controller: con,
-                  child: SingleChildScrollView(
-                    controller: con,
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      height: 500,
-                      width: sw >= 1700
-                          ? 1600
-                          : sw <= 1368
-                              ? 1300
-                              : 1400,
-                      decoration: BoxDecoration(
-                          color: lightBlu,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Column(
-                        children: [
-                          TableHeaderRow(
-                            sw: sw,
-                            rowColor: Blu,
-                          ),
-                          Container(
-                            height: 420,
-                            child: ListView(
-                              children: [
-                                TableRow(
-                                  sw: sw,
-                                  id: id,
-                                  member: name,
-                                  gender: gender,
-                                  package: package,
-                                  feestatus: feestatus,
-                                  platform: platform,
-                                  startingDate: startingDate,
-                                  contact: contact,
-                                  email: email,
-                                  address: email,
-                                  rowColor: Colors.transparent,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                MemberInfoTable(
+                    con: con,
+                    sw: sw,
+                    id: id,
+                    name: name,
+                    gender: gender,
+                    package: package,
+                    feestatus: feestatus,
+                    platform: platform,
+                    startingDate: startingDate,
+                    contact: contact,
+                    email: email)
               ]),
+        ),
+      ),
+    );
+  }
+}
+
+class MemberInfoTable extends StatelessWidget {
+  MemberInfoTable({
+    super.key,
+    required this.con,
+    required this.sw,
+    required this.id,
+    required this.name,
+    required this.gender,
+    required this.package,
+    required this.feestatus,
+    required this.platform,
+    required this.startingDate,
+    required this.contact,
+    required this.email,
+  });
+
+  final ScrollController con;
+  final double sw;
+  final id;
+  final name;
+  final gender;
+  final package;
+  final feestatus;
+  final platform;
+  final startingDate;
+  final contact;
+  final email;
+  final CollectionReference _members =
+      FirebaseFirestore.instance.collection('/TGym/GYM/Members');
+  @override
+  Widget build(BuildContext context) {
+    return RawScrollbar(
+      thickness: 10,
+      thumbColor: Blu,
+      trackColor: Colors.white12,
+      trackBorderColor: Colors.white30,
+      thumbVisibility: true,
+      trackVisibility: true,
+      controller: con,
+      child: SingleChildScrollView(
+        controller: con,
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          height: 500,
+          width: sw >= 1700
+              ? 1600
+              : sw <= 1368
+                  ? 1300
+                  : 1400,
+          decoration: BoxDecoration(
+              color: lightBlu,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Column(
+            children: [
+              TableHeaderRow(
+                sw: sw,
+                rowColor: Blu,
+              ),
+              Container(
+                height: 420,
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('/TGym/GYM/Members')
+                      .orderBy("idnum", descending: false)
+                      .snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    if (streamSnapshot.hasData) {
+                      return ListView.builder(
+                        itemCount:
+                            streamSnapshot.data!.docs.length, //number of rows
+                        itemBuilder: (context, index) {
+                          final DocumentSnapshot documentSnapshot =
+                              streamSnapshot.data!.docs[index];
+                          return TableRow(
+                              rowColor: lightBlu,
+                              id: documentSnapshot["ID"],
+                              sw: sw,
+                              member: documentSnapshot["First name"] +
+                                  documentSnapshot["Last name"],
+                              gender: documentSnapshot["Gender"],
+                              package: documentSnapshot["Package"],
+                              feestatus: documentSnapshot["Fee Status"],
+                              platform: documentSnapshot["Platform"],
+                              startingDate: documentSnapshot["Start Date"],
+                              contact: documentSnapshot["Phone Number"],
+                              email: documentSnapshot["Email"],
+                              address: documentSnapshot["Address"]);
+                        },
+                      );
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -903,7 +970,7 @@ class TableRow extends StatelessWidget {
             flex: 1,
             child: TableCell(
               LineTru: true,
-              Titlecolor: Colors.red,
+              Titlecolor: feestatus == "Paid" ? Colors.green : Colors.red,
               Title: feestatus,
             ),
           ),
