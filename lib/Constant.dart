@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-const DarkBlu = Color(0xFF202342);
+//const DarkBlu = Color(0xFF202342);
+const DarkBlu = Color(0xFF00264D);
 
-const lightBlu = Color(0xFF2D325A);
+//const lightBlu = Color(0xFF2D325A);
+const lightBlu = Color(0xFF02386E);
 
 const lightGreen = Color(0xFFE3FFA8);
 
 const ultraLightBlue = Color(0xFF7497FF);
 
-const Blu = Color(0xFF4C7BFF);
+//const Blu = Color(0xFF4C7BFF);
+const Blu = Color(0xFF0052A2);
 
 const lightRed = Color(0xFFF75165);
 
@@ -67,6 +70,3 @@ var navIconSize = 30;
 const Dtxt = 12.0;
 const DbuttonH = 40;
 const NavSize = 150.0;
-
-
-

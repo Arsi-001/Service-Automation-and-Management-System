@@ -612,11 +612,16 @@ class crudTxtfield extends StatelessWidget {
           padding: EdgeInsets.only(left: 5),
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontFamily: "Montserrat",
+              fontSize: 12,
+              //fontWeight: FontWeight.w600
+            ),
           ),
         ),
         SizedBox(
-          height: 6,
+          height: 12,
         ),
         Container(
           height: 40,
@@ -635,7 +640,10 @@ class crudTxtfield extends StatelessWidget {
             keyboardType: txtinput,
             inputFormatters: format,
             validator: (value) {
-              if (title == "First Name" || title == "Last Name") {
+              if (title == "First Name" ||
+                  title == "Last Name" ||
+                  title == "Username" ||
+                  title == "Password") {
                 if (value == "") {
                   return "Name Required";
                 }

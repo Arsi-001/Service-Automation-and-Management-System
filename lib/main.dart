@@ -8,6 +8,8 @@ import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
 import 'package:s_a_m_s/Table.dart';
 import 'package:s_a_m_s/header/THeader.dart';
+import 'package:s_a_m_s/login.dart';
+import 'package:schedulers/schedulers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,7 @@ void main() async {
     messagingSenderId: "903493121484",
     appId: "1:903493121484:web:d1310e8db6c3610cbb5969",
   ));
+
   runApp(const MyApp());
 }
 
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
           data: scale,
         );
       },
-      home: const Homepage(),
+      home: const LoginPage(),
     );
   }
 }
