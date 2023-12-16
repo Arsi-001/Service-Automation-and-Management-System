@@ -69,4 +69,5 @@ var navIconSize = 30;
 
 const Dtxt = 12.0;
 const DbuttonH = 40;
-const NavSize = 150.0;
+const NavSize = 100.0;
+const String heroAddTodo = 'add-todo-hero';

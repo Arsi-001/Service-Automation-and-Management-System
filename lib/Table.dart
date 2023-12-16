@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:s_a_m_s/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Responsive.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
+import 'package:s_a_m_s/crudpopup.dart';
+import 'package:s_a_m_s/pop_dialog.dart';
+import 'package:s_a_m_s/updatePage.dart';
 import 'package:unicons/unicons.dart';
 
 class TableInfo extends StatefulWidget {
@@ -24,65 +28,26 @@ class _TableInfoState extends State<TableInfo> {
   @override
   Widget build(BuildContext context) {
     var sw = MediaQuery.of(context).size.width;
-    return StreamBuilder<Object>(
-        stream: readmember(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ResponsiveLayout(
-              Desktop: Dtable(
-                  name: (json["First name"]),
-                  gender: json["Gender"],
-                  package: json["Package"],
-                  feestatus: json["Fee Status"],
-                  id: json["ID"],
-                  platform: json["Platform"],
-                  startingDate: json["Start Date"],
-                  contact: json["Phone Number"],
-                  email: json["Email"],
-                  address: json["Address"],
-                  sw: sw,
-                  con: con),
-              Tablet: Ttable(
-                sw: sw,
-                con: con,
-              ),
-              Mobile: Mtable(sw: sw, con: con),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        });
+
+    return ResponsiveLayout(
+      Desktop: Dtable(
+        sw: sw,
+      ),
+      Tablet: Ttable(
+        sw: sw,
+        con: con,
+      ),
+      Mobile: Mtable(sw: sw, con: con),
+    );
   }
 }
 
 class Dtable extends StatelessWidget {
-  const Dtable({
-    super.key,
-    required this.sw,
-    required this.con,
-    required this.name,
-    required this.gender,
-    required this.package,
-    required this.feestatus,
-    required this.id,
-    required this.platform,
-    required this.startingDate,
-    required this.contact,
-    required this.email,
-    required this.address,
-  });
-  final name,
-      package,
-      feestatus,
-      gender,
-      id,
-      platform,
-      startingDate,
-      contact,
-      email,
-      address;
+  Dtable({super.key, required this.sw});
+  ScrollController con = ScrollController();
   final double sw;
-  final ScrollController con;
+  final CollectionReference _members =
+      FirebaseFirestore.instance.collection('/TGym/GYM/Members');
 
   @override
   Widget build(BuildContext context) {
@@ -92,143 +57,239 @@ class Dtable extends StatelessWidget {
         width: 1920,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: sw >= 1700
-                      ? 1600
-                      : sw <= 1368
-                          ? 1300
-                          : 1400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      TBInfoBubble(),
-                      Expanded(flex: sw < 930 ? 0 : 1, child: SizedBox()),
-                      Expanded(
-                        flex: sw < 1090 ? 5 : 2,
-                        child: Container(
-                          height: 100,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: RoundedFuncButton(
-                                    func: () {
-                                      print(name);
-                                    },
-                                    buttTxt: "ADD",
-                                    buttTxtcol: Colors.white,
-                                    buttbordercol: Blu,
-                                    buttcol: lightBlu,
-                                    buttfont: sw < 630
-                                        ? sw < 300
-                                            ? 8
-                                            : 10
-                                        : Dtxt,
-                                    buttheight: DbuttonH,
-                                    butticon: null,
-                                    iconhere: false,
-                                  ),
+          child: StreamBuilder(
+              stream: _members.orderBy("idnum", descending: false).snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            TBInfoBubble(),
+                            Expanded(flex: sw < 930 ? 0 : 1, child: SizedBox()),
+                            Expanded(
+                              flex: sw < 1090 ? 5 : 2,
+                              child: Container(
+                                height: 100,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 100,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).push(
+                                                    HeroDialogRoute(
+                                                        builder: (context) {
+                                              return const AddUser();
+                                            })),
+                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                    side: BorderSide(
+                                                        color:
+                                                            Colors.blueAccent)),
+                                                backgroundColor: Blu,
+                                                elevation: 12.0,
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white)),
+                                            child: const Text(
+                                              'Add Member',
+                                              style: TextStyle(
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white70,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 100,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).push(
+                                                    HeroDialogRoute(
+                                                        builder: (context) {
+                                              return const UpdateUser(
+                                                docsnap: streamSnapshot,
+                                              );
+                                            })),
+                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                    side: BorderSide(
+                                                        color:
+                                                            Colors.blueAccent)),
+                                                backgroundColor: Blu,
+                                                elevation: 12.0,
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white)),
+                                            child: const Text(
+                                              'Update Member',
+                                              style: TextStyle(
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white70,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: RoundedFuncButton(
+                                          func: null,
+                                          buttTxt: "UPDATE",
+                                          buttTxtcol: Colors.white,
+                                          buttbordercol: Blu,
+                                          buttcol: lightBlu,
+                                          buttfont: sw < 630
+                                              ? sw < 300
+                                                  ? 8
+                                                  : 10
+                                              : Dtxt,
+                                          buttheight: DbuttonH,
+                                          butticon: null,
+                                          iconhere: false,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: RoundedFuncButton(
+                                          func: null,
+                                          buttTxt: "SEARCH MEMBER",
+                                          buttTxtcol: Colors.white,
+                                          buttbordercol: Blu,
+                                          buttcol: lightBlu,
+                                          buttfont: sw < 630
+                                              ? sw < 300
+                                                  ? 8
+                                                  : 10
+                                              : Dtxt,
+                                          buttheight: DbuttonH,
+                                          butticon: null,
+                                          iconhere: false,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: RoundedFuncButton(
-                                    func: null,
-                                    buttTxt: "DELETE",
-                                    buttTxtcol: Colors.white,
-                                    buttbordercol: Blu,
-                                    buttcol: lightBlu,
-                                    buttfont: sw < 630
-                                        ? sw < 300
-                                            ? 8
-                                            : 10
-                                        : Dtxt,
-                                    buttheight: DbuttonH,
-                                    butticon: null,
-                                    iconhere: false,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        RawScrollbar(
+                          thickness: 10,
+                          thumbColor: Blu,
+                          trackColor: Colors.white12,
+                          trackBorderColor: Colors.white30,
+                          thumbVisibility: true,
+                          trackVisibility: true,
+                          controller: con,
+                          child: SingleChildScrollView(
+                            controller: con,
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              height: 500,
+                              width: sw >= 1700
+                                  ? 1600
+                                  : sw <= 1368
+                                      ? 1300
+                                      : 1400,
+                              decoration: BoxDecoration(
+                                  color: lightBlu,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Column(
+                                children: [
+                                  TableHeaderRow(
+                                    sw: sw,
+                                    rowColor: Blu,
                                   ),
-                                ),
+                                  Container(
+                                      height: 400,
+                                      child: ListView.builder(
+                                        itemCount: streamSnapshot
+                                            .data!.docs.length, //number of rows
+                                        itemBuilder: (context, index) {
+                                          final DocumentSnapshot
+                                              documentSnapshot =
+                                              streamSnapshot.data!.docs[index];
+                                          return TableRow(
+                                              context: context,
+                                              documentsnap: documentSnapshot,
+                                              membersclass: _members,
+                                              rowColor: lightBlu,
+                                              id: documentSnapshot["ID"],
+                                              sw: sw,
+                                              member: documentSnapshot[
+                                                      "First name"] +
+                                                  documentSnapshot["Last name"],
+                                              gender:
+                                                  documentSnapshot["Gender"],
+                                              package:
+                                                  documentSnapshot["Package"],
+                                              feestatus: documentSnapshot[
+                                                  "Fee Status"],
+                                              platform:
+                                                  documentSnapshot["Platform"],
+                                              startingDate: documentSnapshot[
+                                                  "Start Date"],
+                                              contact: documentSnapshot[
+                                                  "Phone Number"],
+                                              email: documentSnapshot["Email"],
+                                              address:
+                                                  documentSnapshot["Address"]);
+                                        },
+                                      )),
+                                ],
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: RoundedFuncButton(
-                                    func: null,
-                                    buttTxt: "UPDATE",
-                                    buttTxtcol: Colors.white,
-                                    buttbordercol: Blu,
-                                    buttcol: lightBlu,
-                                    buttfont: sw < 630
-                                        ? sw < 300
-                                            ? 8
-                                            : 10
-                                        : Dtxt,
-                                    buttheight: DbuttonH,
-                                    butticon: null,
-                                    iconhere: false,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: RoundedFuncButton(
-                                    func: null,
-                                    buttTxt: "SEARCH MEMBER",
-                                    buttTxtcol: Colors.white,
-                                    buttbordercol: Blu,
-                                    buttcol: lightBlu,
-                                    buttfont: sw < 630
-                                        ? sw < 300
-                                            ? 8
-                                            : 10
-                                        : Dtxt,
-                                    buttheight: DbuttonH,
-                                    butticon: null,
-                                    iconhere: false,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                MemberInfoTable(
-                    con: con,
-                    sw: sw,
-                    id: id,
-                    name: name,
-                    gender: gender,
-                    package: package,
-                    feestatus: feestatus,
-                    platform: platform,
-                    startingDate: startingDate,
-                    contact: contact,
-                    email: email)
-              ]),
+                      ]);
+                } else {
+                  return const CircularProgressIndicator(
+                    color: Colors.blue,
+                  );
+                }
+              }),
         ),
       ),
     );
@@ -250,6 +311,7 @@ class MemberInfoTable extends StatelessWidget {
     required this.contact,
     required this.email,
   });
+  TextEditingController _nameController = TextEditingController();
 
   final ScrollController con;
   final double sw;
@@ -296,10 +358,8 @@ class MemberInfoTable extends StatelessWidget {
               Container(
                 height: 420,
                 child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('/TGym/GYM/Members')
-                      .orderBy("idnum", descending: false)
-                      .snapshots(),
+                  stream:
+                      _members.orderBy("idnum", descending: false).snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     if (streamSnapshot.hasData) {
@@ -310,6 +370,9 @@ class MemberInfoTable extends StatelessWidget {
                           final DocumentSnapshot documentSnapshot =
                               streamSnapshot.data!.docs[index];
                           return TableRow(
+                              context: context,
+                              documentsnap: documentSnapshot,
+                              membersclass: _members,
                               rowColor: lightBlu,
                               id: documentSnapshot["ID"],
                               sw: sw,
@@ -498,21 +561,21 @@ class Ttable extends StatelessWidget {
                             height: 420,
                             child: ListView(
                               children: [
-                                TableRow(
-                                  sw: sw,
-                                  id: "TG-M-001",
-                                  member: "ARSALAN AAMIR",
-                                  gender: "MALE",
-                                  package: "GOLD",
-                                  feestatus: "UNPAID",
-                                  platform: "GYM",
-                                  startingDate: "02-12-2022",
-                                  contact: "03222321683",
-                                  email: "arsalnaamir@gmail.com",
-                                  address:
-                                      "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
-                                  rowColor: Colors.transparent,
-                                ),
+                                // TableRow(
+                                //   sw: sw,
+                                //   id: "TG-M-001",
+                                //   member: "ARSALAN AAMIR",
+                                //   gender: "MALE",
+                                //   package: "GOLD",
+                                //   feestatus: "UNPAID",
+                                //   platform: "GYM",
+                                //   startingDate: "02-12-2022",
+                                //   contact: "03222321683",
+                                //   email: "arsalnaamir@gmail.com",
+                                //   address:
+                                //       "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
+                                //   rowColor: Colors.transparent,
+                                // ),
                               ],
                             ),
                           ),
@@ -691,21 +754,23 @@ class Mtable extends StatelessWidget {
                             height: 420,
                             child: ListView(
                               children: [
-                                TableRow(
-                                  sw: sw,
-                                  id: "TG-M-001",
-                                  member: "ARSALAN AAMIR",
-                                  gender: "MALE",
-                                  package: "GOLD",
-                                  feestatus: "UNPAID",
-                                  platform: "GYM",
-                                  startingDate: "02-12-2022",
-                                  contact: "03222321683",
-                                  email: "arsalnaamir@gmail.com",
-                                  address:
-                                      "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
-                                  rowColor: Colors.transparent,
-                                ),
+                                // TableRow(
+                                //   context: context,
+
+                                //   sw: sw,
+                                //   id: "TG-M-001",
+                                //   member: "ARSALAN AAMIR",
+                                //   gender: "MALE",
+                                //   package: "GOLD",
+                                //   feestatus: "UNPAID",
+                                //   platform: "GYM",
+                                //   startingDate: "02-12-2022",
+                                //   contact: "03222321683",
+                                //   email: "arsalnaamir@gmail.com",
+                                //   address:
+                                //       "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
+                                //   rowColor: Colors.transparent,
+                                // ),
                               ],
                             ),
                           ),
@@ -881,7 +946,7 @@ class TableHeaderRow extends StatelessWidget {
 }
 
 class TableRow extends StatelessWidget {
-  const TableRow({
+  TableRow({
     super.key,
     required this.rowColor,
     required this.id,
@@ -895,6 +960,9 @@ class TableRow extends StatelessWidget {
     required this.email,
     required this.sw,
     required this.address,
+    required this.documentsnap,
+    required this.context,
+    required this.membersclass,
   });
   final rowColor,
       id,
@@ -907,12 +975,65 @@ class TableRow extends StatelessWidget {
       startingDate,
       contact,
       email,
+      context,
+      documentsnap,
+      membersclass,
       address;
+  TextEditingController _nameController = TextEditingController();
+  Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
+    print("this bich workin");
+    if (documentSnapshot != null) {
+      _nameController.text = documentSnapshot['name'];
+    }
+
+    await showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext ctx) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: 10,
+                left: 0,
+                right: 20,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  child: const Text('Update'),
+                  onPressed: () async {
+                    final String name = _nameController.text;
+
+                    await membersclass.doc(documentSnapshot!.id).update({
+                      "First Name": name,
+                    });
+                    _nameController.text = '';
+
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  Future<void> _delete([String? documentSnapshotid]) async {
+    await membersclass.doc(documentSnapshotid).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: sw < 630 ? 50 : 80,
-      width: 100,
+      height: 60,
       decoration: BoxDecoration(
         border:
             const Border(bottom: BorderSide(color: Colors.white24, width: 0.5)),
@@ -924,7 +1045,7 @@ class TableRow extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              height: sw < 630 ? 30 : 50,
+              height: 40,
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               decoration: const BoxDecoration(
                   color: Blu,
@@ -1013,16 +1134,22 @@ class TableRow extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
-                      UniconsLine.edit,
-                      color: Colors.white70,
+                    GestureDetector(
+                      onTap: () => _update(documentsnap),
+                      child: Icon(
+                        UniconsLine.edit,
+                        color: Colors.white70,
+                      ),
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    Icon(
-                      UniconsLine.trash,
-                      color: Colors.red,
+                    GestureDetector(
+                      onTap: () => _delete(documentsnap.id),
+                      child: Icon(
+                        UniconsLine.trash,
+                        color: Colors.red,
+                      ),
                     )
                   ],
                 ),

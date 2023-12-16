@@ -5,14 +5,15 @@ import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 
-class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+class UpdateUser extends StatefulWidget {
+  final docsnap;
+  const UpdateUser({super.key, required this.docsnap});
 
   @override
-  State<AddUser> createState() => _AddUserState();
+  State<UpdateUser> createState() => _UpdateUserState();
 }
 
-class _AddUserState extends State<AddUser> {
+class _UpdateUserState extends State<UpdateUser> {
   String? Selectedgender = "Male";
   String? selectedpackage = "0";
   String? selectedplatform = "0";
@@ -75,6 +76,10 @@ class _AddUserState extends State<AddUser> {
 
   @override
   void initState() {
+    selectedplatform = widget.docsnap["Platform"];
+    selectedpackage = widget.docsnap["Package"];
+    Selectedgender = widget.docsnap["Gender"];
+    fNameCont.text = widget.docsnap["First name"];
     super.initState();
   }
 

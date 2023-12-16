@@ -48,78 +48,86 @@ class DeskDash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (SizeScreenWidht < 1300 && SizeScreenWidht > 910) {
-      return ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 30,
-                ),
-                // Expanded(
-                //   flex: 2,
-                //   child: Billing_Packages_Info(
-                //     SizeScreenw: SizeScreenWidht,
-                //     SizeScreenh: SizeScreenHeight,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   width: 20,
-                // ),
-                Expanded(
-                    flex: 2,
-                    child: Main_Info(
-                      Sh: SizeScreenHeight,
-                      Sw: SizeScreenWidht,
-                    )),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Activity_Info(
-                        sh: SizeScreenHeight, sw: SizeScreenWidht)),
-              ],
-            ),
+      return SingleChildScrollView(
+        child: Container(
+          height: 700,
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // const SizedBox(
+              //   width: 30,
+              // ),
+              // Expanded(
+              //   flex: 2,
+              //   child: Billing_Packages_Info(
+              //     SizeScreenw: SizeScreenWidht,
+              //     SizeScreenh: SizeScreenHeight,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   width: 20,
+              // ),
+              Expanded(
+                  flex: 2,
+                  child: Main_Info(
+                    Sh: SizeScreenHeight,
+                    Sw: SizeScreenWidht,
+                  )),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  flex: 2,
+                  child:
+                      Activity_Info(sh: SizeScreenHeight, Sw: SizeScreenWidht)),
+            ],
           ),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //         child:
-          //             Activity_Info(sh: SizeScreenHeight, sw: SizeScreenWidht)),
-          //   ],
-          // ),
-        ],
+        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //         child:
+        //             Activity_Info(sh: SizeScreenHeight, sw: SizeScreenWidht)),
+        //   ],
+        // ),
       );
     } else {
-      return Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-        child: Row(
+      return SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Expanded(
-            //   flex: 2,
-            //   child: Billing_Packages_Info(
-            //     SizeScreenw: SizeScreenWidht,
-            //     SizeScreenh: SizeScreenHeight,
-            //   ),
-            // ),
-            // const SizedBox(
-            //   width: 20,
-            // ),
-            Main_Info(
-              Sh: SizeScreenHeight,
-              Sw: SizeScreenWidht,
+            Container(
+              height: 700,
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Billing_Packages_Info(
+                  //     SizeScreenw: SizeScreenWidht,
+                  //     SizeScreenh: SizeScreenHeight,
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   width: 20,
+                  // ),
+                  Main_Info(
+                    Sh: SizeScreenHeight,
+                    Sw: SizeScreenWidht,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                      child: Activity_Info(
+                          sh: SizeScreenHeight, Sw: SizeScreenWidht))
+                ],
+              ),
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-                child: Activity_Info(sh: SizeScreenHeight, sw: SizeScreenWidht))
           ],
         ),
       );
@@ -187,7 +195,7 @@ class MobDash extends StatelessWidget {
             Expanded(
                 child: Activity_Info(
               sh: SizeScreenHeight,
-              sw: SizeScreenWidht,
+              Sw: SizeScreenWidht,
             )),
           ],
         ),
@@ -247,7 +255,7 @@ class TabDash extends StatelessWidget {
             ),
             Expanded(
                 child:
-                    Activity_Info(sh: SizeScreenHeight, sw: SizeScreenWidht)),
+                    Activity_Info(sh: SizeScreenHeight, Sw: SizeScreenWidht)),
           ],
         ),
       ],

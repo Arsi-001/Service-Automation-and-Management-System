@@ -3,7 +3,6 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:unicons/unicons.dart';
 
 class RoundedFuncButton extends StatelessWidget {
-
   const RoundedFuncButton({
     super.key,
     required this.buttcol,
@@ -17,7 +16,8 @@ class RoundedFuncButton extends StatelessWidget {
     required this.func,
   });
 
-  final func,iconhere,
+  final func,
+      iconhere,
       buttcol,
       buttbordercol,
       buttfont,
@@ -72,21 +72,73 @@ class RoundedFuncButton extends StatelessWidget {
 class Activity_Info extends StatelessWidget {
   const Activity_Info({
     required this.sh,
-    required this.sw,
+    required this.Sw,
     super.key,
   });
-  final sh, sw;
+  final sh, Sw;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+          decoration: BoxDecoration(
+              color: lightBlu,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          height: Sw < 400 ? 30 : 50,
+          child: Row(
+            children: [
+              Text(
+                "FRIDAY",
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontSize: Sw < 630
+                        ? Sw < 400
+                            ? Dtxt - 4
+                            : Dtxt
+                        : Dtxt + 4),
+              ),
+              Spacer(),
+              Text(
+                "4TH OF MARCH",
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: Sw < 630
+                        ? Sw < 400
+                            ? Dtxt - 4
+                            : Dtxt
+                        : Dtxt + 4),
+              ),
+              Spacer(),
+              Text(
+                "11:05:45",
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontSize: Sw < 630
+                        ? Sw < 400
+                            ? Dtxt - 4
+                            : Dtxt
+                        : Dtxt + 4),
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
         Expanded(
           child: Container(
             padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
             decoration: BoxDecoration(
               color: lightBlu,
               borderRadius:
-                  BorderRadius.all(Radius.circular(sw < 630 ? 0 : 30)),
+                  BorderRadius.all(Radius.circular(Sw < 630 ? 0 : 30)),
             ),
             child: Column(
               children: [
@@ -139,40 +191,40 @@ class Activity_Info extends StatelessWidget {
                     child: ListView(
                       children: [
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                         ActivityProfileBubble(
-                          sw: sw,
+                          sw: Sw,
                         ),
                       ],
                     ),
@@ -196,218 +248,211 @@ class Main_Info extends StatelessWidget {
   final double Sw, Sh;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            width: 750,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: 350,
-                        height: Sw > 1800
-                            ? 350
-                            : Sw < 630
-                                ? 200
-                                : 300,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 0),
-                        decoration: const BoxDecoration(
-                            gradient: glassmorphGreen,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              UniconsLine.dumbbell,
-                              size: 140,
-                              // size: Sw < 630
-                              //     ? Sw < 400
-                              //         ? 50
-                              //         : 100
-                              //     : 150,
-                              color: DarkBlu,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "PLATFORM",
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w200,
-                                  color: DarkBlu,
-                                  letterSpacing: 5,
-                                  fontSize: 16
-                                  // Sw > 1800
-                                  //     ? 16
-                                  //     : Sw < 400
-                                  //         ? Dtxt - 4
-                                  //         : Dtxt
-                                  ),
-                            ),
-                            Text(
-                              "GYM",
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w600,
-                                  color: DarkBlu,
-                                  letterSpacing: 5,
-                                  fontSize: 28
-                                  // Sw > 1800
-                                  //     ? 28
-                                  //     : Sw < 400
-                                  //         ? Dtxt
-                                  //         : Dtxt + 10
-                                  ),
-                            )
-                          ],
-                        )),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                        height: Sw > 1800
-                            ? 350
-                            : Sw < 630
-                                ? 200
-                                : 300,
-                        color: DarkBlu,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Big2Txt(
-                              Sw: Sw,
-                              Sh: Sh,
-                              Txt1: "250",
-                              Txt2: "TOTAL MEMBER",
-                              col: Blu,
-                            ),
-                            Spacer(),
-                            Big2Txt(
-                              Sw: Sw,
-                              Sh: Sh,
-                              Txt1: "250",
-                              Txt2: "STAFF MEMBER",
-                              col: Colors.purple,
-                            ),
-                            Spacer(),
-                            Big2Txt(
-                              Sw: Sw,
-                              Sh: Sh,
-                              Txt1: "250",
-                              Txt2: "FEE DEFAULTER",
-                              col: Colors.redAccent,
-                            ),
-                          ],
-                        )),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphBlu,
-                      titletxt: "NEW MEMBERS",
-                      titlevalue: "13",
-                      icontxt: UniconsLine.user,
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphpurple,
-                      titletxt: "BRANCHES",
-                      titlevalue: "3",
-                      icontxt: UniconsLine.building,
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphRed,
-                      titletxt: "TILL CLOSING",
-                      titlevalue: "05:32:46",
-                      icontxt: UniconsLine.clock,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                  decoration: BoxDecoration(
-                      color: lightBlu,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  height: Sw < 400 ? 30 : 50,
-                  child: Row(
+    return Container(
+      //decoration: BoxDecoration(color: Colors.red),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  width: 300,
+                  height: Sw > 1800
+                      ? 350
+                      : Sw < 630
+                          ? 200
+                          : 300,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                  decoration: const BoxDecoration(
+                      gradient: glassmorphGreen,
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        "FRIDAY",
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: Sw < 630
-                                ? Sw < 400
-                                    ? Dtxt - 4
-                                    : Dtxt
-                                : Dtxt + 4),
+                      Icon(
+                        UniconsLine.dumbbell,
+                        size: 140,
+                        // size: Sw < 630
+                        //     ? Sw < 400
+                        //         ? 50
+                        //         : 100
+                        //     : 150,
+                        color: DarkBlu,
                       ),
-                      Spacer(),
-                      Text(
-                        "4TH OF MARCH",
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: Sw < 630
-                                ? Sw < 400
-                                    ? Dtxt - 4
-                                    : Dtxt
-                                : Dtxt + 4),
+                      SizedBox(
+                        height: 20,
                       ),
-                      Spacer(),
                       Text(
-                        "11:05:45",
+                        "PLATFORM",
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w200,
+                            color: DarkBlu,
+                            letterSpacing: 5,
+                            fontSize: 16
+                            // Sw > 1800
+                            //     ? 16
+                            //     : Sw < 400
+                            //         ? Dtxt - 4
+                            //         : Dtxt
+                            ),
+                      ),
+                      Text(
+                        "GYM",
                         style: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: Sw < 630
-                                ? Sw < 400
-                                    ? Dtxt - 4
-                                    : Dtxt
-                                : Dtxt + 4),
+                            color: DarkBlu,
+                            letterSpacing: 5,
+                            fontSize: 28
+                            // Sw > 1800
+                            //     ? 28
+                            //     : Sw < 400
+                            //         ? Dtxt
+                            //         : Dtxt + 10
+                            ),
                       )
                     ],
-                  ),
-                ),
-              ],
-            ),
+                  )),
+              SizedBox(
+                width: 20,
+              ),
+              Container(
+                  height: Sw > 1800
+                      ? 350
+                      : Sw < 630
+                          ? 200
+                          : 300,
+                  color: DarkBlu,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Big2Txt(
+                        Sw: Sw,
+                        Sh: Sh,
+                        Txt1: "50",
+                        Txt2: "TOTAL MEMBER",
+                        col: Blu,
+                      ),
+                      Spacer(),
+                      Big2Txt(
+                        Sw: Sw,
+                        Sh: Sh,
+                        Txt1: "2",
+                        Txt2: "STAFF MEMBER",
+                        col: Colors.purple,
+                      ),
+                      Spacer(),
+                      Big2Txt(
+                        Sw: Sw,
+                        Sh: Sh,
+                        Txt1: "0",
+                        Txt2: "FEE DEFAULTER",
+                        col: Colors.redAccent,
+                      ),
+                    ],
+                  )),
+            ],
           ),
-        ),
-      ],
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              miniShowCaseBubble(
+                sh: Sh,
+                sw: Sw,
+                bubcolor: glassmorphBlu,
+                titletxt: "NEW MEMBERS",
+                titlevalue: "13",
+                icontxt: UniconsLine.user,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              miniShowCaseBubble(
+                sh: Sh,
+                sw: Sw,
+                bubcolor: glassmorphpurple,
+                titletxt: "BRANCHES",
+                titlevalue: "3",
+                icontxt: UniconsLine.building,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              miniShowCaseBubble(
+                sh: Sh,
+                sw: Sw,
+                bubcolor: glassmorphRed,
+                titletxt: "TILL CLOSING",
+                titlevalue: "05:32:46",
+                icontxt: UniconsLine.clock,
+              ),
+            ],
+          ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          // Container(
+          //   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+          //   decoration: BoxDecoration(
+          //       color: lightBlu,
+          //       borderRadius: BorderRadius.all(Radius.circular(20))),
+          //   height: Sw < 400 ? 30 : 50,
+          //   child: Row(
+          //     children: [
+          //       Text(
+          //         "FRIDAY",
+          //         style: TextStyle(
+          //             fontFamily: "Montserrat",
+          //             fontWeight: FontWeight.w600,
+          //             color: Colors.white,
+          //             fontSize: Sw < 630
+          //                 ? Sw < 400
+          //                     ? Dtxt - 4
+          //                     : Dtxt
+          //                 : Dtxt + 4),
+          //       ),
+          //       Spacer(),
+          //       Text(
+          //         "4TH OF MARCH",
+          //         style: TextStyle(
+          //             fontFamily: "Montserrat",
+          //             color: Colors.white,
+          //             fontWeight: FontWeight.w600,
+          //             fontSize: Sw < 630
+          //                 ? Sw < 400
+          //                     ? Dtxt - 4
+          //                     : Dtxt
+          //                 : Dtxt + 4),
+          //       ),
+          //       Spacer(),
+          //       Text(
+          //         "11:05:45",
+          //         style: TextStyle(
+          //             fontFamily: "Montserrat",
+          //             fontWeight: FontWeight.w600,
+          //             color: Colors.white,
+          //             fontSize: Sw < 630
+          //                 ? Sw < 400
+          //                     ? Dtxt - 4
+          //                     : Dtxt
+          //                 : Dtxt + 4),
+          //       )
+          //     ],
+          //   ),
+          // ),
+        ],
+      ),
     );
   }
 }
@@ -610,7 +655,8 @@ class Billing_Packages_Info extends StatelessWidget {
               width: 10,
             ),
             Expanded(
-              child: RoundedFuncButton(func: null,
+              child: RoundedFuncButton(
+                func: null,
                 buttTxt: "BUTTON",
                 buttTxtcol: Colors.white,
                 buttbordercol: Blu,
@@ -629,7 +675,8 @@ class Billing_Packages_Info extends StatelessWidget {
               width: 10,
             ),
             Expanded(
-              child: RoundedFuncButton(func: null,
+              child: RoundedFuncButton(
+                func: null,
                 buttTxt: "BUTTON",
                 buttTxtcol: Colors.white,
                 buttbordercol: Blu,
@@ -794,7 +841,7 @@ class miniShowCaseBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 230,
+      width: 200,
       height: sw > 1700
           ? 320
           : sw < 630
@@ -980,6 +1027,88 @@ class incomeinfoRow extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class crudTxtfield extends StatelessWidget {
+  final controller;
+  final title;
+  final widht;
+  final txtinput;
+  final format;
+  crudTxtfield({
+    required this.title,
+    required this.widht,
+    required this.controller,
+    required this.txtinput,
+    required this.format,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 5),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontFamily: "Montserrat",
+              fontSize: 12,
+              //fontWeight: FontWeight.w600
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        Container(
+          height: 40,
+          width: widht,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+              color: DarkBlu,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: TextFormField(
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                errorMaxLines: 1,
+                errorStyle: TextStyle(
+                  fontSize: 10,
+                )),
+            keyboardType: txtinput,
+            inputFormatters: format,
+            validator: (value) {
+              if (title == "First Name" ||
+                  title == "Last Name" ||
+                  title == "Username" ||
+                  title == "Password") {
+                if (value == "") {
+                  return "Name Required";
+                }
+              }
+
+              if (title == "Email") {
+                if (value != "") {
+                  final RegExp emailRegex = RegExp(
+                      r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$');
+                  if (emailRegex.hasMatch(value.toString())) {
+                  } else {
+                    return "Invalid Format";
+                  }
+                }
+              }
+            },
+            controller: controller,
+            cursorColor: Blu,
+            style: TextStyle(color: Colors.white),
+          ),
+        )
+      ],
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:s_a_m_s/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
+import 'package:s_a_m_s/SharedComponent.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -21,7 +22,6 @@ class LoginPage extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                   color: Colors.blue,
-                  image: AssetImage("xcxcx"),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
             ),
             Container(
