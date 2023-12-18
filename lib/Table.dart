@@ -120,70 +120,6 @@ class Dtable extends StatelessWidget {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Container(
-                                          width: 100,
-                                          height: 40,
-                                          child: ElevatedButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).push(
-                                                    HeroDialogRoute(
-                                                        builder: (context) {
-                                              return const UpdateUser(
-                                                docsnap: streamSnapshot,
-                                              );
-                                            })),
-                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                    side: BorderSide(
-                                                        color:
-                                                            Colors.blueAccent)),
-                                                backgroundColor: Blu,
-                                                elevation: 12.0,
-                                                textStyle: const TextStyle(
-                                                    color: Colors.white)),
-                                            child: const Text(
-                                              'Update Member',
-                                              style: TextStyle(
-                                                  fontFamily: "Montserrat",
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white70,
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: RoundedFuncButton(
-                                          func: null,
-                                          buttTxt: "UPDATE",
-                                          buttTxtcol: Colors.white,
-                                          buttbordercol: Blu,
-                                          buttcol: lightBlu,
-                                          buttfont: sw < 630
-                                              ? sw < 300
-                                                  ? 8
-                                                  : 10
-                                              : Dtxt,
-                                          buttheight: DbuttonH,
-                                          butticon: null,
-                                          iconhere: false,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
                                       flex: 2,
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -980,51 +916,6 @@ class TableRow extends StatelessWidget {
       membersclass,
       address;
   TextEditingController _nameController = TextEditingController();
-  Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
-    print("this bich workin");
-    if (documentSnapshot != null) {
-      _nameController.text = documentSnapshot['name'];
-    }
-
-    await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 10,
-                left: 0,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    final String name = _nameController.text;
-
-                    await membersclass.doc(documentSnapshot!.id).update({
-                      "First Name": name,
-                    });
-                    _nameController.text = '';
-
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ),
-          );
-        });
-  }
 
   Future<void> _delete([String? documentSnapshotid]) async {
     await membersclass.doc(documentSnapshotid).delete();
@@ -1134,9 +1025,14 @@ class TableRow extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () => _update(documentsnap),
-                      child: Icon(
+                    IconButton(
+                      onPressed: () => Navigator.of(context)
+                          .push(HeroDialogRoute(builder: (context) {
+                        return UpdateUser(
+                          docsnap: documentsnap,
+                        );
+                      })),
+                      icon: Icon(
                         UniconsLine.edit,
                         color: Colors.white70,
                       ),

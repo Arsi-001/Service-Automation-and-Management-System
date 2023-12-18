@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Constant.dart';
+import 'package:timer_builder/timer_builder.dart';
 import 'package:unicons/unicons.dart';
 
 class RoundedFuncButton extends StatelessWidget {
@@ -86,48 +88,41 @@ class Activity_Info extends StatelessWidget {
               color: lightBlu,
               borderRadius: BorderRadius.all(Radius.circular(20))),
           height: Sw < 400 ? 30 : 50,
-          child: Row(
-            children: [
-              Text(
-                "FRIDAY",
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: Sw < 630
-                        ? Sw < 400
-                            ? Dtxt - 4
-                            : Dtxt
-                        : Dtxt + 4),
-              ),
-              Spacer(),
-              Text(
-                "4TH OF MARCH",
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: Sw < 630
-                        ? Sw < 400
-                            ? Dtxt - 4
-                            : Dtxt
-                        : Dtxt + 4),
-              ),
-              Spacer(),
-              Text(
-                "11:05:45",
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: Sw < 630
-                        ? Sw < 400
-                            ? Dtxt - 4
-                            : Dtxt
-                        : Dtxt + 4),
-              )
-            ],
-          ),
+          child:
+              TimerBuilder.periodic(Duration(seconds: 1), builder: (context) {
+            return Row(
+              children: [
+                Text(
+                  "${DateFormat.EEEE().format(DateTime.now())}".toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16),
+                ),
+                Spacer(),
+                Text(
+                  "${DateFormat.MMMM().format(DateTime.now())}".toUpperCase() +
+                      "  " +
+                      "${DateFormat.d().format(DateTime.now())}",
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
+                ),
+                Spacer(),
+                Text(
+                  "${DateFormat.Hms().format(DateTime.now())}".toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16),
+                )
+              ],
+            );
+          }),
         ),
         SizedBox(
           height: 12,

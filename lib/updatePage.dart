@@ -6,8 +6,8 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 
 class UpdateUser extends StatefulWidget {
-  final docsnap;
-  const UpdateUser({super.key, required this.docsnap});
+  var docsnap;
+  UpdateUser({super.key, required this.docsnap});
 
   @override
   State<UpdateUser> createState() => _UpdateUserState();
@@ -80,6 +80,10 @@ class _UpdateUserState extends State<UpdateUser> {
     selectedpackage = widget.docsnap["Package"];
     Selectedgender = widget.docsnap["Gender"];
     fNameCont.text = widget.docsnap["First name"];
+    lNameCont.text = widget.docsnap["Last name"];
+    emailCont.text = widget.docsnap["Email"];
+    addressCont.text = widget.docsnap["Address"];
+    numberCont.text = widget.docsnap["Phone Number"];
     super.initState();
   }
 
@@ -139,39 +143,21 @@ class _UpdateUserState extends State<UpdateUser> {
                                         SizedBox(
                                           height: 6,
                                         ),
-                                        FutureBuilder<String?>(
-                                            future: getID(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error: ${snapshot.error}');
-                                              } else if (snapshot.data ==
-                                                  null) {
-                                                return Text(
-                                                    'ID not found or field is null.');
-                                              } else {
-                                                return Container(
-                                                  height: 40,
-                                                  width: 100,
-                                                  decoration: BoxDecoration(
-                                                      color: DarkBlu,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10))),
-                                                  child: Center(
-                                                    child: Text(
-                                                      '${snapshot.data}',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            })
+                                        Container(
+                                          height: 40,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              color: DarkBlu,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10))),
+                                          child: Center(
+                                            child: Text(
+                                              widget.docsnap.id,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ],
@@ -528,27 +514,24 @@ class _UpdateUserState extends State<UpdateUser> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             final firstname = fNameCont.text;
-                                            fNameCont.clear();
+
                                             final lastname = lNameCont.text;
-                                            lNameCont.clear();
 
                                             final package = selectedpackage;
 
                                             final platform = selectedplatform;
                                             final number = numberCont.text;
-                                            numberCont.clear();
 
                                             final address = addressCont.text;
-                                            addressCont.clear();
+
                                             final email = emailCont.text;
                                             final selectD =
                                                 dateFormat.format(selectedDate);
-                                            emailCont.clear();
 
-                                            addMember(
+                                            updateMember(
                                               email: email,
                                               idnum: userIDnum,
-                                              id: userID,
+                                              id: widget.docsnap.id,
                                               fname: firstname,
                                               lname: lastname,
                                               gender: Selectedgender,
@@ -558,11 +541,9 @@ class _UpdateUserState extends State<UpdateUser> {
                                               startdate: selectD,
                                               address: address,
                                             );
-                                            selectedDate = DateTime.now();
-                                            selectedpackage = "0";
-                                            selectedplatform = "0";
-                                            Selectedgender = "Male";
+
                                             setState(() {});
+                                            Navigator.pop(context);
                                           }
                                         },
                                         // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
@@ -572,7 +553,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                             elevation: 12.0,
                                             textStyle: const TextStyle(
                                                 color: Colors.white)),
-                                        child: const Text('Add Member'),
+                                        child: const Text('Update Member'),
                                       ),
                                     ),
                                     SizedBox(
@@ -615,7 +596,7 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  Future addMember(
+  Future updateMember(
       {required String fname,
       required String lname,
       required String email,
@@ -627,13 +608,10 @@ class _UpdateUserState extends State<UpdateUser> {
       required String startdate,
       required id,
       required idnum}) async {
-    final docUser = FirebaseFirestore.instance
-        .collection("/TGym/GYM/Members")
-        .doc(id + (idnum + 1).toString());
+    final docUser =
+        FirebaseFirestore.instance.collection("/TGym/GYM/Members").doc(id);
 
     final json = {
-      "idnum": idnum + 1,
-      "ID": id + (idnum + 1).toString(),
       "Fee Status": "Paid",
       "First name": fname,
       "Last name": lname,
@@ -641,10 +619,10 @@ class _UpdateUserState extends State<UpdateUser> {
       "Package": package,
       "Platform": platform,
       "Phone Number": number,
-      "Email": "email",
+      "Email": email,
       "Address": address,
       "Start Date": startdate,
     };
-    await docUser.set(json);
+    await docUser.update(json);
   }
 }
