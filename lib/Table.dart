@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:s_a_m_s/Addpage.dart';
+import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Responsive.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
-import 'package:s_a_m_s/crudpopup.dart';
-import 'package:s_a_m_s/pop_dialog.dart';
-import 'package:s_a_m_s/updatePage.dart';
+import 'package:s_a_m_s/Crud%20operation/crudpopup.dart';
+import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
+import 'package:s_a_m_s/Crud%20operation/popUp/updatePage.dart';
 import 'package:unicons/unicons.dart';
 
 class TableInfo extends StatefulWidget {
@@ -29,15 +29,8 @@ class _TableInfoState extends State<TableInfo> {
   Widget build(BuildContext context) {
     var sw = MediaQuery.of(context).size.width;
 
-    return ResponsiveLayout(
-      Desktop: Dtable(
-        sw: sw,
-      ),
-      Tablet: Ttable(
-        sw: sw,
-        con: con,
-      ),
-      Mobile: Mtable(sw: sw, con: con),
+    return Dtable(
+      sw: sw,
     );
   }
 }
@@ -226,496 +219,6 @@ class Dtable extends StatelessWidget {
                   );
                 }
               }),
-        ),
-      ),
-    );
-  }
-}
-
-class MemberInfoTable extends StatelessWidget {
-  MemberInfoTable({
-    super.key,
-    required this.con,
-    required this.sw,
-    required this.id,
-    required this.name,
-    required this.gender,
-    required this.package,
-    required this.feestatus,
-    required this.platform,
-    required this.startingDate,
-    required this.contact,
-    required this.email,
-  });
-  TextEditingController _nameController = TextEditingController();
-
-  final ScrollController con;
-  final double sw;
-  final id;
-  final name;
-  final gender;
-  final package;
-  final feestatus;
-  final platform;
-  final startingDate;
-  final contact;
-  final email;
-  final CollectionReference _members =
-      FirebaseFirestore.instance.collection('/TGym/GYM/Members');
-  @override
-  Widget build(BuildContext context) {
-    return RawScrollbar(
-      thickness: 10,
-      thumbColor: Blu,
-      trackColor: Colors.white12,
-      trackBorderColor: Colors.white30,
-      thumbVisibility: true,
-      trackVisibility: true,
-      controller: con,
-      child: SingleChildScrollView(
-        controller: con,
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          height: 500,
-          width: sw >= 1700
-              ? 1600
-              : sw <= 1368
-                  ? 1300
-                  : 1400,
-          decoration: BoxDecoration(
-              color: lightBlu,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Column(
-            children: [
-              TableHeaderRow(
-                sw: sw,
-                rowColor: Blu,
-              ),
-              Container(
-                height: 420,
-                child: StreamBuilder(
-                  stream:
-                      _members.orderBy("idnum", descending: false).snapshots(),
-                  builder:
-                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                    if (streamSnapshot.hasData) {
-                      return ListView.builder(
-                        itemCount:
-                            streamSnapshot.data!.docs.length, //number of rows
-                        itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              streamSnapshot.data!.docs[index];
-                          return TableRow(
-                              context: context,
-                              documentsnap: documentSnapshot,
-                              membersclass: _members,
-                              rowColor: lightBlu,
-                              id: documentSnapshot["ID"],
-                              sw: sw,
-                              member: documentSnapshot["First name"] +
-                                  documentSnapshot["Last name"],
-                              gender: documentSnapshot["Gender"],
-                              package: documentSnapshot["Package"],
-                              feestatus: documentSnapshot["Fee Status"],
-                              platform: documentSnapshot["Platform"],
-                              startingDate: documentSnapshot["Start Date"],
-                              contact: documentSnapshot["Phone Number"],
-                              email: documentSnapshot["Email"],
-                              address: documentSnapshot["Address"]);
-                        },
-                      );
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Ttable extends StatelessWidget {
-  const Ttable({
-    super.key,
-    required this.sw,
-    required this.con,
-  });
-
-  final double sw;
-  final ScrollController con;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: 1920,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    TBInfoBubble(),
-                    Expanded(flex: sw < 930 ? 0 : 1, child: SizedBox()),
-                    Expanded(
-                      flex: sw < 1090 ? 5 : 2,
-                      child: Container(
-                        height: 200,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "ADD",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "DELETE",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "UPDATE",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RoundedFuncButton(
-                                  func: null,
-                                  buttTxt: "SEARCH",
-                                  buttTxtcol: Colors.white,
-                                  buttbordercol: Blu,
-                                  buttcol: lightBlu,
-                                  buttfont: sw < 630
-                                      ? sw < 300
-                                          ? 8
-                                          : 10
-                                      : Dtxt,
-                                  buttheight: DbuttonH,
-                                  butticon: null,
-                                  iconhere: false,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                RawScrollbar(
-                  thickness: 10,
-                  thumbColor: Blu,
-                  trackColor: Colors.white12,
-                  trackBorderColor: Colors.white30,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  controller: con,
-                  child: SingleChildScrollView(
-                    controller: con,
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      width: sw >= 1700
-                          ? 1600
-                          : sw <= 1368
-                              ? 1300
-                              : 1400,
-                      decoration: BoxDecoration(
-                          color: lightBlu,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Column(
-                        children: [
-                          TableHeaderRow(
-                            sw: sw,
-                            rowColor: Blu,
-                          ),
-                          Container(
-                            height: 420,
-                            child: ListView(
-                              children: [
-                                // TableRow(
-                                //   sw: sw,
-                                //   id: "TG-M-001",
-                                //   member: "ARSALAN AAMIR",
-                                //   gender: "MALE",
-                                //   package: "GOLD",
-                                //   feestatus: "UNPAID",
-                                //   platform: "GYM",
-                                //   startingDate: "02-12-2022",
-                                //   contact: "03222321683",
-                                //   email: "arsalnaamir@gmail.com",
-                                //   address:
-                                //       "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
-                                //   rowColor: Colors.transparent,
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ]),
-        ),
-      ),
-    );
-  }
-}
-
-class Mtable extends StatelessWidget {
-  const Mtable({
-    super.key,
-    required this.sw,
-    required this.con,
-  });
-
-  final double sw;
-  final ScrollController con;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: 1920,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TBInfoBubble(),
-                    Container(
-                      height: 100,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "ADD",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "DELETE",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RoundedFuncButton(
-                                      func: null,
-                                      buttTxt: "UPDATE",
-                                      buttTxtcol: Colors.white,
-                                      buttbordercol: Blu,
-                                      buttcol: lightBlu,
-                                      buttfont: sw < 630
-                                          ? sw < 300
-                                              ? 8
-                                              : 10
-                                          : Dtxt,
-                                      buttheight: DbuttonH,
-                                      butticon: null,
-                                      iconhere: false,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RoundedFuncButton(
-                              func: null,
-                              buttTxt: "SEARCH MEMBER",
-                              buttTxtcol: Colors.white,
-                              buttbordercol: Blu,
-                              buttcol: lightBlu,
-                              buttfont: sw < 630
-                                  ? sw < 300
-                                      ? 8
-                                      : 10
-                                  : Dtxt,
-                              buttheight: DbuttonH,
-                              butticon: null,
-                              iconhere: false,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                RawScrollbar(
-                  thickness: 10,
-                  thumbColor: Blu,
-                  trackColor: Colors.white12,
-                  trackBorderColor: Colors.white30,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  controller: con,
-                  child: SingleChildScrollView(
-                    controller: con,
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      width: sw >= 1700
-                          ? 1600
-                          : sw <= 1368
-                              ? 1300
-                              : 1400,
-                      decoration: BoxDecoration(
-                          color: lightBlu,
-                          borderRadius: BorderRadius.all(Radius.circular(0))),
-                      child: Column(
-                        children: [
-                          TableHeaderRow(
-                            sw: sw,
-                            rowColor: Blu,
-                          ),
-                          Container(
-                            height: 420,
-                            child: ListView(
-                              children: [
-                                // TableRow(
-                                //   context: context,
-
-                                //   sw: sw,
-                                //   id: "TG-M-001",
-                                //   member: "ARSALAN AAMIR",
-                                //   gender: "MALE",
-                                //   package: "GOLD",
-                                //   feestatus: "UNPAID",
-                                //   platform: "GYM",
-                                //   startingDate: "02-12-2022",
-                                //   contact: "03222321683",
-                                //   email: "arsalnaamir@gmail.com",
-                                //   address:
-                                //       "Flat 30-H, Askari V, Malir cantt, Karachi, Paksitan",
-                                //   rowColor: Colors.transparent,
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ]),
         ),
       ),
     );
@@ -1021,10 +524,20 @@ class TableRow extends StatelessWidget {
           Expanded(
               flex: 1,
               child: Container(
-                padding: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    GestureDetector(
+                      onTap: () => _delete(documentsnap.id),
+                      child: Icon(
+                        UniconsLine.dollar_sign_alt,
+                        color: Colors.green,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
                     IconButton(
                       onPressed: () => Navigator.of(context)
                           .push(HeroDialogRoute(builder: (context) {
@@ -1038,7 +551,7 @@ class TableRow extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     GestureDetector(
                       onTap: () => _delete(documentsnap.id),

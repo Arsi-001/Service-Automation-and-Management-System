@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:s_a_m_s/Constant.dart';
@@ -152,42 +153,45 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                 const SizedBox(
                   width: 10,
                 ),
-                Container(
-                  height: 45,
-                  width: SizeScreenW < 1080 ? 150 : 200,
-                  decoration: BoxDecoration(
-                      color: lightBlu,
-                      border: Border.all(color: Colors.blue),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            "Garrison Officer Mess",
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w600,
-                                overflow: TextOverflow.ellipsis,
-                                color: Colors.white70,
-                                fontSize: 14),
+                GestureDetector(
+                  onTap: () => FirebaseAuth.instance.signOut(),
+                  child: Container(
+                    height: 45,
+                    width: SizeScreenW < 1080 ? 150 : 200,
+                    decoration: BoxDecoration(
+                        color: lightBlu,
+                        border: Border.all(color: Colors.blue),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              "Garrison Officer Mess",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w600,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.white70,
+                                  fontSize: 14),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Icon(
-                            Icons.arrow_drop_down_rounded,
-                            color: Colors.white70,
-                            size: 35,
-                          ),
-                        )
-                      ],
+                          Expanded(
+                            flex: 1,
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Colors.white70,
+                              size: 35,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

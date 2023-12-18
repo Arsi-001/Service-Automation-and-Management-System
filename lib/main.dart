@@ -1,7 +1,8 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:s_a_m_s/Addpage.dart';
+import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
@@ -21,16 +22,21 @@ void main() async {
     appId: "1:903493121484:web:d1310e8db6c3610cbb5969",
   ));
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+final formKey = GlobalKey<FormState>();
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       scrollBehavior: MyCustomScrollBehavior(),
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
@@ -40,7 +46,26 @@ class MyApp extends StatelessWidget {
           data: scale,
         );
       },
-      home: LoginPage(),
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text(
+                  "Something Went Wrong!, Please Try Again",
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              return const Homepage();
+            } else {
+              return const LoginPage();
+            }
+          }),
     );
   }
 }

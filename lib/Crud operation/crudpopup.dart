@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:s_a_m_s/Addpage.dart';
+import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
-import 'package:s_a_m_s/updatePage.dart';
+import 'package:s_a_m_s/Crud%20operation/popUp/updatePage.dart';
 
 class AddTodoPopupCard extends StatelessWidget {
   /// {@macro add_todo_popup_card}
