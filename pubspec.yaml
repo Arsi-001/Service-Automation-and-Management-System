@@ -44,6 +44,9 @@ dependencies:
   schedulers: ^1.0.1
   timer_builder: ^2.0.0
   firebase_auth: ^4.15.3
+  simple_barcode_scanner: ^0.0.8
+  barcode_widget: ^2.0.4
+  qr_bar_code_scanner_dialog: ^0.0.5
 
 dev_dependencies:
   flutter_test:

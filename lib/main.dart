@@ -1,10 +1,12 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
+import 'package:s_a_m_s/Splashscreen.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
 import 'package:s_a_m_s/Table.dart';
@@ -61,7 +63,11 @@ class MyApp extends StatelessWidget {
                 ),
               );
             } else if (snapshot.hasData) {
-              return const Homepage();
+              if (Splashon) {
+                return const Splash();
+              } else {
+                return const Homepage();
+              }
             } else {
               return const LoginPage();
             }
@@ -92,6 +98,28 @@ class _HomepageState extends State<Homepage> {
   final AddUser _addmember = new AddUser();
   final Dash _dash = Dash();
 
+  final user = FirebaseAuth.instance.currentUser!;
+  Future getcolname() async {
+    try {
+      var colName = await FirebaseFirestore.instance
+          .collection("ClientLoginInfo")
+          .where("uid", isEqualTo: user.uid.toString())
+          .get();
+
+      return colName.docs.first["collectionName"];
+    } catch (e) {
+      return "   no found    ";
+    }
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      Splashon = false;
+    });
+    super.initState();
+  }
+
   Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
@@ -106,7 +134,7 @@ class _HomepageState extends State<Homepage> {
         return new Container(
           child: Center(
             child: Text(
-              "Page Down, Sorry for the trouble",
+              user.uid,
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -117,23 +145,28 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: DarkBlu,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(NavSize),
-            child: ResponsiveLayout(
-              Desktop: DesktopHeader(
-                callback: (index) {
-                  setState(() {
-                    _showPage = _pageSelect(index);
-                  });
-                },
-              ),
-              Mobile: TabHeader(),
-              Tablet: TabHeader(),
-            )),
-        body: _showPage,
-      ),
+      child: FutureBuilder(
+          future: getcolname(),
+          builder: (context, snapshot) {
+            return Scaffold(
+              backgroundColor: DarkBlu,
+              appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(NavSize),
+                  child: ResponsiveLayout(
+                    Desktop: DesktopHeader(
+                      colname: "snapshot.data",
+                      callback: (index) {
+                        setState(() {
+                          _showPage = _pageSelect(index);
+                        });
+                      },
+                    ),
+                    Mobile: TabHeader(),
+                    Tablet: TabHeader(),
+                  )),
+              body: _showPage,
+            );
+          }),
     );
   }
 }

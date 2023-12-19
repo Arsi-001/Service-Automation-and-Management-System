@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     Future<void> authuser() async {
       showDialog(
           context: context,
-          builder: (context) => Center(
+          builder: (context) => const Center(
                 child: CircularProgressIndicator(),
               ));
       try {

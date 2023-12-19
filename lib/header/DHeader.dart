@@ -6,7 +6,8 @@ import 'package:unicons/unicons.dart';
 
 class DesktopHeader extends StatefulWidget {
   final Function(int i) callback;
-  DesktopHeader({super.key, required this.callback});
+  final colname;
+  DesktopHeader({super.key, required this.callback, required this.colname});
 
   @override
   State<DesktopHeader> createState() => _DesktopHeaderState();
@@ -127,7 +128,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
           Expanded(
             flex: 1,
             child: Text(
-              SizeScreenW.toString() + "DASh",
+              SizeScreenW.toString() + "DASh" + widget.colname + userinfo.uid,
               style: TextStyle(
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w600,

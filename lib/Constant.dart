@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //const DarkBlu = Color(0xFF202342);
@@ -71,3 +72,14 @@ const Dtxt = 12.0;
 const DbuttonH = 40;
 const NavSize = 100.0;
 const String heroAddTodo = 'add-todo-hero';
+
+final userinfo = FirebaseAuth.instance.currentUser!;
+String? colname = "TGym";
+CollectionReference clientcol =
+    FirebaseFirestore.instance.collection("$colname");
+bool Splashon = false;
+String? clientplat = "GYM";
+CollectionReference membercol =
+    FirebaseFirestore.instance.collection("/$colname/$clientplat/Members");
+final defaultercol =
+    FirebaseFirestore.instance.collection("/$colname/$clientplat/Members").where("Defaulters", isEqualTo: true);
