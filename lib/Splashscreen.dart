@@ -41,7 +41,7 @@ class _SplashState extends State<Splash> {
     fadeIn = false;
 
     // Set a timer to trigger the fade in after a short delay
-    Timer(Duration(milliseconds: 500), () {
+    Timer(Duration(milliseconds: 1000), () {
       setState(() {
         fadeIn = true;
       });
@@ -50,6 +50,7 @@ class _SplashState extends State<Splash> {
       Timer(Duration(seconds: 4), () {
         setState(() {
           fadeIn = false;
+          Splashon = false;
         });
 
         // Set a delay before navigating to the next page

@@ -79,7 +79,10 @@ CollectionReference clientcol =
     FirebaseFirestore.instance.collection("$colname");
 bool Splashon = false;
 String? clientplat = "GYM";
-CollectionReference membercol =
+final membercol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Members");
-final defaultercol =
-    FirebaseFirestore.instance.collection("/$colname/$clientplat/Members").where("Defaulters", isEqualTo: true);
+CollectionReference activitycol =
+    FirebaseFirestore.instance.collection("/$colname/$clientplat/Activity");
+final defaultercol = FirebaseFirestore.instance
+    .collection("/$colname/$clientplat/Members")
+    .where("Defaulters", isEqualTo: true);

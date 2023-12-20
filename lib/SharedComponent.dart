@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Constant.dart';
+import 'package:s_a_m_s/Crud%20operation/Attendace.dart';
+import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:unicons/unicons.dart';
 
@@ -134,107 +136,135 @@ class Activity_Info extends StatelessWidget {
           height: 12,
         ),
         Expanded(
-          child: Container(
-            width: 700,
-            padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
-            decoration: BoxDecoration(
-              color: lightBlu,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(Sw < 630 ? 0 : 30)),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Center(
-                        child: Text(
-                      "ACTIVITY TRACKER",
-                      style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white70,
-                          fontSize: Dtxt + 4),
-                    )),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                      decoration: BoxDecoration(
-                          color: Blu,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text(
-                        "Members In Attendance: 05",
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            // fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: Dtxt),
-                      ),
+          child: StreamBuilder(
+              stream: activitycol.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  return Container(
+                    width: 700,
+                    padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                    decoration: BoxDecoration(
+                      color: lightBlu,
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sw < 630 ? 0 : 30)),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                      height: 1,
-                      color: Color.fromARGB(58, 128, 128, 128),
-                    ))
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: Container(
-                    child: ListView(
+                    child: Column(
                       children: [
-                        ActivityProfileBubble(
-                          sw: Sw,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                    child: Text(
+                                  "ACTIVITY TRACKER",
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white70,
+                                      fontSize: Dtxt + 4),
+                                )),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      color: Blu,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Text(
+                                    "Attendance: " +
+                                        (streamSnapshot.data?.docs.length)
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        // fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 10),
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.of(context)
+                                    .push(HeroDialogRoute(builder: (context) {
+                                  return AttendacePopUp();
+                                })),
+                                // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    backgroundColor: Blu,
+                                    elevation: 12.0,
+                                    textStyle:
+                                        const TextStyle(color: Colors.white)),
+                                child: const Text(
+                                  'Check in',
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                      fontSize: 12),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        ActivityProfileBubble(
-                          sw: Sw,
+                        SizedBox(
+                          height: 16,
                         ),
-                        ActivityProfileBubble(
-                          sw: Sw,
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 1,
+                              color: Color.fromARGB(58, 128, 128, 128),
+                            ))
+                          ],
                         ),
-                        ActivityProfileBubble(
-                          sw: Sw,
+                        SizedBox(
+                          height: 10,
                         ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
-                        ActivityProfileBubble(
-                          sw: Sw,
-                        ),
+                        Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                              itemCount: streamSnapshot.data?.docs.length,
+                              itemBuilder: (context, i) {
+                                final DocumentSnapshot documentSnapshot =
+                                    streamSnapshot.data!.docs[i];
+                                return ActivityProfileBubble(
+                                  id: documentSnapshot.id,
+                                  name: documentSnapshot["Name"],
+                                  feestatus: documentSnapshot["Fee Status"],
+                                  package: documentSnapshot["Package"],
+                                  platform: documentSnapshot["Platform"],
+                                  defaulters: documentSnapshot["Defaulter"],
+                                  timein:
+                                      documentSnapshot["Time In"].toString(),
+                                  sw: Sw,
+                                );
+                              },
+                            ),
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
         ),
       ],
     );
@@ -253,200 +283,207 @@ class Main_Info extends StatelessWidget {
     return StreamBuilder(
         stream: membercol.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      width: 300,
-                      height: 300,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 0),
-                      decoration: const BoxDecoration(
-                          gradient: glassmorphGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            UniconsLine.dumbbell,
-                            size: 140,
-                            // size: Sw < 630
-                            //     ? Sw < 400
-                            //         ? 50
-                            //         : 100
-                            //     : 150,
-                            color: DarkBlu,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "PLATFORM",
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w200,
-                                color: DarkBlu,
-                                letterSpacing: 5,
-                                fontSize: 16
-                                // Sw > 1800
-                                //     ? 16
-                                //     : Sw < 400
-                                //         ? Dtxt - 4
-                                //         : Dtxt
-                                ),
-                          ),
-                          Text(
-                            clientplat!,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w600,
-                                color: DarkBlu,
-                                letterSpacing: 5,
-                                fontSize: 28
-                                // Sw > 1800
-                                //     ? 28
-                                //     : Sw < 400
-                                //         ? Dtxt
-                                //         : Dtxt + 10
-                                ),
-                          )
-                        ],
-                      )),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                      height: 300,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Big2Txt(
-                            Sw: Sw,
-                            Sh: Sh,
-                            Txt1: snapshot.data!.docs.length.toString(),
-                            Txt2: "TOTAL MEMBER",
-                            col: Blu,
-                          ),
-                          Spacer(),
-                          Big2Txt(
-                            Sw: Sw,
-                            Sh: Sh,
-                            Txt1: "2",
-                            Txt2: "STAFF MEMBER",
-                            col: Colors.purple,
-                          ),
-                          Spacer(),
-                          Big2Txt(
-                            Sw: Sw,
-                            Sh: Sh,
-                            Txt1: snapshot.data!.docs.where((element) => false),
-                            Txt2: "FEE DEFAULTER",
-                            col: Colors.redAccent,
-                          ),
-                        ],
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  miniShowCaseBubble(
-                    sh: Sh,
-                    sw: Sw,
-                    bubcolor: glassmorphBlu,
-                    titletxt: "NEW MEMBERS",
-                    titlevalue: "13",
-                    icontxt: UniconsLine.user,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  miniShowCaseBubble(
-                    sh: Sh,
-                    sw: Sw,
-                    bubcolor: glassmorphpurple,
-                    titletxt: "BRANCHES",
-                    titlevalue: "3",
-                    icontxt: UniconsLine.building,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  miniShowCaseBubble(
-                    sh: Sh,
-                    sw: Sw,
-                    bubcolor: glassmorphRed,
-                    titletxt: "TILL CLOSING",
-                    titlevalue: "05:32:46",
-                    icontxt: UniconsLine.clock,
-                  ),
-                ],
-              ),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              // Container(
-              //   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-              //   decoration: BoxDecoration(
-              //       color: lightBlu,
-              //       borderRadius: BorderRadius.all(Radius.circular(20))),
-              //   height: Sw < 400 ? 30 : 50,
-              //   child: Row(
-              //     children: [
-              //       Text(
-              //         "FRIDAY",
-              //         style: TextStyle(
-              //             fontFamily: "Montserrat",
-              //             fontWeight: FontWeight.w600,
-              //             color: Colors.white,
-              //             fontSize: Sw < 630
-              //                 ? Sw < 400
-              //                     ? Dtxt - 4
-              //                     : Dtxt
-              //                 : Dtxt + 4),
-              //       ),
-              //       Spacer(),
-              //       Text(
-              //         "4TH OF MARCH",
-              //         style: TextStyle(
-              //             fontFamily: "Montserrat",
-              //             color: Colors.white,
-              //             fontWeight: FontWeight.w600,
-              //             fontSize: Sw < 630
-              //                 ? Sw < 400
-              //                     ? Dtxt - 4
-              //                     : Dtxt
-              //                 : Dtxt + 4),
-              //       ),
-              //       Spacer(),
-              //       Text(
-              //         "11:05:45",
-              //         style: TextStyle(
-              //             fontFamily: "Montserrat",
-              //             fontWeight: FontWeight.w600,
-              //             color: Colors.white,
-              //             fontSize: Sw < 630
-              //                 ? Sw < 400
-              //                     ? Dtxt - 4
-              //                     : Dtxt
-              //                 : Dtxt + 4),
-              //       )
-              //     ],
-              //   ),
-              // ),
-            ],
-          );
+          if (snapshot.hasData) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 300,
+                        height: 300,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 0),
+                        decoration: const BoxDecoration(
+                            gradient: glassmorphGreen,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30))),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              UniconsLine.dumbbell,
+                              size: 140,
+                              // size: Sw < 630
+                              //     ? Sw < 400
+                              //         ? 50
+                              //         : 100
+                              //     : 150,
+                              color: DarkBlu,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "PLATFORM",
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w200,
+                                  color: DarkBlu,
+                                  letterSpacing: 5,
+                                  fontSize: 16
+                                  // Sw > 1800
+                                  //     ? 16
+                                  //     : Sw < 400
+                                  //         ? Dtxt - 4
+                                  //         : Dtxt
+                                  ),
+                            ),
+                            Text(
+                              clientplat!,
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w600,
+                                  color: DarkBlu,
+                                  letterSpacing: 5,
+                                  fontSize: 28
+                                  // Sw > 1800
+                                  //     ? 28
+                                  //     : Sw < 400
+                                  //         ? Dtxt
+                                  //         : Dtxt + 10
+                                  ),
+                            )
+                          ],
+                        )),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                        height: 300,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Big2Txt(
+                              Sw: Sw,
+                              Sh: Sh,
+                              Txt1: snapshot.data!.docs.length.toString(),
+                              Txt2: "TOTAL MEMBER",
+                              col: Blu,
+                            ),
+                            Spacer(),
+                            Big2Txt(
+                              Sw: Sw,
+                              Sh: Sh,
+                              Txt1: "2",
+                              Txt2: "STAFF MEMBER",
+                              col: Colors.purple,
+                            ),
+                            Spacer(),
+                            Big2Txt(
+                              Sw: Sw,
+                              Sh: Sh,
+                              Txt1: "3",
+                              Txt2: "FEE DEFAULTER",
+                              col: Colors.redAccent,
+                            ),
+                          ],
+                        )),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    miniShowCaseBubble(
+                      sh: Sh,
+                      sw: Sw,
+                      bubcolor: glassmorphBlu,
+                      titletxt: "NEW MEMBERS",
+                      titlevalue: "13",
+                      icontxt: UniconsLine.user,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    miniShowCaseBubble(
+                      sh: Sh,
+                      sw: Sw,
+                      bubcolor: glassmorphpurple,
+                      titletxt: "BRANCHES",
+                      titlevalue: "3",
+                      icontxt: UniconsLine.building,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    miniShowCaseBubble(
+                      sh: Sh,
+                      sw: Sw,
+                      bubcolor: glassmorphRed,
+                      titletxt: "TILL CLOSING",
+                      titlevalue: "05:32:46",
+                      icontxt: UniconsLine.clock,
+                    ),
+                  ],
+                ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                //   decoration: BoxDecoration(
+                //       color: lightBlu,
+                //       borderRadius: BorderRadius.all(Radius.circular(20))),
+                //   height: Sw < 400 ? 30 : 50,
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         "FRIDAY",
+                //         style: TextStyle(
+                //             fontFamily: "Montserrat",
+                //             fontWeight: FontWeight.w600,
+                //             color: Colors.white,
+                //             fontSize: Sw < 630
+                //                 ? Sw < 400
+                //                     ? Dtxt - 4
+                //                     : Dtxt
+                //                 : Dtxt + 4),
+                //       ),
+                //       Spacer(),
+                //       Text(
+                //         "4TH OF MARCH",
+                //         style: TextStyle(
+                //             fontFamily: "Montserrat",
+                //             color: Colors.white,
+                //             fontWeight: FontWeight.w600,
+                //             fontSize: Sw < 630
+                //                 ? Sw < 400
+                //                     ? Dtxt - 4
+                //                     : Dtxt
+                //                 : Dtxt + 4),
+                //       ),
+                //       Spacer(),
+                //       Text(
+                //         "11:05:45",
+                //         style: TextStyle(
+                //             fontFamily: "Montserrat",
+                //             fontWeight: FontWeight.w600,
+                //             color: Colors.white,
+                //             fontSize: Sw < 630
+                //                 ? Sw < 400
+                //                     ? Dtxt - 4
+                //                     : Dtxt
+                //                 : Dtxt + 4),
+                //       )
+                //     ],
+                //   ),
+                // ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         });
   }
 }
@@ -722,10 +759,21 @@ class Billing_Packages_Info extends StatelessWidget {
 class ActivityProfileBubble extends StatelessWidget {
   const ActivityProfileBubble({
     super.key,
+    required this.id,
     required this.sw,
+    required this.name,
+    required this.package,
+    required this.platform,
+    required this.timein,
+    required this.feestatus,
+    required this.defaulters,
   });
 
-  final sw;
+  final sw, name, package, platform, timein, feestatus, defaulters, id;
+
+  Future<void> _deletemember([String? documentSnapshotid]) async {
+    await activitycol.doc(documentSnapshotid).delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -759,7 +807,7 @@ class ActivityProfileBubble extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ARSALAN AAMIR",
+                      name,
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
@@ -770,7 +818,7 @@ class ActivityProfileBubble extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      "GYM - GOLD MEMBERSHIP",
+                      "$platform - $package Package",
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
@@ -791,11 +839,13 @@ class ActivityProfileBubble extends StatelessWidget {
                               fontSize: Dtxt - 3),
                         ),
                         Text(
-                          "PAID",
+                          "$feestatus",
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.w600,
-                              color: Colors.greenAccent,
+                              color: feestatus == "Paid"
+                                  ? Colors.greenAccent
+                                  : Colors.redAccent,
                               fontSize: Dtxt - 3),
                         ),
                       ],
@@ -803,6 +853,20 @@ class ActivityProfileBubble extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
+                Center(
+                    child: Icon(Icons.monetization_on_outlined,
+                        color: defaulters
+                            ? Colors.redAccent
+                            : Colors.greenAccent)),
+                SizedBox(
+                  width: 12,
+                ),
+                IconButton(
+                    onPressed: () => _deletemember(id),
+                    icon: Icon(Icons.exit_to_app, color: Colors.blue)),
+                SizedBox(
+                  width: 12,
+                ),
                 Text(
                   "6:00 PM",
                   style: TextStyle(

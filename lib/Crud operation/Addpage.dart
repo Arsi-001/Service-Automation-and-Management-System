@@ -639,6 +639,7 @@ class _AddUserState extends State<AddUser> {
       "Email": "email",
       "Address": address,
       "Start Date": startdate,
+      "Defaulter": false
     };
     await docUser.set(json);
   }

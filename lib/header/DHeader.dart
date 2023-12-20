@@ -125,17 +125,17 @@ class _DesktopHeaderState extends State<DesktopHeader> {
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              SizeScreenW.toString() + "DASh" + widget.colname + userinfo.uid,
-              style: TextStyle(
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 16),
-            ),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: Text(
+          //     SizeScreenW.toString() + "DASh" + widget.colname + userinfo.uid,
+          //     style: TextStyle(
+          //         fontFamily: "Montserrat",
+          //         fontWeight: FontWeight.w600,
+          //         color: Colors.white,
+          //         fontSize: 16),
+          //   ),
+          // ),
           Expanded(
             flex: 1,
             child: Row(
