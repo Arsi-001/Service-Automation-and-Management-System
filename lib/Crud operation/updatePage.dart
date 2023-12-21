@@ -25,7 +25,7 @@ class _UpdateUserState extends State<UpdateUser> {
   TextEditingController addressCont = TextEditingController();
   var genders = ["Male", "Female"];
 
-  DateTime selectedDate = DateTime.now();
+  late DateTime selectedDate;
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 
   int userIDnum = 0;
@@ -84,6 +84,8 @@ class _UpdateUserState extends State<UpdateUser> {
     emailCont.text = widget.docsnap["Email"];
     addressCont.text = widget.docsnap["Address"];
     numberCont.text = widget.docsnap["Phone Number"];
+    selectedDate = (widget.docsnap['Date'] as Timestamp).toDate();
+    ;
     super.initState();
   }
 
@@ -529,18 +531,18 @@ class _UpdateUserState extends State<UpdateUser> {
                                                 dateFormat.format(selectedDate);
 
                                             updateMember(
-                                              email: email,
-                                              idnum: userIDnum,
-                                              id: widget.docsnap.id,
-                                              fname: firstname,
-                                              lname: lastname,
-                                              gender: Selectedgender,
-                                              package: package,
-                                              platform: platform,
-                                              number: number,
-                                              startdate: selectD,
-                                              address: address,
-                                            );
+                                                email: email,
+                                                idnum: userIDnum,
+                                                id: widget.docsnap.id,
+                                                fname: firstname,
+                                                lname: lastname,
+                                                gender: Selectedgender,
+                                                package: package,
+                                                platform: platform,
+                                                number: number,
+                                                startdate: selectD,
+                                                address: address,
+                                                date: selectedDate);
 
                                             setState(() {});
                                             Navigator.pop(context);
@@ -606,6 +608,7 @@ class _UpdateUserState extends State<UpdateUser> {
       required String number,
       required String address,
       required String startdate,
+      required DateTime date,
       required id,
       required idnum}) async {
     final docUser =
@@ -622,6 +625,7 @@ class _UpdateUserState extends State<UpdateUser> {
       "Email": email,
       "Address": address,
       "Start Date": startdate,
+      "Date": date
     };
     await docUser.update(json);
   }

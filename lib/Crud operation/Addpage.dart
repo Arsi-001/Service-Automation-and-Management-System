@@ -551,6 +551,7 @@ class _AddUserState extends State<AddUser> {
                                               platform: platform,
                                               number: number,
                                               startdate: selectD,
+                                              date: selectedDate,
                                               address: address,
                                             );
                                             selectedDate = DateTime.now();
@@ -620,6 +621,7 @@ class _AddUserState extends State<AddUser> {
       required String number,
       required String address,
       required String startdate,
+      required DateTime date,
       required id,
       required idnum}) async {
     final docUser = FirebaseFirestore.instance
@@ -636,10 +638,11 @@ class _AddUserState extends State<AddUser> {
       "Package": package,
       "Platform": platform,
       "Phone Number": number,
-      "Email": "email",
+      "Email": email,
       "Address": address,
       "Start Date": startdate,
-      "Defaulter": false
+      "Defaulter": false,
+      "Date": date
     };
     await docUser.set(json);
   }

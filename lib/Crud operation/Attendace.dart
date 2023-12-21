@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Crud%20operation/updatePage.dart';
@@ -60,11 +61,8 @@ class AttendacePopUp extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           child: ElevatedButton(
                             onPressed: () => addMember(
-                                id: idcont.text,
-                                name: "name",
-                                package: "package",
-                                platform: "platform",
-                                startdate: "startdate"),
+                              id: idcont.text,
+                            ),
                             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
                             style: ElevatedButton.styleFrom(
@@ -108,10 +106,6 @@ class AttendacePopUp extends StatelessWidget {
 
   Future addMember({
     required id,
-    required String name,
-    required String? package,
-    required String? platform,
-    required String startdate,
   }) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
@@ -119,14 +113,14 @@ class AttendacePopUp extends StatelessWidget {
 
       if (documentSnapshot.exists) {
         var data = documentSnapshot.data();
-        final docUser = activitycol.doc();
+        final docUser = activitycol.doc(data?["ID"]);
 
         final json = {
           "Name": data?["First name"] + " " + data?["Last name"],
           "Fee Status": data?["Fee Status"],
           "Package": data?["Package"],
           "Platform": data?["Platform"],
-          "Time In": data?["Start Date"],
+          "Time In": "${DateFormat.jm().format(DateTime.now())}",
           "Defaulter": data?["Defaulter"]
         };
         await docUser.set(json);

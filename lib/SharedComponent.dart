@@ -818,7 +818,7 @@ class ActivityProfileBubble extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      "$platform - $package Package",
+                      "$platform - $package Package".toUpperCase(),
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
@@ -839,7 +839,7 @@ class ActivityProfileBubble extends StatelessWidget {
                               fontSize: Dtxt - 3),
                         ),
                         Text(
-                          "$feestatus",
+                          "$feestatus".toUpperCase(),
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.w600,
@@ -853,6 +853,26 @@ class ActivityProfileBubble extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
+                Container(
+                  height: 30,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          right: BorderSide(color: Colors.white24, width: 2))),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Center(
+                    child: Text(
+                      timein,
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blue,
+                          fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
                 Center(
                     child: Icon(Icons.monetization_on_outlined,
                         color: defaulters
@@ -864,17 +884,6 @@ class ActivityProfileBubble extends StatelessWidget {
                 IconButton(
                     onPressed: () => _deletemember(id),
                     icon: Icon(Icons.exit_to_app, color: Colors.blue)),
-                SizedBox(
-                  width: 12,
-                ),
-                Text(
-                  "6:00 PM",
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
-                ),
               ],
             ),
           ),

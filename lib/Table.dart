@@ -409,7 +409,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Container(
               //  padding: const EdgeInsets.symmetric(horizontal: 20),
               child: const TableCell(
@@ -457,6 +457,14 @@ class TableHeaderRow extends StatelessWidget {
               LineTru: true,
               Titlecolor: Colors.white70,
               Title: "NUMBER",
+            ),
+          ),
+          const Expanded(
+            flex: 1,
+            child: TableCell(
+              LineTru: true,
+              Titlecolor: Colors.white70,
+              Title: "Email",
             ),
           ),
           const Expanded(
@@ -527,12 +535,16 @@ class TableRow extends StatelessWidget {
 
   Future<void> _delete([String? documentSnapshotid]) async {
     await membersclass.doc(documentSnapshotid).delete();
+    await activitycol.doc(documentSnapshotid).delete();
   }
 
   Future<void> _feestatus([String? documentSnapshotid, String? status]) async {
     final jsonpaid = {"Fee Status": "Paid"};
     final jsonunpaid = {"Fee Status": "Unpaid"};
     await membersclass
+        .doc(documentSnapshotid)
+        .update(status == "Paid" ? jsonunpaid : jsonpaid);
+    await activitycol
         .doc(documentSnapshotid)
         .update(status == "Paid" ? jsonunpaid : jsonpaid);
   }
@@ -568,7 +580,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TableCell(
@@ -616,6 +628,14 @@ class TableRow extends StatelessWidget {
               LineTru: true,
               Titlecolor: Colors.white70,
               Title: contact,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: TableCell(
+              LineTru: true,
+              Titlecolor: Colors.white70,
+              Title: email,
             ),
           ),
           Expanded(
