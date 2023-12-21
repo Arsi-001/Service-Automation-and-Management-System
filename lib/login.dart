@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
             email: Uname.text.trim(), password: Upass.text.trim());
       } on FirebaseAuthException catch (e) {
         print(e);
-   
       }
 
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
@@ -188,8 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                                     side: BorderSide(color: Colors.blueAccent)),
                                 backgroundColor: Blu,
                                 elevation: 12.0,
-                                textStyle:
-                                    const TextStyle(color: Colors.white)),
+                                textStyle: const TextStyle(color: Colors.red)),
                             child: const Text('LOGIN'),
                           ),
                         ),
