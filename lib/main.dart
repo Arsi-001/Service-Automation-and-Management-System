@@ -9,7 +9,7 @@ import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/Splashscreen.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
-import 'package:s_a_m_s/Table.dart';
+import 'package:s_a_m_s/MemberTable.dart';
 import 'package:s_a_m_s/header/THeader.dart';
 import 'package:s_a_m_s/login.dart';
 import 'package:schedulers/schedulers.dart';
@@ -124,8 +124,6 @@ class _HomepageState extends State<Homepage> {
   Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
-      case 0:
-        return _addmember;
       case 1:
         return _membertable;
       case 2:
@@ -135,8 +133,8 @@ class _HomepageState extends State<Homepage> {
         return new Container(
           child: Center(
             child: Text(
-              user.uid,
-              style: TextStyle(color: Colors.white),
+              "Work In Progress!",
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         );
