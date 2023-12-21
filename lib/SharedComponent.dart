@@ -200,19 +200,18 @@ class Activity_Info extends StatelessWidget {
                                 })),
                                 // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                 style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    backgroundColor: Blu,
-                                    elevation: 12.0,
-                                    textStyle:
-                                        const TextStyle(color: Colors.white)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  backgroundColor: Colors.white,
+                                  elevation: 12.0,
+                                ),
                                 child: const Text(
                                   'Check in',
                                   style: TextStyle(
                                       fontFamily: "Montserrat",
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                      color: Colors.blue,
                                       fontSize: 12),
                                 ),
                               ),
