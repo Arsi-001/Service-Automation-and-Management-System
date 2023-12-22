@@ -86,3 +86,7 @@ CollectionReference activitycol =
 final defaultercol = FirebaseFirestore.instance
     .collection("/$colname/$clientplat/Members")
     .where("Defaulters", isEqualTo: true);
+final staffcol =
+    FirebaseFirestore.instance.collection("/$colname/$clientplat/Staff");
+
+final clientName = "Test Gym";

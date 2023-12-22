@@ -44,12 +44,40 @@ class AttendacePopUp extends StatelessWidget {
                           fontFamily: "Montserrat",
                           fontSize: 14),
                     ),
-                    crudTxtfield(
-                      txtinput: TextInputType.text,
-                      format: [FilteringTextInputFormatter.singleLineFormatter],
-                      widht: 100,
-                      title: "ID Number",
-                      controller: idcont,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 55,
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(color: Colors.white)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "TG-M-",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: "Montserrat"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        crudTxtfield(
+                          txtinput: TextInputType.text,
+                          format: [
+                            FilteringTextInputFormatter.singleLineFormatter
+                          ],
+                          widht: 100,
+                          title: "ID Number",
+                          controller: idcont,
+                        ),
+                      ],
                     ),
                     Row(
                       children: [

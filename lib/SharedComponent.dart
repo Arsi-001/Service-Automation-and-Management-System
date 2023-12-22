@@ -9,6 +9,7 @@ import 'package:s_a_m_s/Crud%20operation/Attendace.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:unicons/unicons.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RoundedFuncButton extends StatelessWidget {
   const RoundedFuncButton({
@@ -279,211 +280,227 @@ class Main_Info extends StatelessWidget {
   final double Sw, Sh;
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: membercol.snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                width: 300,
+                height: 300,
+                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                decoration: const BoxDecoration(
+                    gradient: glassmorphGreen,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                        width: 300,
-                        height: 300,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 0),
-                        decoration: const BoxDecoration(
-                            gradient: glassmorphGreen,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              UniconsLine.dumbbell,
-                              size: 140,
-                              // size: Sw < 630
-                              //     ? Sw < 400
-                              //         ? 50
-                              //         : 100
-                              //     : 150,
-                              color: DarkBlu,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "PLATFORM",
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w200,
-                                  color: DarkBlu,
-                                  letterSpacing: 5,
-                                  fontSize: 16
-                                  // Sw > 1800
-                                  //     ? 16
-                                  //     : Sw < 400
-                                  //         ? Dtxt - 4
-                                  //         : Dtxt
-                                  ),
-                            ),
-                            Text(
-                              clientplat!,
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w600,
-                                  color: DarkBlu,
-                                  letterSpacing: 5,
-                                  fontSize: 28
-                                  // Sw > 1800
-                                  //     ? 28
-                                  //     : Sw < 400
-                                  //         ? Dtxt
-                                  //         : Dtxt + 10
-                                  ),
-                            )
-                          ],
-                        )),
-                    SizedBox(
-                      width: 20,
+                    Icon(
+                      UniconsLine.dumbbell,
+                      size: 140,
+                      // size: Sw < 630
+                      //     ? Sw < 400
+                      //         ? 50
+                      //         : 100
+                      //     : 150,
+                      color: DarkBlu,
                     ),
-                    Container(
-                        height: 300,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Big2Txt(
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "PLATFORM",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w200,
+                          color: DarkBlu,
+                          letterSpacing: 5,
+                          fontSize: 16
+                          // Sw > 1800
+                          //     ? 16
+                          //     : Sw < 400
+                          //         ? Dtxt - 4
+                          //         : Dtxt
+                          ),
+                    ),
+                    Text(
+                      clientplat!,
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: DarkBlu,
+                          letterSpacing: 5,
+                          fontSize: 28
+                          // Sw > 1800
+                          //     ? 28
+                          //     : Sw < 400
+                          //         ? Dtxt
+                          //         : Dtxt + 10
+                          ),
+                    )
+                  ],
+                )),
+            SizedBox(
+              width: 20,
+            ),
+            Container(
+                height: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    StreamBuilder(
+                        stream: membercol.snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Big2Txt(
                               Sw: Sw,
                               Sh: Sh,
-                              Txt1: snapshot.data!.docs.length.toString(),
+                              Txt1: (snapshot.data!.docs.length).toString(),
                               Txt2: "TOTAL MEMBER",
-                              col: Blu,
-                            ),
-                            Spacer(),
-                            Big2Txt(
+                              col: Colors.blue,
+                            );
+                          } else {
+                            return Big2Txt(
                               Sw: Sw,
                               Sh: Sh,
-                              Txt1: "2",
+                              Txt1: ("0").toString(),
+                              Txt2: "TOTAL MEMBER",
+                              col: Colors.blue,
+                            );
+                          }
+                        }),
+                    Spacer(),
+                    StreamBuilder(
+                        stream: staffcol.snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Big2Txt(
+                              Sw: Sw,
+                              Sh: Sh,
+                              Txt1: (snapshot.data!.docs.length).toString(),
                               Txt2: "STAFF MEMBER",
                               col: Colors.purple,
-                            ),
-                            Spacer(),
-                            Big2Txt(
+                            );
+                          } else {
+                            return Big2Txt(
                               Sw: Sw,
                               Sh: Sh,
-                              Txt1: "3",
-                              Txt2: "FEE DEFAULTER",
-                              col: Colors.redAccent,
-                            ),
-                          ],
-                        )),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphBlu,
-                      titletxt: "NEW MEMBERS",
-                      titlevalue: "13",
-                      icontxt: UniconsLine.user,
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphpurple,
-                      titletxt: "BRANCHES",
-                      titlevalue: "3",
-                      icontxt: UniconsLine.building,
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    miniShowCaseBubble(
-                      sh: Sh,
-                      sw: Sw,
-                      bubcolor: glassmorphRed,
-                      titletxt: "TILL CLOSING",
-                      titlevalue: "05:32:46",
-                      icontxt: UniconsLine.clock,
+                              Txt1: ("0").toString(),
+                              Txt2: "STAFF MEMBER",
+                              col: Colors.purple,
+                            );
+                          }
+                        }),
+                    Spacer(),
+                    Big2Txt(
+                      Sw: Sw,
+                      Sh: Sh,
+                      Txt1: "3",
+                      Txt2: "FEE DEFAULTER",
+                      col: Colors.redAccent,
                     ),
                   ],
-                ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Container(
-                //   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                //   decoration: BoxDecoration(
-                //       color: lightBlu,
-                //       borderRadius: BorderRadius.all(Radius.circular(20))),
-                //   height: Sw < 400 ? 30 : 50,
-                //   child: Row(
-                //     children: [
-                //       Text(
-                //         "FRIDAY",
-                //         style: TextStyle(
-                //             fontFamily: "Montserrat",
-                //             fontWeight: FontWeight.w600,
-                //             color: Colors.white,
-                //             fontSize: Sw < 630
-                //                 ? Sw < 400
-                //                     ? Dtxt - 4
-                //                     : Dtxt
-                //                 : Dtxt + 4),
-                //       ),
-                //       Spacer(),
-                //       Text(
-                //         "4TH OF MARCH",
-                //         style: TextStyle(
-                //             fontFamily: "Montserrat",
-                //             color: Colors.white,
-                //             fontWeight: FontWeight.w600,
-                //             fontSize: Sw < 630
-                //                 ? Sw < 400
-                //                     ? Dtxt - 4
-                //                     : Dtxt
-                //                 : Dtxt + 4),
-                //       ),
-                //       Spacer(),
-                //       Text(
-                //         "11:05:45",
-                //         style: TextStyle(
-                //             fontFamily: "Montserrat",
-                //             fontWeight: FontWeight.w600,
-                //             color: Colors.white,
-                //             fontSize: Sw < 630
-                //                 ? Sw < 400
-                //                     ? Dtxt - 4
-                //                     : Dtxt
-                //                 : Dtxt + 4),
-                //       )
-                //     ],
-                //   ),
-                // ),
-              ],
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
+                )),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            miniShowCaseBubble(
+              sh: Sh,
+              sw: Sw,
+              bubcolor: glassmorphBlu,
+              titletxt: "NEW MEMBERS",
+              titlevalue: "13",
+              icontxt: UniconsLine.user,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            miniShowCaseBubble(
+              sh: Sh,
+              sw: Sw,
+              bubcolor: glassmorphpurple,
+              titletxt: "BRANCHES",
+              titlevalue: "3",
+              icontxt: UniconsLine.building,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            miniShowCaseBubble(
+              sh: Sh,
+              sw: Sw,
+              bubcolor: glassmorphRed,
+              titletxt: "TILL CLOSING",
+              titlevalue: "05:32:46",
+              icontxt: UniconsLine.clock,
+            ),
+          ],
+        ),
+        // SizedBox(
+        //   height: 20,
+        // ),
+        // Container(
+        //   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+        //   decoration: BoxDecoration(
+        //       color: lightBlu,
+        //       borderRadius: BorderRadius.all(Radius.circular(20))),
+        //   height: Sw < 400 ? 30 : 50,
+        //   child: Row(
+        //     children: [
+        //       Text(
+        //         "FRIDAY",
+        //         style: TextStyle(
+        //             fontFamily: "Montserrat",
+        //             fontWeight: FontWeight.w600,
+        //             color: Colors.white,
+        //             fontSize: Sw < 630
+        //                 ? Sw < 400
+        //                     ? Dtxt - 4
+        //                     : Dtxt
+        //                 : Dtxt + 4),
+        //       ),
+        //       Spacer(),
+        //       Text(
+        //         "4TH OF MARCH",
+        //         style: TextStyle(
+        //             fontFamily: "Montserrat",
+        //             color: Colors.white,
+        //             fontWeight: FontWeight.w600,
+        //             fontSize: Sw < 630
+        //                 ? Sw < 400
+        //                     ? Dtxt - 4
+        //                     : Dtxt
+        //                 : Dtxt + 4),
+        //       ),
+        //       Spacer(),
+        //       Text(
+        //         "11:05:45",
+        //         style: TextStyle(
+        //             fontFamily: "Montserrat",
+        //             fontWeight: FontWeight.w600,
+        //             color: Colors.white,
+        //             fontSize: Sw < 630
+        //                 ? Sw < 400
+        //                     ? Dtxt - 4
+        //                     : Dtxt
+        //                 : Dtxt + 4),
+        //       )
+        //     ],
+        //   ),
+        // ),
+      ],
+    );
   }
 }
 
@@ -918,17 +935,13 @@ class miniShowCaseBubble extends StatelessWidget {
         children: [
           Icon(
             icontxt,
-            size: sw > 1440
-                ? 120
-                : sw < 630
-                    ? 30
-                    : 80,
+            size: 100,
             color: Colors.white70,
           ),
           Column(
             children: [
               SizedBox(
-                height: 15,
+                height: 20,
               ),
               Text(
                 titlevalue,
@@ -936,7 +949,7 @@ class miniShowCaseBubble extends StatelessWidget {
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.w600,
                     color: Colors.white70,
-                    fontSize: sw < 630 ? Dtxt - 2 : Dtxt + 14),
+                    fontSize: 24),
               ),
               SizedBox(
                 height: 05,
@@ -948,11 +961,7 @@ class miniShowCaseBubble extends StatelessWidget {
                     //  fontWeight: FontWeight.w600,
                     letterSpacing: 2,
                     color: Colors.white70,
-                    fontSize: sw > 1500
-                        ? Dtxt + 8
-                        : sw < 630
-                            ? Dtxt - 6
-                            : Dtxt + 2),
+                    fontSize: 14),
               )
             ],
           ),

@@ -53,18 +53,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Blu,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Icon(
-                      Icons.toys_outlined,
-                      color: Colors.white,
-                      size: 60,
-                    ),
-                  ),
+                  Logo(),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
@@ -183,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
 
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(color: Colors.blueAccent)),
                                 backgroundColor: Blu,
                                 elevation: 12.0,
@@ -199,5 +188,28 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ));
+  }
+}
+
+class Logo extends StatelessWidget {
+  const Logo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120,
+      height: 120,
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFF5293F3), width: 4),
+          color: Blu,
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: Image.asset(
+        "assets/images/sams_logo_blu_alt.png",
+        fit: BoxFit.contain,
+      ),
+    );
   }
 }

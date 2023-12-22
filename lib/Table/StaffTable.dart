@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
@@ -13,14 +11,14 @@ import 'package:s_a_m_s/Crud%20operation/updatePage.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:unicons/unicons.dart';
 
-class TableInfo extends StatefulWidget {
-  const TableInfo({super.key});
+class StaffTableInfo extends StatefulWidget {
+  const StaffTableInfo({super.key});
 
   @override
-  State<TableInfo> createState() => _TableInfoState();
+  State<StaffTableInfo> createState() => _StaffTableInfoState();
 }
 
-class _TableInfoState extends State<TableInfo> {
+class _StaffTableInfoState extends State<StaffTableInfo> {
   ScrollController con = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -58,9 +56,7 @@ class _DtableState extends State<Dtable> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
           child: StreamBuilder(
-              stream: isdefaulter
-                  ? _members.where("Defaulter", isEqualTo: true).snapshots()
-                  : _members.orderBy("idnum", descending: false).snapshots(),
+              stream: _members.orderBy("idnum", descending: false).snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                 if (streamSnapshot.hasData) {
                   return Center(
@@ -108,7 +104,7 @@ class _DtableState extends State<Dtable> {
                                         height: 10,
                                       ),
                                       Text(
-                                        "MEMBERS",
+                                        "STAFF",
                                         style: TextStyle(
                                             fontFamily: "Montserrat",
                                             fontWeight: FontWeight.w600,
@@ -192,7 +188,7 @@ class _DtableState extends State<Dtable> {
                                                   Navigator.of(context).push(
                                                       HeroDialogRoute(
                                                           builder: (context) {
-                                                return const AddUser();
+                                                return  AddUser(mode: "Staff", modeletter: "S", colref: staffcol,);
                                               })),
                                               // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                               style: ElevatedButton.styleFrom(
@@ -208,7 +204,7 @@ class _DtableState extends State<Dtable> {
                                                   textStyle: const TextStyle(
                                                       color: Colors.white)),
                                               child: const Text(
-                                                'Add Member',
+                                                'Add Staff',
                                                 style: TextStyle(
                                                     fontFamily: "Montserrat",
                                                     fontWeight: FontWeight.w600,
@@ -218,53 +214,53 @@ class _DtableState extends State<Dtable> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Container(
-                                            width: 200,
-                                            height: 40,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isdefaulter
-                                                      ? isdefaulter = false
-                                                      : isdefaulter = true;
-                                                });
+                                        // Padding(
+                                        //   padding: const EdgeInsets.symmetric(
+                                        //       horizontal: 8.0),
+                                        //   child: Container(
+                                        //     width: 200,
+                                        //     height: 40,
+                                        //     child: ElevatedButton(
+                                        //       onPressed: () {
+                                        //         setState(() {
+                                        //           isdefaulter
+                                        //               ? isdefaulter = false
+                                        //               : isdefaulter = true;
+                                        //         });
 
-                                                // if (isdefaulter == false) {
-                                                //   isdefaulter = true;
-                                                // } else {
-                                                //   isdefaulter = false;
-                                                // }
-                                              },
-                                              // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                    // side: BorderSide(
-                                                    //     color:
-                                                    //         Colors.blueAccent)
-                                                  ),
-                                                  backgroundColor: isdefaulter
-                                                      ? Colors.red
-                                                      : Colors.green,
-                                                  elevation: 12.0,
-                                                  textStyle: const TextStyle(
-                                                      color: Colors.white)),
-                                              child: const Text(
-                                                'Defaulter Table',
-                                                style: TextStyle(
-                                                    fontFamily: "Montserrat",
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white70,
-                                                    fontSize: 12),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                        //         // if (isdefaulter == false) {
+                                        //         //   isdefaulter = true;
+                                        //         // } else {
+                                        //         //   isdefaulter = false;
+                                        //         // }
+                                        //       },
+                                        //       // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                        //       style: ElevatedButton.styleFrom(
+                                        //           shape: RoundedRectangleBorder(
+                                        //             borderRadius:
+                                        //                 BorderRadius.circular(
+                                        //                     12.0),
+                                        //             // side: BorderSide(
+                                        //             //     color:
+                                        //             //         Colors.blueAccent)
+                                        //           ),
+                                        //           backgroundColor: isdefaulter
+                                        //               ? Colors.red
+                                        //               : Colors.green,
+                                        //           elevation: 12.0,
+                                        //           textStyle: const TextStyle(
+                                        //               color: Colors.white)),
+                                        //       child: const Text(
+                                        //         'Defaulter Table',
+                                        //         style: TextStyle(
+                                        //             fontFamily: "Montserrat",
+                                        //             fontWeight: FontWeight.w600,
+                                        //             color: Colors.white70,
+                                        //             fontSize: 12),
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         // Expanded(
                                         //   flex: 2,
                                         //   child: Padding(
@@ -415,7 +411,7 @@ class TableHeaderRow extends StatelessWidget {
               child: const TableCell(
                 LineTru: true,
                 Titlecolor: Colors.white70,
-                Title: "MEMBER",
+                Title: "STAFF",
               ),
             ),
           ),
@@ -432,15 +428,7 @@ class TableHeaderRow extends StatelessWidget {
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
-              Title: "PACKAGE",
-            ),
-          ),
-          const Expanded(
-            flex: 1,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: Colors.white70,
-              Title: "FEE STATUS",
+              Title: "DESIGNATION",
             ),
           ),
           const Expanded(
@@ -457,14 +445,6 @@ class TableHeaderRow extends StatelessWidget {
               LineTru: true,
               Titlecolor: Colors.white70,
               Title: "NUMBER",
-            ),
-          ),
-          const Expanded(
-            flex: 1,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: Colors.white70,
-              Title: "Email",
             ),
           ),
           const Expanded(
@@ -598,22 +578,8 @@ class TableRow extends StatelessWidget {
               Title: gender,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: Colors.white70,
-              Title: package,
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: feestatus == "Paid" ? Colors.green : Colors.red,
-              Title: feestatus,
-            ),
-          ),
+      
+       
           Expanded(
             flex: 1,
             child: TableCell(
@@ -630,14 +596,7 @@ class TableRow extends StatelessWidget {
               Title: contact,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: Colors.white70,
-              Title: email,
-            ),
-          ),
+       
           Expanded(
             flex: 1,
             child: TableCell(

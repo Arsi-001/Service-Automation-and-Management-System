@@ -18,6 +18,8 @@ class _DesktopHeaderState extends State<DesktopHeader> {
   Widget build(BuildContext context) {
     var SizeScreenW = MediaQuery.of(context).size.width;
 
+    var headeritems = [clientName, "Settiings", "Logout"];
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
       child: Row(
@@ -148,52 +150,48 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: Image.asset(
                     "assets/images/profile_pic.png",
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                GestureDetector(
-                  onTap: () => FirebaseAuth.instance.signOut(),
-                  child: Container(
-                    height: 45,
-                    width: SizeScreenW < 1080 ? 150 : 200,
-                    decoration: BoxDecoration(
-                        color: lightBlu,
-                        border: Border.all(color: Colors.blue),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "Garrison Officer Mess",
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w600,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Colors.white70,
-                                  fontSize: 14),
-                            ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        width: 180,
+                        decoration: BoxDecoration(
+                            color: lightBlu,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            onChanged: (value) {
+                              if (value == "Logout") {
+                                FirebaseAuth.instance.signOut();
+                              }
+                            },
+                            dropdownColor: DarkBlu,
+                            value: clientName,
+                            style: TextStyle(
+                                color: Colors.white,
+                                overflow: TextOverflow.clip),
+                            items: headeritems.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.white70,
-                              size: 35,
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],

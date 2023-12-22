@@ -7,10 +7,11 @@ import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/Splashscreen.dart';
+import 'package:s_a_m_s/Table/MemberTable.dart';
+import 'package:s_a_m_s/Table/StaffTable.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
-import 'package:s_a_m_s/MemberTable.dart';
-import 'package:s_a_m_s/header/THeader.dart';
+
 import 'package:s_a_m_s/login.dart';
 import 'package:schedulers/schedulers.dart';
 
@@ -95,9 +96,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final TableInfo _membertable = new TableInfo();
-  final AddUser _addmember = new AddUser();
-  final Dash _dash = Dash();
+  final TableInfo _membertable = const TableInfo();
+  final StaffTableInfo _stafftable = const StaffTableInfo();
+  final Dash _dash = const Dash();
 
   final user = FirebaseAuth.instance.currentUser!;
   Future getcolname() async {
@@ -124,20 +125,17 @@ class _HomepageState extends State<Homepage> {
   Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
+      case 0:
+        return Placeholder();
       case 1:
         return _membertable;
       case 2:
         return _dash;
+      case 3:
+        return Placeholder();
 
       default:
-        return new Container(
-          child: Center(
-            child: Text(
-              "Work In Progress!",
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        );
+        return Placeholder();
     }
   }
 
@@ -150,7 +148,7 @@ class _HomepageState extends State<Homepage> {
             return Scaffold(
               backgroundColor: DarkBlu,
               appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(NavSize),
+                  preferredSize: const Size.fromHeight(NavSize),
                   child: ResponsiveLayout(
                     Desktop: DesktopHeader(
                       colname: "snapshot.data",
@@ -160,10 +158,14 @@ class _HomepageState extends State<Homepage> {
                         });
                       },
                     ),
-                    Mobile: TabHeader(),
-                    Tablet: TabHeader(),
+                    Mobile: const Center(),
+                    Tablet: const Center(),
                   )),
-              body: _showPage,
+              body: ResponsiveLayout(
+                Desktop: _showPage,
+                Mobile: Placeholder(),
+                Tablet: Placeholder(),
+              ),
             );
           }),
     );

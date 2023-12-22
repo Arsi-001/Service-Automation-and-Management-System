@@ -6,8 +6,12 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 
 class AddUser extends StatefulWidget {
-  const AddUser({super.key});
-
+   AddUser(
+      {super.key,
+      required this.mode,
+      required this.modeletter,
+      required this.colref});
+  final mode, modeletter, colref;
   @override
   State<AddUser> createState() => _AddUserState();
 }
@@ -34,16 +38,13 @@ class _AddUserState extends State<AddUser> {
       DocumentSnapshot snapshot =
           await FirebaseFirestore.instance.collection('TGym').doc("GYM").get();
 
-      var snap = await FirebaseFirestore.instance
-          .collection('/TGym/GYM/Members')
-          .orderBy("idnum", descending: false)
-          .get();
+      var snap = await widget.colref.orderBy("idnum", descending: false).get();
       var mID = 0;
       if (snap.size != 0) {
         mID = snap.docs.last["idnum"];
       }
 
-      var finalID = snapshot.get("initials") + "-M-";
+      var finalID = snapshot.get("initials") + "-" + "$widget.modeletter" + "-";
       userIDnum = mID;
       userID = finalID;
 
@@ -75,6 +76,7 @@ class _AddUserState extends State<AddUser> {
 
   @override
   void initState() {
+   
     super.initState();
   }
 

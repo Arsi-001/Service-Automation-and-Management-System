@@ -192,7 +192,7 @@ class _DtableState extends State<Dtable> {
                                                   Navigator.of(context).push(
                                                       HeroDialogRoute(
                                                           builder: (context) {
-                                                return const AddUser();
+                                                return  AddUser(mode: "Members", modeletter: "M",colref: membercol,);
                                               })),
                                               // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                               style: ElevatedButton.styleFrom(
@@ -340,6 +340,7 @@ class _DtableState extends State<Dtable> {
                                                   sw: widget.sw,
                                                   member: documentSnapshot[
                                                           "First name"] +
+                                                      " " +
                                                       documentSnapshot[
                                                           "Last name"],
                                                   gender: documentSnapshot[
@@ -400,7 +401,7 @@ class TableHeaderRow extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              padding: const EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 10),
               child: const TableCell(
                 LineTru: true,
                 Titlecolor: Colors.white70,
@@ -409,7 +410,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               //  padding: const EdgeInsets.symmetric(horizontal: 20),
               child: const TableCell(
@@ -460,11 +461,11 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
-              Title: "Email",
+              Title: "EMAIL",
             ),
           ),
           const Expanded(
@@ -476,7 +477,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           const Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -484,7 +485,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
@@ -544,9 +545,13 @@ class TableRow extends StatelessWidget {
     await membersclass
         .doc(documentSnapshotid)
         .update(status == "Paid" ? jsonunpaid : jsonpaid);
-    await activitycol
-        .doc(documentSnapshotid)
-        .update(status == "Paid" ? jsonunpaid : jsonpaid);
+    try {
+      await activitycol
+          .doc(documentSnapshotid)
+          .update(status == "Paid" ? jsonunpaid : jsonpaid);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -565,7 +570,7 @@ class TableRow extends StatelessWidget {
             flex: 1,
             child: Container(
               height: 40,
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
               decoration: const BoxDecoration(
                   color: Blu,
                   borderRadius:
@@ -580,7 +585,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TableCell(
@@ -631,7 +636,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -647,7 +652,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -655,7 +660,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
                 padding: EdgeInsets.only(left: 10),
                 child: Row(
@@ -709,7 +714,7 @@ class TableCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      padding: EdgeInsets.only(left: 20),
+      padding: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
           border: LineTru
               ? const Border(right: BorderSide(color: Colors.white12))
