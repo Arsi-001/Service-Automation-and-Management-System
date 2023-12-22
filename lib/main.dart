@@ -125,17 +125,31 @@ class _HomepageState extends State<Homepage> {
   Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
-      case 0:
-        return Placeholder();
       case 1:
         return _membertable;
       case 2:
         return _dash;
-      case 3:
-        return Placeholder();
 
       default:
-        return Placeholder();
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Logo(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Pages In Progress!",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Montserrat",
+                    fontSize: 24),
+              ),
+            ],
+          ),
+        );
+        ;
     }
   }
 
