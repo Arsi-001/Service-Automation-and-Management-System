@@ -29,10 +29,10 @@ class AttendacePopUp extends StatelessWidget {
             height: 200,
             width: 300,
             decoration: BoxDecoration(
-                color: lightBlu,
+                color: LightShade,
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Material(
-                color: lightBlu,
+                color: LightShade,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +94,7 @@ class AttendacePopUp extends StatelessWidget {
                             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Blu,
+                                backgroundColor: MainShade,
                                 elevation: 12.0,
                                 textStyle:
                                     const TextStyle(color: Colors.white)),

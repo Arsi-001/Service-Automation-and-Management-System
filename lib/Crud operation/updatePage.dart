@@ -105,7 +105,7 @@ class _UpdateUserState extends State<UpdateUser> {
             height: 700,
             width: 1100,
             child: Material(
-              color: lightBlu,
+              color: LightShade,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0)),
               child: Column(
@@ -120,7 +120,7 @@ class _UpdateUserState extends State<UpdateUser> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 40),
                             decoration: BoxDecoration(
-                                color: lightBlu,
+                                color: LightShade,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
                             child: Column(
@@ -149,7 +149,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                           height: 40,
                                           width: 100,
                                           decoration: BoxDecoration(
-                                              color: DarkBlu,
+                                              color: DarkShade,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                           child: Center(
@@ -285,7 +285,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 20),
                                                 decoration: BoxDecoration(
-                                                    color: DarkBlu,
+                                                    color: DarkShade,
                                                     borderRadius:
                                                         BorderRadius.all(
                                                             Radius.circular(
@@ -314,7 +314,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                       items: packageslist,
-                                                      dropdownColor: DarkBlu,
+                                                      dropdownColor: DarkShade,
                                                       onChanged: (clientvalue) {
                                                         setState(() {
                                                           selectedpackage =
@@ -373,7 +373,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 20),
                                                 decoration: BoxDecoration(
-                                                    color: DarkBlu,
+                                                    color: DarkShade,
                                                     borderRadius:
                                                         BorderRadius.all(
                                                             Radius.circular(
@@ -394,7 +394,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                                         return "Please select a valid option";
                                                       }
                                                     },
-                                                    dropdownColor: DarkBlu,
+                                                    dropdownColor: DarkShade,
                                                     value: selectedplatform,
                                                     style: TextStyle(
                                                         color: Colors.white),
@@ -431,12 +431,12 @@ class _UpdateUserState extends State<UpdateUser> {
                                           width: 175,
                                           height: 40,
                                           decoration: BoxDecoration(
-                                              color: DarkBlu,
+                                              color: DarkShade,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                backgroundColor: DarkBlu),
+                                                backgroundColor: DarkShade),
                                             onPressed: () =>
                                                 _selectDate(context),
                                             child: Row(
@@ -475,12 +475,12 @@ class _UpdateUserState extends State<UpdateUser> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(
-                                              color: DarkBlu,
+                                              color: DarkShade,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                           child: DropdownButtonHideUnderline(
                                             child: DropdownButton(
-                                              dropdownColor: DarkBlu,
+                                              dropdownColor: DarkShade,
                                               value: Selectedgender,
                                               style: TextStyle(
                                                   color: Colors.white),
@@ -551,7 +551,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                         // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Blu,
+                                            backgroundColor: MainShade,
                                             elevation: 12.0,
                                             textStyle: const TextStyle(
                                                 color: Colors.white)),

@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-        backgroundColor: DarkBlu,
+        backgroundColor: DarkShade,
         body: Form(
           key: formKey,
           child: Center(
@@ -73,7 +73,9 @@ class _LoginPageState extends State<LoginPage> {
                     height: 400,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     decoration: BoxDecoration(
-                        color: lightBlu,
+                        color: LightShade,
+                        border: Border.all(
+                            color: MainShade.withOpacity(0.4), width: 1),
                         borderRadius: BorderRadius.all(Radius.circular(15))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -115,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.email,
-                                  color: Colors.blue,
+                                  color: MainShade,
                                 ),
                                 label: Text(
                                   "Email Address",
@@ -148,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             icon: Icon(
                               Icons.key,
-                              color: Colors.blue,
+                              color: MainShade,
                             ),
                             label: Text(
                               "Password",
@@ -173,8 +175,8 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    side: BorderSide(color: Colors.blueAccent)),
-                                backgroundColor: Blu,
+                                    side: BorderSide(color: MainShade)),
+                                backgroundColor: MainShade,
                                 elevation: 12.0,
                                 textStyle: const TextStyle(color: Colors.red)),
                             child: const Text('LOGIN'),
@@ -203,8 +205,8 @@ class Logo extends StatelessWidget {
       height: 120,
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFF5293F3), width: 4),
-          color: Blu,
+          border: Border.all(color: MainShade, width: 4),
+          color: Colors.white10,
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Image.asset(
         "assets/images/sams_logo_blu_alt.png",

@@ -74,7 +74,7 @@ class _DtableState extends State<Dtable> {
                                   height: 200,
                                   width: 350,
                                   decoration: BoxDecoration(
-                                      color: Blu,
+                                      color: MainShade,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(20))),
                                   child: Column(
@@ -188,7 +188,11 @@ class _DtableState extends State<Dtable> {
                                                   Navigator.of(context).push(
                                                       HeroDialogRoute(
                                                           builder: (context) {
-                                                return  AddUser(mode: "Staff", modeletter: "S", colref: staffcol,);
+                                                return AddUser(
+                                                  mode: "Staff",
+                                                  modeletter: "S",
+                                                  colref: staffcol,
+                                                );
                                               })),
                                               // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                               style: ElevatedButton.styleFrom(
@@ -199,7 +203,7 @@ class _DtableState extends State<Dtable> {
                                                       side: BorderSide(
                                                           color: Colors
                                                               .blueAccent)),
-                                                  backgroundColor: Blu,
+                                                  backgroundColor: MainShade,
                                                   elevation: 12.0,
                                                   textStyle: const TextStyle(
                                                       color: Colors.white)),
@@ -294,7 +298,7 @@ class _DtableState extends State<Dtable> {
                             ),
                             RawScrollbar(
                               thickness: 10,
-                              thumbColor: Blu,
+                              thumbColor: MainShade,
                               trackColor: Colors.white12,
                               trackBorderColor: Colors.white30,
                               thumbVisibility: true,
@@ -307,14 +311,14 @@ class _DtableState extends State<Dtable> {
                                   height: 500,
                                   width: 1600,
                                   decoration: BoxDecoration(
-                                      color: lightBlu,
+                                      color: LightShade,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Column(
                                     children: [
                                       TableHeaderRow(
                                         sw: widget.sw,
-                                        rowColor: Blu,
+                                        rowColor: MainShade,
                                       ),
                                       Container(
                                           height: 400,
@@ -331,7 +335,7 @@ class _DtableState extends State<Dtable> {
                                                   documentsnap:
                                                       documentSnapshot,
                                                   membersclass: _members,
-                                                  rowColor: lightBlu,
+                                                  rowColor: LightShade,
                                                   id: documentSnapshot["ID"],
                                                   sw: widget.sw,
                                                   member: documentSnapshot[
@@ -547,7 +551,7 @@ class TableRow extends StatelessWidget {
               height: 40,
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               decoration: const BoxDecoration(
-                  color: Blu,
+                  color: MainShade,
                   borderRadius:
                       BorderRadius.horizontal(right: Radius.circular(10))),
               child: Center(
@@ -578,8 +582,6 @@ class TableRow extends StatelessWidget {
               Title: gender,
             ),
           ),
-      
-       
           Expanded(
             flex: 1,
             child: TableCell(
@@ -596,7 +598,6 @@ class TableRow extends StatelessWidget {
               Title: contact,
             ),
           ),
-       
           Expanded(
             flex: 1,
             child: TableCell(

@@ -94,7 +94,7 @@ class Activity_Info extends StatelessWidget {
           width: 700,
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
           decoration: BoxDecoration(
-              color: lightBlu,
+              color: LightShade,
               borderRadius: BorderRadius.all(Radius.circular(20))),
           height: Sw < 400 ? 30 : 50,
           child:
@@ -145,7 +145,7 @@ class Activity_Info extends StatelessWidget {
                     width: 700,
                     padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
                     decoration: BoxDecoration(
-                      color: lightBlu,
+                      color: LightShade,
                       borderRadius:
                           BorderRadius.all(Radius.circular(Sw < 630 ? 0 : 30)),
                     ),
@@ -174,7 +174,7 @@ class Activity_Info extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 6, horizontal: 10),
                                   decoration: BoxDecoration(
-                                      color: Blu,
+                                      color: MainShade,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Text(
@@ -307,7 +307,7 @@ class Main_Info extends StatelessWidget {
                       //         ? 50
                       //         : 100
                       //     : 150,
-                      color: DarkBlu,
+                      color: DarkShade,
                     ),
                     SizedBox(
                       height: 20,
@@ -317,7 +317,7 @@ class Main_Info extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w200,
-                          color: DarkBlu,
+                          color: DarkShade,
                           letterSpacing: 5,
                           fontSize: 16
                           // Sw > 1800
@@ -332,7 +332,7 @@ class Main_Info extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
-                          color: DarkBlu,
+                          color: DarkShade,
                           letterSpacing: 5,
                           fontSize: 28
                           // Sw > 1800
@@ -580,7 +580,7 @@ class Billing_Packages_Info extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 vertical: 20.0, horizontal: SizeScreenw < 630 ? 20 : 40),
             decoration: BoxDecoration(
-                color: lightBlu,
+                color: LightShade,
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             height: SizeScreenw > 1800 ? 380 : 300,
             child: Column(
@@ -686,8 +686,8 @@ class Billing_Packages_Info extends StatelessWidget {
                 func: null,
                 buttTxt: "BUTTON",
                 buttTxtcol: Colors.white,
-                buttbordercol: Blu,
-                buttcol: lightBlu,
+                buttbordercol: MainShade,
+                buttcol: LightShade,
                 buttfont: SizeScreenw < 630
                     ? SizeScreenw < 300
                         ? 8
@@ -706,8 +706,8 @@ class Billing_Packages_Info extends StatelessWidget {
                 func: null,
                 buttTxt: "BUTTON",
                 buttTxtcol: Colors.white,
-                buttbordercol: Blu,
-                buttcol: lightBlu,
+                buttbordercol: MainShade,
+                buttcol: LightShade,
                 buttfont: SizeScreenw < 630
                     ? SizeScreenw < 300
                         ? 8
@@ -726,8 +726,8 @@ class Billing_Packages_Info extends StatelessWidget {
                 func: null,
                 buttTxt: "BUTTON",
                 buttTxtcol: Colors.white,
-                buttbordercol: Blu,
-                buttcol: lightBlu,
+                buttbordercol: MainShade,
+                buttcol: LightShade,
                 buttfont: SizeScreenw < 630
                     ? SizeScreenw < 300
                         ? 8
@@ -801,14 +801,14 @@ class ActivityProfileBubble extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             height: 65,
             decoration: BoxDecoration(
-                color: DarkBlu,
+                color: LightShade,
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Row(
               children: [
                 Container(
                   height: 36,
                   decoration: BoxDecoration(
-                      color: Colors.yellow,
+                      color: MainShade,
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: Image.asset(
                     "assets/images/profile_pic.png",
@@ -838,7 +838,7 @@ class ActivityProfileBubble extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
-                          color: Colors.blue,
+                          color: MainShade,
                           fontSize: Dtxt - 3),
                     ),
                     SizedBox(
@@ -881,7 +881,7 @@ class ActivityProfileBubble extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,
-                          color: Colors.blue,
+                          color: Colors.white70,
                           fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
                     ),
                   ),
@@ -899,7 +899,7 @@ class ActivityProfileBubble extends StatelessWidget {
                 ),
                 IconButton(
                     onPressed: () => _deletemember(id),
-                    icon: Icon(Icons.exit_to_app, color: Colors.blue)),
+                    icon: Icon(Icons.exit_to_app, color: Colors.white70)),
               ],
             ),
           ),
@@ -984,7 +984,7 @@ class PackageViewBubble extends StatelessWidget {
       child: Container(
           padding: EdgeInsets.symmetric(horizontal: 25),
           decoration: BoxDecoration(
-              color: lightBlu,
+              color: LightShade,
               borderRadius: BorderRadius.all(Radius.circular(20))),
           height: Sw < 630
               ? Sw < 400
@@ -1140,7 +1140,7 @@ class crudTxtfield extends StatelessWidget {
           width: widht,
           padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-              color: DarkBlu,
+              color: DarkShade,
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: TextFormField(
             decoration: InputDecoration(
@@ -1173,7 +1173,7 @@ class crudTxtfield extends StatelessWidget {
               }
             },
             controller: controller,
-            cursorColor: Blu,
+            cursorColor: MainShade,
             style: TextStyle(color: Colors.white),
           ),
         )

@@ -9,6 +9,7 @@ import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/Splashscreen.dart';
 import 'package:s_a_m_s/Table/MemberTable.dart';
 import 'package:s_a_m_s/Table/StaffTable.dart';
+import 'package:s_a_m_s/alt_Dash.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
 
@@ -98,6 +99,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final TableInfo _membertable = const TableInfo();
   final StaffTableInfo _stafftable = const StaffTableInfo();
+  final AltDash _altDash = const AltDash();
   final Dash _dash = const Dash();
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -122,31 +124,34 @@ class _HomepageState extends State<Homepage> {
     super.initState();
   }
 
-  Widget _showPage = new Dash();
+  Widget _showPage = new AltDash();
   Widget _pageSelect(int page) {
     switch (page) {
       case 1:
         return _membertable;
       case 2:
-        return _dash;
+        return _altDash;
 
       default:
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Logo(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Pages In Progress!",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "Montserrat",
-                    fontSize: 24),
-              ),
-            ],
+        return SizedBox(
+          height: 500,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Logo(),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Pages In Progress!",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "Montserrat",
+                      fontSize: 24),
+                ),
+              ],
+            ),
           ),
         );
         ;
@@ -160,25 +165,51 @@ class _HomepageState extends State<Homepage> {
           future: getcolname(),
           builder: (context, snapshot) {
             return Scaffold(
-              backgroundColor: DarkBlu,
-              appBar: PreferredSize(
-                  preferredSize: const Size.fromHeight(NavSize),
-                  child: ResponsiveLayout(
-                    Desktop: DesktopHeader(
-                      colname: "snapshot.data",
-                      callback: (index) {
-                        setState(() {
-                          _showPage = _pageSelect(index);
-                        });
-                      },
-                    ),
-                    Mobile: const Center(),
-                    Tablet: const Center(),
-                  )),
-              body: ResponsiveLayout(
-                Desktop: _showPage,
-                Mobile: Placeholder(),
-                Tablet: Placeholder(),
+              backgroundColor: DarkShade,
+              // appBar: PreferredSize(
+              //     preferredSize: const Size.fromHeight(NavSize),
+              //     child: ResponsiveLayout(
+              //       Desktop: DesktopHeader(
+              //         colname: "snapshot.data",
+              //         callback: (index) {
+              //           setState(() {
+              //             _showPage = _pageSelect(index);
+              //           });
+              //         },
+              //       ),
+              //       Mobile: const Center(),
+              //       Tablet: const Center(),
+              //     )),
+              body: SingleChildScrollView(
+                child: SizedBox(
+                  height: 1080,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          gradient: multigradient,
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          DesktopHeader(
+                              colname: "snapshot.data",
+                              callback: (index) {
+                                setState(() {
+                                  _showPage = _pageSelect(index);
+                                });
+                              }),
+                          ResponsiveLayout(
+                            Desktop: _showPage,
+                            Mobile: Placeholder(),
+                            Tablet: Placeholder(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
           }),

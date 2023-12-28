@@ -68,7 +68,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DarkBlu,
+      backgroundColor: DarkShade,
       body: FutureBuilder(
           future: getcolname(),
           builder: (context, snapshot) {

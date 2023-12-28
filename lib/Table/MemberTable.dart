@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _DtableState extends State<Dtable> {
                 if (streamSnapshot.hasData) {
                   return Center(
                     child: Container(
-                      width: 1600,
+                      width: 1400,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -74,49 +75,61 @@ class _DtableState extends State<Dtable> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Container(
-                                  height: 200,
-                                  width: 350,
-                                  decoration: BoxDecoration(
-                                      color: Blu,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        UniconsLine.dumbbell,
-                                        size: 60,
-                                        color: Colors.white70,
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        (streamSnapshot.data?.docs.length)
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w200,
+                                ClipRRect(
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10.0, sigmaY: 10.0),
+                                    child: Container(
+                                      height: 200,
+                                      width: 350,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                      26, 104, 104, 104)
+                                                  .withAlpha(80)),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          gradient:
+                                              darkGlassMorphismGradient()),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            UniconsLine.dumbbell,
+                                            size: 60,
                                             color: Colors.white70,
-                                            letterSpacing: 5,
-                                            fontSize: 16),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            (streamSnapshot.data?.docs.length)
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w200,
+                                                color: Colors.white70,
+                                                letterSpacing: 5,
+                                                fontSize: 16),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "MEMBERS",
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white70,
+                                                letterSpacing: 5,
+                                                fontSize: 16),
+                                          )
+                                        ],
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "MEMBERS",
-                                        style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white70,
-                                            letterSpacing: 5,
-                                            fontSize: 16),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -192,7 +205,11 @@ class _DtableState extends State<Dtable> {
                                                   Navigator.of(context).push(
                                                       HeroDialogRoute(
                                                           builder: (context) {
-                                                return  AddUser(mode: "Members", modeletter: "M",colref: membercol,);
+                                                return AddUser(
+                                                  mode: "Members",
+                                                  modeletter: "M",
+                                                  colref: membercol,
+                                                );
                                               })),
                                               // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                               style: ElevatedButton.styleFrom(
@@ -201,9 +218,9 @@ class _DtableState extends State<Dtable> {
                                                           BorderRadius.circular(
                                                               12.0),
                                                       side: BorderSide(
-                                                          color: Colors
-                                                              .blueAccent)),
-                                                  backgroundColor: Blu,
+                                                          color: MainShade)),
+                                                  backgroundColor:
+                                                      Colors.transparent,
                                                   elevation: 12.0,
                                                   textStyle: const TextStyle(
                                                       color: Colors.white)),
@@ -241,6 +258,8 @@ class _DtableState extends State<Dtable> {
                                               // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                               style: ElevatedButton.styleFrom(
                                                   shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color: MainShade),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             12.0),
@@ -250,7 +269,7 @@ class _DtableState extends State<Dtable> {
                                                   ),
                                                   backgroundColor: isdefaulter
                                                       ? Colors.red
-                                                      : Colors.green,
+                                                      : Colors.transparent,
                                                   elevation: 12.0,
                                                   textStyle: const TextStyle(
                                                       color: Colors.white)),
@@ -298,7 +317,7 @@ class _DtableState extends State<Dtable> {
                             ),
                             RawScrollbar(
                               thickness: 10,
-                              thumbColor: Blu,
+                              thumbColor: MainShade,
                               trackColor: Colors.white12,
                               trackBorderColor: Colors.white30,
                               thumbVisibility: true,
@@ -309,16 +328,16 @@ class _DtableState extends State<Dtable> {
                                 scrollDirection: Axis.horizontal,
                                 child: Container(
                                   height: 500,
-                                  width: 1600,
+                                  width: 1400,
                                   decoration: BoxDecoration(
-                                      color: lightBlu,
+                                      color: LightShade,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Column(
                                     children: [
                                       TableHeaderRow(
                                         sw: widget.sw,
-                                        rowColor: Blu,
+                                        rowColor: Colors.white10,
                                       ),
                                       Container(
                                           height: 400,
@@ -335,7 +354,7 @@ class _DtableState extends State<Dtable> {
                                                   documentsnap:
                                                       documentSnapshot,
                                                   membersclass: _members,
-                                                  rowColor: lightBlu,
+                                                  rowColor: LightShade,
                                                   id: documentSnapshot["ID"],
                                                   sw: widget.sw,
                                                   member: documentSnapshot[
@@ -399,7 +418,7 @@ class TableHeaderRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               padding: const EdgeInsets.only(left: 10),
               child: const TableCell(
@@ -410,52 +429,52 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               //  padding: const EdgeInsets.symmetric(horizontal: 20),
               child: const TableCell(
-                LineTru: true,
+                LineTru: false,
                 Titlecolor: Colors.white70,
                 Title: "MEMBER",
               ),
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "GENDER",
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "PACKAGE",
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "FEE STATUS",
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "PLATFORM",
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "NUMBER",
             ),
@@ -463,29 +482,29 @@ class TableHeaderRow extends StatelessWidget {
           const Expanded(
             flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "EMAIL",
             ),
           ),
           const Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
-              Title: "STARTING DATE",
+              Title: "JOINING",
             ),
           ),
           const Expanded(
-            flex: 3,
+            flex: 4,
             child: TableCell(
-              LineTru: true,
+              LineTru: false,
               Titlecolor: Colors.white70,
               Title: "ADDRESS",
             ),
           ),
           const Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
@@ -567,12 +586,12 @@ class TableRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               height: 40,
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
               decoration: const BoxDecoration(
-                  color: Blu,
+                  color: MainShade,
                   borderRadius:
                       BorderRadius.horizontal(right: Radius.circular(10))),
               child: Center(
@@ -585,7 +604,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TableCell(
@@ -596,7 +615,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -604,7 +623,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -612,7 +631,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: feestatus == "Paid" ? Colors.green : Colors.red,
@@ -620,7 +639,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -628,7 +647,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -644,7 +663,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -652,7 +671,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -660,41 +679,37 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.only(left: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () => _feestatus(documentsnap.id, feestatus),
-                      icon: Icon(
-                        UniconsLine.dollar_sign_alt,
-                        color:
-                            feestatus == "Paid" ? Colors.blueGrey : Colors.blue,
-                      ),
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () => _feestatus(documentsnap.id, feestatus),
+                    icon: Icon(
+                      UniconsLine.dollar_sign_alt,
+                      color: feestatus == "Paid" ? Colors.blueGrey : MainShade,
                     ),
-                    IconButton(
-                      onPressed: () => Navigator.of(context)
-                          .push(HeroDialogRoute(builder: (context) {
-                        return UpdateUser(
-                          docsnap: documentsnap,
-                        );
-                      })),
-                      icon: Icon(
-                        UniconsLine.edit,
-                        color: Colors.white70,
-                      ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context)
+                        .push(HeroDialogRoute(builder: (context) {
+                      return UpdateUser(
+                        docsnap: documentsnap,
+                      );
+                    })),
+                    icon: Icon(
+                      UniconsLine.edit,
+                      color: Colors.white70,
                     ),
-                    IconButton(
-                      onPressed: () => _delete(documentsnap.id),
-                      icon: Icon(
-                        UniconsLine.trash,
-                        color: Colors.red,
-                      ),
+                  ),
+                  IconButton(
+                    onPressed: () => _delete(documentsnap.id),
+                    icon: Icon(
+                      UniconsLine.trash,
+                      color: Colors.red,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )),
         ],
       ),
@@ -717,7 +732,7 @@ class TableCell extends StatelessWidget {
       padding: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
           border: LineTru
-              ? const Border(right: BorderSide(color: Colors.white12))
+              ? const Border(right: BorderSide(color: Colors.white30))
               : null),
       child: Align(
         alignment: Alignment.centerLeft,

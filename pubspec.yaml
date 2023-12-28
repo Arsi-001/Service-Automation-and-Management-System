@@ -48,6 +48,7 @@ dependencies:
   barcode_widget: ^2.0.4
   qr_bar_code_scanner_dialog: ^0.0.5
   rxdart: ^0.27.7
+  flutter_countdown_timer: ^4.1.0
 
 dev_dependencies:
   flutter_test:

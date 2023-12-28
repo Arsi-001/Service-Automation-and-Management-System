@@ -2,24 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-//const DarkBlu = Color(0xFF202342);
+//Main Theme Settings
+
+const DarkShade = Color(0xFF080808);
+const LightShade = Color.fromARGB(255, 25, 25, 25);
+const MainShade = Color(0xFFFF7F01);
+const ThemeItemcolbackground = Colors.black87;
+
+//Main Theme Settings
+
+// Limbo Theme
+const DarkSgrey = Color(0xFF080808);
+const Lightgrey = Color(0xFF141414);
+const grey = Color(0xFF676767);
+// Limbo Theme
+
+//Calm Blue Theme
 const DarkBlu = Color(0xFF00264D);
-
-//const lightBlu = Color(0xFF2D325A);
 const lightBlu = Color(0xFF02386E);
-
-const lightGreen = Color(0xFFE3FFA8);
-
-const ultraLightBlue = Color(0xFF7497FF);
-
-//const Blu = Color(0xFF4C7BFF);
 const Blu = Color(0xFF0052A2);
+//Calm Blue Theme
 
+//Alt Calm Blue Theme
+const DarkBlu_alt = Color(0xFF202342);
+const lightBlu_alt = Color(0xFF2D325A);
+const Blu_alt = Color(0xFF4C7BFF);
+//Alt Calm Blue Theme
+
+// Misc Color Items
+const lightGreen = Color(0xFFE3FFA8);
+const ultraLightBlue = Color(0xFF7497FF);
 const lightRed = Color(0xFFF75165);
-
 const lightPurple = Color(0xFF7133FF);
-
-//2D325A E3FFA8 7497FF 4C7BFF F86173 7133FF
+//Misc Color Items
 
 const glassmorphGreen = LinearGradient(
     begin: Alignment(-0.3, 0.8),
@@ -36,6 +51,10 @@ const glassmorphBlu = LinearGradient(
       Color.fromRGBO(76, 123, 255, 0.65),
       Color.fromRGBO(76, 124, 255, 1)
     ]);
+const multigradient = LinearGradient(
+    begin: Alignment(0.1, 0.8),
+    end: Alignment(0.3, -0.1),
+    colors: [Color(0xFFFF7F01), Color(0xFFEC5012)]);
 
 const glassmorphRed = LinearGradient(
     begin: Alignment(-0.3, 0.8),
@@ -90,3 +109,17 @@ final staffcol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Staff");
 
 final clientName = "Test Gym";
+
+LinearGradient darkGlassMorphismGradient() {
+  return LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      DarkShade.withOpacity(0.8), // Dark color with 80% opacity
+      DarkShade.withOpacity(0.6), // Slightly lighter color
+    ],
+    //  Color(0xFF2B2B2B).withOpacity(0.9), // Dark color with 80% opacity
+    //   Color(0xFF383838).withOpacity(0.7),
+    stops: const [0.1, 0.9],
+  );
+}
