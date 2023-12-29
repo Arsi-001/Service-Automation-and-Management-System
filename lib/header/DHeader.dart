@@ -18,7 +18,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
   Widget build(BuildContext context) {
     var SizeScreenW = MediaQuery.of(context).size.width;
 
-    var headeritems = [clientName.toUpperCase(), "Settings", "Logout"];
+    var headeritems = [clientName!.toUpperCase(), "Settings", "Logout"];
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
@@ -187,7 +187,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                                 }
                               },
                               dropdownColor: DarkShade,
-                              value: clientName.toUpperCase(),
+                              value: clientName!.toUpperCase(),
                               style: TextStyle(
                                   fontFamily: "Lato",
                                   color: Colors.white,

@@ -40,15 +40,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: false),
+      theme: ThemeData(useMaterial3: false, primaryColor: MainShade),
       navigatorKey: navigatorKey,
       scrollBehavior: MyCustomScrollBehavior(),
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.copyWith(textScaleFactor: 1.0);
+        final scale =
+            mediaQueryData.copyWith(textScaler: const TextScaler.linear(1.0));
         return MediaQuery(
-          child: child!,
           data: scale,
+          child: child!,
         );
       },
       home: StreamBuilder(
@@ -109,8 +110,10 @@ class _HomepageState extends State<Homepage> {
           .collection("ClientLoginInfo")
           .where("uid", isEqualTo: user.uid.toString())
           .get();
-
-      return colName.docs.first["collectionName"];
+      colname = colName.docs.first["collectionName"];
+      clientName = colName.docs.first["clientName"];
+      initials = colName.docs.first["initials"];
+      return colName.docs.first;
     } catch (e) {
       return "   no found    ";
     }
@@ -164,55 +167,85 @@ class _HomepageState extends State<Homepage> {
       child: FutureBuilder(
           future: getcolname(),
           builder: (context, snapshot) {
-            return Scaffold(
-              backgroundColor: DarkShade,
-              // appBar: PreferredSize(
-              //     preferredSize: const Size.fromHeight(NavSize),
-              //     child: ResponsiveLayout(
-              //       Desktop: DesktopHeader(
-              //         colname: "snapshot.data",
-              //         callback: (index) {
-              //           setState(() {
-              //             _showPage = _pageSelect(index);
-              //           });
-              //         },
-              //       ),
-              //       Mobile: const Center(),
-              //       Tablet: const Center(),
-              //     )),
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  height: 1080,
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          gradient: multigradient,
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          DesktopHeader(
-                              colname: "snapshot.data",
-                              callback: (index) {
-                                setState(() {
-                                  _showPage = _pageSelect(index);
-                                });
-                              }),
-                          ResponsiveLayout(
-                            Desktop: _showPage,
-                            Mobile: Placeholder(),
-                            Tablet: Placeholder(),
+            if (snapshot.hasData) {
+              print(colname);
+              print("this:" + "$initials");
+              return Scaffold(
+                backgroundColor: DarkShade,
+                // appBar: PreferredSize(
+                //     preferredSize: const Size.fromHeight(NavSize),
+                //     child: ResponsiveLayout(
+                //       Desktop: DesktopHeader(
+                //         colname: "snapshot.data",
+                //         callback: (index) {
+                //           setState(() {
+                //             _showPage = _pageSelect(index);
+                //           });
+                //         },
+                //       ),
+                //       Mobile: const Center(),
+                //       Tablet: const Center(),
+                //     )),
+                body: SingleChildScrollView(
+                  child: SizedBox(
+                    height: 1080,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            gradient: multigradient,
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Column(
+                          children: [
+                            DesktopHeader(
+                                colname: "snapshot.data",
+                                callback: (index) {
+                                  setState(() {
+                                    _showPage = _pageSelect(index);
+                                  });
+                                }),
+                            ResponsiveLayout(
+                              Desktop: _showPage,
+                              Mobile: Placeholder(),
+                              Tablet: Placeholder(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return ProgressBar();
+            }
           }),
+    );
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  const ProgressBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: DarkShade,
+      body: Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Logo(),
+          SizedBox(
+            height: 30,
+          ),
+          CircularProgressIndicator(
+            color: MainShade,
+          )
+        ]),
+      ),
     );
   }
 }

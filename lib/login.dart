@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,152 +46,162 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-        backgroundColor: DarkShade,
-        body: Form(
-          key: formKey,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Logo(),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      "Service Automation And Management System",
-                      style: TextStyle(
-                          fontSize: 24,
-                          //  fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                          fontFamily: "Montserrat"),
-                    ),
+        body: Container(
+      decoration: BoxDecoration(gradient: multigradient),
+      child: Form(
+        key: formKey,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Logo(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    "Service Automation And Management System",
+                    style: TextStyle(
+                        fontSize: 24,
+                        //  fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontFamily: "Montserrat"),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    width: 380,
-                    height: 400,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                    decoration: BoxDecoration(
-                        color: LightShade,
-                        border: Border.all(
-                            color: MainShade.withOpacity(0.4), width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "LOGIN",
-                                  style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      color: Colors.white,
-                                      fontSize: 20),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  "Please enter your credentials.",
-                                  style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      color: Colors.white54,
-                                      fontSize: 12),
-                                ),
-                              ],
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                ClipRRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      width: 420,
+                      height: 500,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                      decoration: BoxDecoration(
+                          //border: Border.all(color: Colors.white, width: 2),
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: darkGlassMorphismGradient()),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "LOGIN",
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        color: Colors.white,
+                                        fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "Please enter your credentials.",
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        color: Colors.white54,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Container(
+                            child: TextFormField(
+                              controller: Uname,
+                              textInputAction: TextInputAction.done,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  height: 2.0,
+                                  color: Colors.white),
+                              decoration: InputDecoration(
+                                  icon: Icon(
+                                    Icons.email,
+                                    color: MainShade,
+                                  ),
+                                  label: Text(
+                                    "Email Address",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  hintText: "johndoe@gmail.com",
+                                  hintStyle: TextStyle(
+                                      color: Colors.white30, fontSize: 10)),
+                              validator: (value) {
+                                if (value == "") {
+                                  return "Field Cannot be empty";
+                                }
+                                if (value != "") {
+                                  final RegExp emailRegex = RegExp(
+                                      r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$');
+                                  if (emailRegex.hasMatch(value.toString())) {
+                                  } else {
+                                    return "Invalid Format";
+                                  }
+                                }
+                              },
                             ),
-                          ],
-                        ),
-                        Container(
-                          child: TextFormField(
-                            controller: Uname,
+                          ),
+                          TextFormField(
+                            controller: Upass,
                             textInputAction: TextInputAction.done,
+                            obscureText: true,
                             style: TextStyle(
                                 fontSize: 14, height: 2.0, color: Colors.white),
                             decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.email,
-                                  color: MainShade,
-                                ),
-                                label: Text(
-                                  "Email Address",
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                                hintText: "johndoe@gmail.com",
-                                hintStyle: TextStyle(
-                                    color: Colors.white30, fontSize: 10)),
-                            validator: (value) {
-                              if (value == "") {
-                                return "Field Cannot be empty";
-                              }
-                              if (value != "") {
-                                final RegExp emailRegex = RegExp(
-                                    r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$');
-                                if (emailRegex.hasMatch(value.toString())) {
-                                } else {
-                                  return "Invalid Format";
+                              icon: Icon(
+                                Icons.key,
+                                color: MainShade,
+                              ),
+                              label: Text(
+                                "Password",
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 150,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  authuser();
                                 }
-                              }
-                            },
-                          ),
-                        ),
-                        TextFormField(
-                          controller: Upass,
-                          textInputAction: TextInputAction.done,
-                          obscureText: true,
-                          style: TextStyle(
-                              fontSize: 14, height: 2.0, color: Colors.white),
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.key,
-                              color: MainShade,
-                            ),
-                            label: Text(
-                              "Password",
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                authuser();
-                              }
-                            },
-                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                              },
+                              // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    side: BorderSide(color: MainShade)),
-                                backgroundColor: MainShade,
-                                elevation: 12.0,
-                                textStyle: const TextStyle(color: Colors.red)),
-                            child: const Text('LOGIN'),
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: MainShade)),
+                                  backgroundColor: MainShade,
+                                  elevation: 12.0,
+                                  textStyle:
+                                      const TextStyle(color: Colors.red)),
+                              child: const Text('LOGIN'),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    ));
   }
 }
 

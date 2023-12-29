@@ -20,7 +20,7 @@ class _AddUserState extends State<AddUser> {
   String? Selectedgender = "Male";
   String? selectedpackage = "0";
   String? selectedplatform = "0";
-  String initials = "";
+
   TextEditingController fNameCont = TextEditingController();
   TextEditingController lNameCont = TextEditingController();
   TextEditingController emailCont = TextEditingController();
@@ -35,8 +35,10 @@ class _AddUserState extends State<AddUser> {
   String userID = "";
   Future<String?> getID() async {
     try {
-      DocumentSnapshot snapshot =
-          await FirebaseFirestore.instance.collection('TGym').doc("GYM").get();
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('$colname')
+          .doc("$clientplat")
+          .get();
 
       var snap = await widget.colref.orderBy("idnum", descending: false).get();
       var mID = 0;
@@ -44,8 +46,7 @@ class _AddUserState extends State<AddUser> {
         mID = snap.docs.last["idnum"];
       }
 
-      var finalID =
-          snapshot.get("initials") + "-" + "${widget.modeletter}" + "-";
+      var finalID = initials! + "-" + "${widget.modeletter}" + "-";
       userIDnum = mID;
       userID = finalID;
 
@@ -260,10 +261,7 @@ class _AddUserState extends State<AddUser> {
                                           height: 6,
                                         ),
                                         StreamBuilder(
-                                            stream: FirebaseFirestore.instance
-                                                .collection(
-                                                    "/TGym/GYM/Packages")
-                                                .snapshots(),
+                                            stream: packagecol.snapshots(),
                                             builder: (context, snapshot) {
                                               List<DropdownMenuItem>
                                                   packageslist = [];
@@ -352,7 +350,7 @@ class _AddUserState extends State<AddUser> {
                                         ),
                                         StreamBuilder(
                                             stream: FirebaseFirestore.instance
-                                                .collection("/TGym")
+                                                .collection("$colname")
                                                 .snapshots(),
                                             builder: (context, snapshot) {
                                               List<DropdownMenuItem>

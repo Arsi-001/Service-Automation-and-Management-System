@@ -51,7 +51,7 @@ const glassmorphBlu = LinearGradient(
       Color.fromRGBO(76, 123, 255, 0.65),
       Color.fromRGBO(76, 124, 255, 1)
     ]);
-const multigradient = LinearGradient(
+var multigradient = LinearGradient(
     begin: Alignment(0.1, 0.8),
     end: Alignment(0.3, -0.1),
     colors: [Color(0xFFFF7F01), Color(0xFFEC5012)]);
@@ -93,22 +93,25 @@ const NavSize = 100.0;
 const String heroAddTodo = 'add-todo-hero';
 
 final userinfo = FirebaseAuth.instance.currentUser!;
-String? colname = "TGym";
+String? colname = "TGym1";
+String? initials = "TG";
 CollectionReference clientcol =
     FirebaseFirestore.instance.collection("$colname");
 bool Splashon = false;
 String? clientplat = "GYM";
-final membercol =
+var membercol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Members");
-CollectionReference activitycol =
+var activitycol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Activity");
-final defaultercol = FirebaseFirestore.instance
+var packagecol =
+    FirebaseFirestore.instance.collection("/$colname/$clientplat/Packages");
+var defaultercol = FirebaseFirestore.instance
     .collection("/$colname/$clientplat/Members")
     .where("Defaulters", isEqualTo: true);
-final staffcol =
+var staffcol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Staff");
 
-final clientName = "Test Gym";
+var clientName = "Test";
 
 LinearGradient darkGlassMorphismGradient() {
   return LinearGradient(
@@ -118,8 +121,6 @@ LinearGradient darkGlassMorphismGradient() {
       DarkShade.withOpacity(0.8), // Dark color with 80% opacity
       DarkShade.withOpacity(0.6), // Slightly lighter color
     ],
-    //  Color(0xFF2B2B2B).withOpacity(0.9), // Dark color with 80% opacity
-    //   Color(0xFF383838).withOpacity(0.7),
     stops: const [0.1, 0.9],
   );
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Crud%20operation/Attendace.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
@@ -39,7 +40,7 @@ class _AltDashState extends State<AltDash> {
           "Fee Status": data?["Fee Status"],
           "Package": data?["Package"],
           "Platform": data?["Platform"],
-          "Time In": "${DateFormat.jm().format(DateTime.now())}",
+          "Time In": DateFormat.jm().format(DateTime.now()),
           "Defaulter": data?["Defaulter"]
         };
         await docUser.set(json);
@@ -57,7 +58,16 @@ class _AltDashState extends State<AltDash> {
 
   // int endTime = closingTimeToday.millisecondsSinceEpoch -
   //     DateTime.now().millisecondsSinceEpoch;
-
+  Map<String, double> dataMap = {
+    "Flutter": 5,
+    "React": 6,
+    // "Xamarin": 2,
+    // "Ionic": 2,
+  };
+  Map<String, double> dataMap2 = {
+    "Male": 5,
+    "Female": 2,
+  };
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
@@ -122,7 +132,7 @@ class _AltDashState extends State<AltDash> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Test Gym".toUpperCase(),
+                                      clientName!.toUpperCase(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Lato",
@@ -345,7 +355,7 @@ class _AltDashState extends State<AltDash> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "TG-M-",
+                                              "$initials" + "-M-",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.white,
@@ -388,7 +398,7 @@ class _AltDashState extends State<AltDash> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          backgroundColor: Colors.white,
+                                          backgroundColor: MainShade,
                                           elevation: 12.0,
                                         ),
                                         child: const Text(
@@ -396,7 +406,7 @@ class _AltDashState extends State<AltDash> {
                                           style: TextStyle(
                                               fontFamily: "Montserrat",
                                               fontWeight: FontWeight.w600,
-                                              color: MainShade,
+                                              color: Colors.white,
                                               fontSize: 12),
                                         ),
                                       ),
@@ -405,7 +415,7 @@ class _AltDashState extends State<AltDash> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 10),
                                         decoration: BoxDecoration(
-                                            color: MainShade,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                         child: Text(
@@ -488,14 +498,247 @@ class _AltDashState extends State<AltDash> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                   child: Container(
-                      height: 700,
+                      height: 720,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 30, horizontal: 40),
                       decoration: BoxDecoration(
                           border: Border.all(
                               color:
                                   Color.fromARGB(26, 75, 75, 75).withAlpha(80)),
                           borderRadius: BorderRadius.circular(16),
                           gradient: darkGlassMorphismGradient()),
-                      child: Center()),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.white24, width: 2),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16))),
+                                      width: 200,
+                                      height: 200,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 20, horizontal: 20),
+                                      child: PieChart(
+                                        ringStrokeWidth: 20,
+                                        gradientList: <List<Color>>[
+                                          [
+                                            MainShade,
+                                            MainShade,
+                                          ],
+                                          [
+                                            Color.fromRGBO(129, 182, 205, 1),
+                                            Color.fromRGBO(91, 253, 199, 1),
+                                          ],
+                                          [
+                                            Color.fromRGBO(175, 63, 62, 1.0),
+                                            Color.fromRGBO(254, 154, 92, 1),
+                                          ]
+                                        ],
+                                        chartType: ChartType.ring,
+                                        dataMap: dataMap2,
+                                        chartLegendSpacing: 20,
+                                        legendOptions: LegendOptions(
+                                          showLegendsInRow: false,
+                                          showLegends: true,
+                                          legendTextStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
+                                        ),
+                                      )),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white24, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16))),
+                                    width: 150,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    child: PieChart(
+                                      ringStrokeWidth: 10,
+                                      gradientList: <List<Color>>[
+                                        [
+                                          MainShade,
+                                          MainShade,
+                                        ],
+                                        [
+                                          Color.fromRGBO(129, 182, 205, 1),
+                                          Color.fromRGBO(91, 253, 199, 1),
+                                        ],
+                                        [
+                                          Color.fromRGBO(175, 63, 62, 1.0),
+                                          Color.fromRGBO(254, 154, 92, 1),
+                                        ]
+                                      ],
+                                      chartType: ChartType.ring,
+                                      dataMap: dataMap2,
+                                      chartLegendSpacing: 20,
+                                      legendOptions: LegendOptions(
+                                        showLegendsInRow: true,
+                                        legendPosition: LegendPosition.bottom,
+                                        showLegends: true,
+                                        legendTextStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white24, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16))),
+                                    width: 150,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    child: PieChart(
+                                      ringStrokeWidth: 10,
+                                      gradientList: <List<Color>>[
+                                        [
+                                          MainShade,
+                                          MainShade,
+                                        ],
+                                        [
+                                          Color.fromRGBO(129, 182, 205, 1),
+                                          Color.fromRGBO(91, 253, 199, 1),
+                                        ],
+                                        [
+                                          Color.fromRGBO(175, 63, 62, 1.0),
+                                          Color.fromRGBO(254, 154, 92, 1),
+                                        ]
+                                      ],
+                                      chartType: ChartType.ring,
+                                      dataMap: dataMap2,
+                                      chartLegendSpacing: 20,
+                                      legendOptions: LegendOptions(
+                                        showLegendsInRow: true,
+                                        legendPosition: LegendPosition.bottom,
+                                        showLegends: true,
+                                        legendTextStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white24, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16))),
+                                    width: 150,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    child: PieChart(
+                                      ringStrokeWidth: 10,
+                                      gradientList: <List<Color>>[
+                                        [
+                                          MainShade,
+                                          MainShade,
+                                        ],
+                                        [
+                                          Color.fromRGBO(129, 182, 205, 1),
+                                          Color.fromRGBO(91, 253, 199, 1),
+                                        ],
+                                        [
+                                          Color.fromRGBO(175, 63, 62, 1.0),
+                                          Color.fromRGBO(254, 154, 92, 1),
+                                        ]
+                                      ],
+                                      chartType: ChartType.ring,
+                                      dataMap: dataMap2,
+                                      chartLegendSpacing: 20,
+                                      legendOptions: LegendOptions(
+                                        showLegendsInRow: true,
+                                        legendPosition: LegendPosition.bottom,
+                                        showLegends: true,
+                                        legendTextStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.white24, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16))),
+                                    width: 150,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    child: PieChart(
+                                      ringStrokeWidth: 10,
+                                      gradientList: <List<Color>>[
+                                        [
+                                          MainShade,
+                                          MainShade,
+                                        ],
+                                        [
+                                          Color.fromRGBO(129, 182, 205, 1),
+                                          Color.fromRGBO(91, 253, 199, 1),
+                                        ],
+                                        [
+                                          Color.fromRGBO(175, 63, 62, 1.0),
+                                          Color.fromRGBO(254, 154, 92, 1),
+                                        ]
+                                      ],
+                                      chartType: ChartType.ring,
+                                      dataMap: dataMap2,
+                                      chartLegendSpacing: 20,
+                                      legendOptions: LegendOptions(
+                                        showLegendsInRow: true,
+                                        legendPosition: LegendPosition.bottom,
+                                        showLegends: true,
+                                        legendTextStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(59, 27, 27, 27)
+                                      .withOpacity(0.8),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16))),
+                              child: Center(
+                                child: Text(
+                                  "COMING SOON!",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                            ))
+                          ],
+                        ),
+                      )),
                 ),
               ))
         ],

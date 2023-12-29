@@ -11,6 +11,7 @@ import 'package:s_a_m_s/SharedComponent.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/crudpopup.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:s_a_m_s/Crud%20operation/updatePage.dart';
+import 'package:s_a_m_s/main.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:unicons/unicons.dart';
 
@@ -60,8 +61,8 @@ class _DtableState extends State<Dtable> {
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
           child: StreamBuilder(
               stream: isdefaulter
-                  ? _members.where("Defaulter", isEqualTo: true).snapshots()
-                  : _members.orderBy("idnum", descending: false).snapshots(),
+                  ? membercol.where("Defaulter", isEqualTo: true).snapshots()
+                  : membercol.orderBy("idnum", descending: false).snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                 if (streamSnapshot.hasData) {
                   return Center(
@@ -353,7 +354,7 @@ class _DtableState extends State<Dtable> {
                                                   context: context,
                                                   documentsnap:
                                                       documentSnapshot,
-                                                  membersclass: _members,
+                                                  membersclass: membercol,
                                                   rowColor: LightShade,
                                                   id: documentSnapshot["ID"],
                                                   sw: widget.sw,
@@ -390,9 +391,7 @@ class _DtableState extends State<Dtable> {
                     ),
                   );
                 } else {
-                  return const CircularProgressIndicator(
-                    color: Colors.blue,
-                  );
+                  return const ProgressBar();
                 }
               }),
         ),
