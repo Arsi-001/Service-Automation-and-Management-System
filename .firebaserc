@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sams-6df51"
-  }
+    "default": "sams-36804",
+    "sams-36804": "sams-36804"
+  },
+  "targets": {},
+  "etags": {}
 }

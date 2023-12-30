@@ -40,7 +40,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: false, primaryColor: MainShade),
+      theme: ThemeData(
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.white,
+        ),
+        primaryColor: Colors.white,
+        useMaterial3: false,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: MainShade,
+
+          // ···
+          brightness: Brightness.light,
+        ),
+      ),
       navigatorKey: navigatorKey,
       scrollBehavior: MyCustomScrollBehavior(),
       builder: (context, child) {

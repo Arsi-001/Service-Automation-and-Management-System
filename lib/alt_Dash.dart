@@ -1,16 +1,16 @@
 import 'dart:async';
-import 'dart:html';
+import 'dart:math';
+
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
-import 'package:pie_chart/pie_chart.dart';
+//import 'package:pie_chart/pie_chart.dart';
 import 'package:s_a_m_s/Constant.dart';
-import 'package:s_a_m_s/Crud%20operation/Attendace.dart';
-import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 import 'package:unicons/unicons.dart';
 
@@ -23,6 +23,52 @@ class AltDash extends StatefulWidget {
 
 class _AltDashState extends State<AltDash> {
   TextEditingController activitycont = TextEditingController();
+
+  Future<List<DocumentSnapshot>> getData() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('/$colname/$clientplat/Packages')
+        .get();
+
+    return snapshot.docs;
+  }
+
+  List<PieChartSectionData> getSections(List<DocumentSnapshot> data) {
+    List<PieChartSectionData> sections = [];
+
+    data.forEach((document) async {
+      // var snapshot = await FirebaseFirestore.instance
+      //     .collection('/$colname/$clientplat/Members')
+      //     .get();
+      // print("\\\\\\\\0000");
+      // print(document["name"]);
+      // print(
+      //     snapshot.docs.where((element) => element == document["name"]).length);
+
+      String packageName = document['name'];
+      int subscribers = 5;
+
+      sections.add(
+        PieChartSectionData(
+          value: subscribers.toDouble(),
+          title: '$packageName', // Display data on the chart
+          color:
+              getRandomColor(), // Implement a function to get colors dynamically
+        ),
+      );
+    });
+
+    return sections;
+  }
+
+  Color getRandomColor() {
+    Random random = Random();
+    return Color.fromRGBO(
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+      1.0, // You can adjust the alpha value if needed
+    );
+  }
 
   Future addMember({
     required id,
@@ -132,7 +178,7 @@ class _AltDashState extends State<AltDash> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      clientName!.toUpperCase(),
+                                      clientName.toUpperCase(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Lato",
@@ -328,13 +374,25 @@ class _AltDashState extends State<AltDash> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "ACTIVITY TRACKER",
+                                        "Activity Tracker",
                                         style: TextStyle(
-                                            fontFamily: "Lato",
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            fontSize: 20),
+                                            fontFamily: "Montserrat",
+                                            color: Colors.white70,
+                                            fontSize: 16),
                                       ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: Container(
+                                        height: 1,
+                                        color:
+                                            Color.fromARGB(58, 128, 128, 128),
+                                      ))
                                     ],
                                   ),
                                   SizedBox(
@@ -347,7 +405,7 @@ class _AltDashState extends State<AltDash> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 10),
                                         decoration: BoxDecoration(
-                                            color: Colors.white10,
+                                            //color: Colors.white10,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10))),
                                         child: Row(
@@ -434,16 +492,6 @@ class _AltDashState extends State<AltDash> {
                                   SizedBox(
                                     height: 16,
                                   ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: Container(
-                                        height: 1,
-                                        color:
-                                            Color.fromARGB(58, 128, 128, 128),
-                                      ))
-                                    ],
-                                  ),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -492,255 +540,233 @@ class _AltDashState extends State<AltDash> {
           SizedBox(
             width: 20,
           ),
-          Expanded(
-              flex: 1,
-              child: ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                      height: 720,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 30, horizontal: 40),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                                  Color.fromARGB(26, 75, 75, 75).withAlpha(80)),
-                          borderRadius: BorderRadius.circular(16),
-                          gradient: darkGlassMorphismGradient()),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                  height: 720,
+                  width: 550,
+                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Color.fromARGB(26, 75, 75, 75).withAlpha(80)),
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: darkGlassMorphismGradient()),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Statistics",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontFamily: "Montserrat",
+                              fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.white24, width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16))),
-                                      width: 200,
-                                      height: 200,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 20),
-                                      child: PieChart(
-                                        ringStrokeWidth: 20,
-                                        gradientList: <List<Color>>[
-                                          [
-                                            MainShade,
-                                            MainShade,
-                                          ],
-                                          [
-                                            Color.fromRGBO(129, 182, 205, 1),
-                                            Color.fromRGBO(91, 253, 199, 1),
-                                          ],
-                                          [
-                                            Color.fromRGBO(175, 63, 62, 1.0),
-                                            Color.fromRGBO(254, 154, 92, 1),
-                                          ]
-                                        ],
-                                        chartType: ChartType.ring,
-                                        dataMap: dataMap2,
-                                        chartLegendSpacing: 20,
-                                        legendOptions: LegendOptions(
-                                          showLegendsInRow: false,
-                                          showLegends: true,
-                                          legendTextStyle: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10),
-                                        ),
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.white24, width: 2),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16))),
-                                    width: 150,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    child: PieChart(
-                                      ringStrokeWidth: 10,
-                                      gradientList: <List<Color>>[
-                                        [
-                                          MainShade,
-                                          MainShade,
-                                        ],
-                                        [
-                                          Color.fromRGBO(129, 182, 205, 1),
-                                          Color.fromRGBO(91, 253, 199, 1),
-                                        ],
-                                        [
-                                          Color.fromRGBO(175, 63, 62, 1.0),
-                                          Color.fromRGBO(254, 154, 92, 1),
-                                        ]
-                                      ],
-                                      chartType: ChartType.ring,
-                                      dataMap: dataMap2,
-                                      chartLegendSpacing: 20,
-                                      legendOptions: LegendOptions(
-                                        showLegendsInRow: true,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: true,
-                                        legendTextStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.white24, width: 2),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16))),
-                                    width: 150,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    child: PieChart(
-                                      ringStrokeWidth: 10,
-                                      gradientList: <List<Color>>[
-                                        [
-                                          MainShade,
-                                          MainShade,
-                                        ],
-                                        [
-                                          Color.fromRGBO(129, 182, 205, 1),
-                                          Color.fromRGBO(91, 253, 199, 1),
-                                        ],
-                                        [
-                                          Color.fromRGBO(175, 63, 62, 1.0),
-                                          Color.fromRGBO(254, 154, 92, 1),
-                                        ]
-                                      ],
-                                      chartType: ChartType.ring,
-                                      dataMap: dataMap2,
-                                      chartLegendSpacing: 20,
-                                      legendOptions: LegendOptions(
-                                        showLegendsInRow: true,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: true,
-                                        legendTextStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.white24, width: 2),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16))),
-                                    width: 150,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    child: PieChart(
-                                      ringStrokeWidth: 10,
-                                      gradientList: <List<Color>>[
-                                        [
-                                          MainShade,
-                                          MainShade,
-                                        ],
-                                        [
-                                          Color.fromRGBO(129, 182, 205, 1),
-                                          Color.fromRGBO(91, 253, 199, 1),
-                                        ],
-                                        [
-                                          Color.fromRGBO(175, 63, 62, 1.0),
-                                          Color.fromRGBO(254, 154, 92, 1),
-                                        ]
-                                      ],
-                                      chartType: ChartType.ring,
-                                      dataMap: dataMap2,
-                                      chartLegendSpacing: 20,
-                                      legendOptions: LegendOptions(
-                                        showLegendsInRow: true,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: true,
-                                        legendTextStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.white24, width: 2),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16))),
-                                    width: 150,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    child: PieChart(
-                                      ringStrokeWidth: 10,
-                                      gradientList: <List<Color>>[
-                                        [
-                                          MainShade,
-                                          MainShade,
-                                        ],
-                                        [
-                                          Color.fromRGBO(129, 182, 205, 1),
-                                          Color.fromRGBO(91, 253, 199, 1),
-                                        ],
-                                        [
-                                          Color.fromRGBO(175, 63, 62, 1.0),
-                                          Color.fromRGBO(254, 154, 92, 1),
-                                        ]
-                                      ],
-                                      chartType: ChartType.ring,
-                                      dataMap: dataMap2,
-                                      chartLegendSpacing: 20,
-                                      legendOptions: LegendOptions(
-                                        showLegendsInRow: true,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: true,
-                                        legendTextStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Expanded(
                                 child: Container(
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(59, 27, 27, 27)
-                                      .withOpacity(0.8),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16))),
-                              child: Center(
-                                child: Text(
-                                  "COMING SOON!",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ))
+                              height: 1,
+                              color: Colors.white12,
+                            )),
                           ],
                         ),
-                      )),
-                ),
-              ))
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 3,
+                                child: Container(
+                                    height: 200,
+                                    child: FutureBuilder(
+                                      future: getData(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          // If the Future is still running, show a loading indicator
+                                          return CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          // If there is an error, show an error message
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        } else {
+                                          // If the Future is complete, build the PieChart with the data
+                                          return PieChart(
+                                            PieChartData(
+                                              sections:
+                                                  getSections(snapshot.data!),
+                                              // Other configurations for your pie chart
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ))),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Attendance",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontFamily: "Montserrat",
+                              fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 1,
+                              color: Colors.white12,
+                            )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            side: BorderSide(color: MainShade)),
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 12.0,
+                                        textStyle: const TextStyle(
+                                            color: Colors.white)),
+                                    child: const Text(
+                                      'Weekly',
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white70,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            side: BorderSide(color: MainShade)),
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 12.0,
+                                        textStyle: const TextStyle(
+                                            color: Colors.white)),
+                                    child: const Text(
+                                      'Monthly',
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white70,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            side: BorderSide(color: MainShade)),
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 12.0,
+                                        textStyle: const TextStyle(
+                                            color: Colors.white)),
+                                    child: const Text(
+                                      'Yearly',
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white70,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(59, 27, 27, 27)
+                                  .withOpacity(0.8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          child: Center(
+                            child: Text(
+                              "COMING SOON!",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ))
+                      ],
+                    ),
+                  )),
+            ),
+          )
         ],
       ),
     );

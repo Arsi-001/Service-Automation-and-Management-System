@@ -49,7 +49,8 @@ dependencies:
   qr_bar_code_scanner_dialog: ^0.0.5
   rxdart: ^0.27.7
   flutter_countdown_timer: ^4.1.0
-  pie_chart: ^5.4.0
+  #pie_chart: ^5.4.0
+  fl_chart: ^0.66.0
 
 dev_dependencies:
   flutter_test:

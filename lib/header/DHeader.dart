@@ -141,26 +141,30 @@ class _DesktopHeaderState extends State<DesktopHeader> {
             //         fontSize: 16),
             //   ),
             // ),
-            Expanded(
-              flex: 1,
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  border: Border.all(color: MainShade, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // Container(
-                  //   height: 40,
-                  //   decoration: const BoxDecoration(
-                  //       color: Colors.blue,
-                  //       borderRadius: BorderRadius.all(Radius.circular(50))),
-                  //   child: Image.asset(
-                  //     "assets/images/profile_pic.png",
-                  //     fit: BoxFit.cover,
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 43, 43, 43),
+                        border: Border.all(color: MainShade, width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Image.asset(
+                      "assets/images/sams_logo.png",
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -174,6 +178,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                                   BorderRadius.all(Radius.circular(10))),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
+                              icon: Icon(Icons.arrow_drop_down_rounded),
                               // icon: Icon(
                               //   UniconsLine.setting,
                               //   color: Colors.white,
