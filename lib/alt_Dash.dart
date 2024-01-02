@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 //import 'package:pie_chart/pie_chart.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
+import 'package:s_a_m_s/weeklychceker.dart';
 import 'package:unicons/unicons.dart';
 
 class AltDash extends StatefulWidget {
@@ -32,30 +33,29 @@ class _AltDashState extends State<AltDash> {
     return snapshot.docs;
   }
 
-  List<PieChartSectionData> getSections(List<DocumentSnapshot> data) {
+  Future<List<PieChartSectionData>> getSections(
+      List<DocumentSnapshot> data) async {
     List<PieChartSectionData> sections = [];
 
-    data.forEach((document) async {
-      // var snapshot = await FirebaseFirestore.instance
-      //     .collection('/$colname/$clientplat/Members')
-      //     .get();
-      // print("\\\\\\\\0000");
-      // print(document["name"]);
-      // print(
-      //     snapshot.docs.where((element) => element == document["name"]).length);
+    for (var document in data) {
+      var snap = await FirebaseFirestore.instance
+          .collection('/$colname/$clientplat/Members')
+          .where("Package", isEqualTo: document["name"])
+          .get();
+      print(document["name"]);
 
       String packageName = document['name'];
-      int subscribers = 5;
+      int subscribers = snap.docs.length;
 
       sections.add(
         PieChartSectionData(
           value: subscribers.toDouble(),
-          title: '$packageName', // Display data on the chart
-          color:
-              getRandomColor(), // Implement a function to get colors dynamically
+          title: packageName, // Display data on the chart
+          color: getRandomColor(),
+          titleStyle: const TextStyle(color: Colors.white),
         ),
       );
-    });
+    }
 
     return sections;
   }
@@ -101,7 +101,7 @@ class _AltDashState extends State<AltDash> {
   // Specify your gym's closing time
   final int closingHour = 1; // 5:00 PM
   final int closingMinute = 0;
-
+  int touchedIndex = -1;
   // int endTime = closingTimeToday.millisecondsSinceEpoch -
   //     DateTime.now().millisecondsSinceEpoch;
   Map<String, double> dataMap = {
@@ -581,58 +581,16 @@ class _AltDashState extends State<AltDash> {
                         ),
                         Row(
                           children: [
+                            Expanded(flex: 5, child: Container()),
                             Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: Container(
-                                    height: 200,
-                                    child: FutureBuilder(
-                                      future: getData(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          // If the Future is still running, show a loading indicator
-                                          return CircularProgressIndicator();
-                                        } else if (snapshot.hasError) {
-                                          // If there is an error, show an error message
-                                          return Text(
-                                              'Error: ${snapshot.error}');
-                                        } else {
-                                          // If the Future is complete, build the PieChart with the data
-                                          return PieChart(
-                                            PieChartData(
-                                              sections:
-                                                  getSections(snapshot.data!),
-                                              // Other configurations for your pie chart
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ))),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [],
-                              ),
-                            ),
+                                  child: BarChartSample1(),
+                                ))
                           ],
                         ),
                         SizedBox(
                           height: 20,
-                        ),
-                        Text(
-                          "Attendance",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontFamily: "Montserrat",
-                              fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
                         Row(
                           children: [
@@ -643,6 +601,24 @@ class _AltDashState extends State<AltDash> {
                             )),
                           ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(59, 27, 27, 27)
+                                  .withOpacity(0.8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          child: Center(
+                            child: Text(
+                              "COMING SOON!",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        )),
                         SizedBox(
                           height: 20,
                         ),
@@ -662,7 +638,7 @@ class _AltDashState extends State<AltDash> {
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(12.0),
+                                                BorderRadius.circular(8.0),
                                             side: BorderSide(color: MainShade)),
                                         backgroundColor: Colors.transparent,
                                         elevation: 12.0,
@@ -693,7 +669,7 @@ class _AltDashState extends State<AltDash> {
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(12.0),
+                                                BorderRadius.circular(8.0),
                                             side: BorderSide(color: MainShade)),
                                         backgroundColor: Colors.transparent,
                                         elevation: 12.0,
@@ -724,7 +700,7 @@ class _AltDashState extends State<AltDash> {
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(12.0),
+                                                BorderRadius.circular(8.0),
                                             side: BorderSide(color: MainShade)),
                                         backgroundColor: Colors.transparent,
                                         elevation: 12.0,
@@ -744,24 +720,6 @@ class _AltDashState extends State<AltDash> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(59, 27, 27, 27)
-                                  .withOpacity(0.8),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                          child: Center(
-                            child: Text(
-                              "COMING SOON!",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          ),
-                        ))
                       ],
                     ),
                   )),

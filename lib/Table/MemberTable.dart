@@ -45,15 +45,13 @@ class Dtable extends StatefulWidget {
 class _DtableState extends State<Dtable> {
   ScrollController con = ScrollController();
 
-  final CollectionReference _members =
-      FirebaseFirestore.instance.collection('/TGym/GYM/Members');
-
   bool isdefaulter = false;
   String result = "";
   final _qrBarCodeScannerDialogPlugin = QrBarCodeScannerDialog();
 
   @override
   Widget build(BuildContext context) {
+    print(membercol);
     return SingleChildScrollView(
       child: SizedBox(
         height: 1080 - 150,

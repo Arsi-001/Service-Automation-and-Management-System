@@ -122,9 +122,6 @@ class _HomepageState extends State<Homepage> {
           .collection("ClientLoginInfo")
           .where("uid", isEqualTo: user.uid.toString())
           .get();
-      colname = colName.docs.first["collectionName"];
-      clientName = colName.docs.first["clientName"];
-      initials = colName.docs.first["initials"];
       return colName.docs.first;
     } catch (e) {
       return "   no found    ";
@@ -180,6 +177,13 @@ class _HomepageState extends State<Homepage> {
           future: getcolname(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              colname = snapshot.data["collectionName"];
+              clientName = snapshot.data["clientName"];
+              initials = snapshot.data["initials"];
+              // colname = snapshot.data!.docs.first["collectionName"];
+              // clientName = snapshot.data!.docs.first["clientName"];
+              // initials = snapshot.data!.docs.first["initials"];
+              print(snapshot.data);
               print(colname);
               print("this:" + "$initials");
               return Scaffold(
@@ -198,18 +202,18 @@ class _HomepageState extends State<Homepage> {
                 //       Mobile: const Center(),
                 //       Tablet: const Center(),
                 //     )),
-                body: SingleChildScrollView(
-                  child: SizedBox(
-                    height: 1080,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            gradient: multigradient,
-                          ),
+                body: SizedBox(
+                  height: 1080,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          gradient: multigradient,
                         ),
-                        Column(
+                      ),
+                      SingleChildScrollView(
+                        child: Column(
                           children: [
                             DesktopHeader(
                                 colname: "snapshot.data",
@@ -225,8 +229,8 @@ class _HomepageState extends State<Homepage> {
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );
