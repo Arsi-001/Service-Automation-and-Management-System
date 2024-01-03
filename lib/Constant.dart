@@ -54,7 +54,10 @@ const glassmorphBlu = LinearGradient(
 var multigradient = LinearGradient(
     begin: Alignment(0.1, 0.8),
     end: Alignment(0.3, -0.1),
-    colors: [Color(0xFFFF7F01), Color(0xFFEC5012)]);
+    colors: [
+      Color.fromARGB(255, 196, 98, 0),
+      Color.fromARGB(255, 255, 107, 48)
+    ]);
 
 const glassmorphRed = LinearGradient(
     begin: Alignment(-0.3, 0.8),
@@ -67,6 +70,10 @@ const glassmorphpurple = LinearGradient(
       Color.fromRGBO(113, 51, 255, 0.7),
       Color.fromRGBO(113, 51, 255, 1)
     ]);
+const glassmorphblack = LinearGradient(
+    begin: Alignment(-0.3, 0.8),
+    end: Alignment(0.3, -0.1),
+    colors: [Color.fromRGBO(56, 56, 56, 0.682), Color.fromRGBO(49, 49, 49, 1)]);
 const glassmorph = LinearGradient(
     begin: Alignment(-0.3, 0.8),
     end: Alignment(0.3, -0.1),
