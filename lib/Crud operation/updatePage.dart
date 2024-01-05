@@ -89,6 +89,19 @@ class _UpdateUserState extends State<UpdateUser> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    fNameCont.dispose();
+    lNameCont.dispose();
+    emailCont.dispose();
+    numberCont.dispose();
+    addressCont.dispose();
+    // ageCont.dispose();
+    lNameCont.dispose();
+
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
   Future<bool> _onWillPop() async {
     return false; //<-- SEE HERE

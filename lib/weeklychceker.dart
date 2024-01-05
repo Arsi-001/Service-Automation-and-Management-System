@@ -19,7 +19,7 @@ class BarChartSample1 extends StatefulWidget {
 
   final Color barBackgroundColor = Colors.black.withOpacity(0.3);
   final Color barColor = Colors.white;
-  final Color touchedBarColor = Colors.green;
+  final Color touchedBarColor = MainShade;
 
   @override
   State<StatefulWidget> createState() => BarChartSample1State();
@@ -37,7 +37,10 @@ class BarChartSample1State extends State<BarChartSample1> {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
-        color: Colors.greenAccent,
+        decoration: BoxDecoration(
+            color: Lightgrey,
+            //  border: Border.all(color: MainShade),
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         child: Stack(
           children: <Widget>[
             Padding(
@@ -48,7 +51,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   const Text(
                     'Attendance',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: MainShade,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -59,7 +62,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   Text(
                     'Weekly Report',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.3),
+                      color: MainShade.withOpacity(0.3),
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -89,7 +92,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 child: IconButton(
                   icon: Icon(
                     isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-                    color: Colors.black,
+                    color: MainShade,
                   ),
                   onPressed: () {
                     setState(() {
@@ -199,14 +202,14 @@ class BarChartSample1State extends State<BarChartSample1> {
               const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 14,
               ),
               children: <TextSpan>[
                 TextSpan(
                   text: (rod.toY - 1).toString(),
                   style: TextStyle(
                     color: widget.touchedBarColor,
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

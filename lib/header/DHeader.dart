@@ -100,7 +100,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                           ),
                           GButton(
                             icon: UniconsLine.estate,
-                            text: 'HOME',
+                            text: '$SizeScreenW',
                             textStyle: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.w600,
@@ -151,8 +151,8 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    height: 40,
-                    width: 40,
+                    height: 30,
+                    width: 30,
                     padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
                         color: Color.fromARGB(255, 43, 43, 43),

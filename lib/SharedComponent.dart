@@ -788,6 +788,8 @@ class ActivityProfileBubble extends StatelessWidget {
   final sw, name, package, platform, timein, feestatus, defaulters, id;
 
   Future<void> _deletemember([String? documentSnapshotid]) async {
+    var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
+    await recordscol.doc(documentSnapshotid).update(json);
     await activitycol.doc(documentSnapshotid).delete();
   }
 
@@ -1144,6 +1146,7 @@ class crudTxtfield extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: TextFormField(
             decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(bottom: 8),
                 border: InputBorder.none,
                 errorMaxLines: 1,
                 errorStyle: TextStyle(
@@ -1151,6 +1154,7 @@ class crudTxtfield extends StatelessWidget {
                 )),
             keyboardType: txtinput,
             inputFormatters: format,
+            textInputAction: TextInputAction.next,
             validator: (value) {
               if (title == "First Name" ||
                   title == "Last Name" ||

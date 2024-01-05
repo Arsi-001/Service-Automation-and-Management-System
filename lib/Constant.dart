@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 //Main Theme Settings
 
@@ -51,12 +52,20 @@ const glassmorphBlu = LinearGradient(
       Color.fromRGBO(76, 123, 255, 0.65),
       Color.fromRGBO(76, 124, 255, 1)
     ]);
+
+var Logingradient = LinearGradient(
+    begin: Alignment(0.1, 0.8),
+    end: Alignment(0.3, -0.1),
+    colors: [
+      Color.fromARGB(158, 120, 120, 120),
+      Color.fromARGB(147, 200, 200, 200)
+    ]);
 var multigradient = LinearGradient(
     begin: Alignment(0.1, 0.8),
     end: Alignment(0.3, -0.1),
     colors: [
-      Color.fromARGB(255, 196, 98, 0),
-      Color.fromARGB(255, 255, 107, 48)
+      Color.fromARGB(255, 255, 149, 43),
+      Color.fromARGB(255, 252, 121, 70)
     ]);
 
 const glassmorphRed = LinearGradient(
@@ -115,6 +124,10 @@ var packagecol =
 var defaultercol = FirebaseFirestore.instance
     .collection("/$colname/$clientplat/Members")
     .where("Defaulters", isEqualTo: true);
+DateFormat currentmonth = DateFormat.MMM();
+DateFormat currentyear = DateFormat.y();
+var recordscol = FirebaseFirestore.instance.collection(
+    "/$colname/$clientplat/Records/${currentyear.format(DateTime.now())}/${currentmonth.format(DateTime.now())}/");
 var staffcol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Staff");
 

@@ -49,9 +49,10 @@ class _AltDashState extends State<AltDash> {
 
       sections.add(
         PieChartSectionData(
+          titlePositionPercentageOffset: 1.5,
           value: subscribers.toDouble(),
           title: packageName, // Display data on the chart
-          color: getRandomColor(),
+          color: getBrightRandomColor(),
           titleStyle: const TextStyle(color: Colors.white),
         ),
       );
@@ -60,26 +61,30 @@ class _AltDashState extends State<AltDash> {
     return sections;
   }
 
-  Color getRandomColor() {
+  Color getBrightRandomColor() {
     Random random = Random();
-    return Color.fromRGBO(
-      random.nextInt(256),
-      random.nextInt(256),
-      random.nextInt(256),
-      1.0, // You can adjust the alpha value if needed
-    );
+    int minBrightness = 192; // Adjust as needed
+
+    int red = minBrightness + random.nextInt(256 - minBrightness);
+    int green = minBrightness + random.nextInt(256 - minBrightness);
+    int blue = minBrightness + random.nextInt(256 - minBrightness);
+
+    return Color.fromRGBO(red, green, blue, 1.0);
   }
 
+  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateformat2 = DateFormat.d();
   Future addMember({
     required id,
   }) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await membercol.doc("TG-M-$id").get();
+          await membercol.doc("$initials-M-$id").get();
 
       if (documentSnapshot.exists) {
         var data = documentSnapshot.data();
         final docUser = activitycol.doc(data?["ID"]);
+        final docUser2 = recordscol.doc(data?["ID"]);
 
         final json = {
           "Name": data?["First name"] + " " + data?["Last name"],
@@ -87,9 +92,13 @@ class _AltDashState extends State<AltDash> {
           "Package": data?["Package"],
           "Platform": data?["Platform"],
           "Time In": DateFormat.jm().format(DateTime.now()),
-          "Defaulter": data?["Defaulter"]
+          "Defaulter": data?["Defaulter"],
+          "Date": dateFormat.format(DateTime.now()),
+          "Day": (dateformat2.format(DateTime.now()))
         };
+
         await docUser.set(json);
+        await docUser2.set(json);
       } else {
         print('Document $id does not exist in the collection.');
       }
@@ -116,6 +125,7 @@ class _AltDashState extends State<AltDash> {
   };
   @override
   Widget build(BuildContext context) {
+    var SizeScreenW = MediaQuery.of(context).size.width;
     DateTime now = DateTime.now();
     DateTime closingTimeToday =
         DateTime(now.year, now.month, now.day, closingHour, closingMinute);
@@ -150,6 +160,7 @@ class _AltDashState extends State<AltDash> {
           Expanded(
             flex: 2,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -428,10 +439,14 @@ class _AltDashState extends State<AltDash> {
                                                       .digitsOnly
                                                 ],
                                                 style: TextStyle(
+                                                    fontSize: 12,
                                                     decorationColor: MainShade,
                                                     color: MainShade,
                                                     fontFamily: "Lato"),
                                                 decoration: InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            left: 5),
                                                     border: OutlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color: Colors.white,
@@ -533,198 +548,444 @@ class _AltDashState extends State<AltDash> {
                           }),
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizeScreenW > 1200
+                    ? SizedBox(
+                        width: 1,
+                      )
+                    : ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                          child: Container(
+                              width: 550,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 20),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color.fromARGB(26, 75, 75, 75)
+                                          .withAlpha(80)),
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: darkGlassMorphismGradient()),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Statistics",
+                                      style: TextStyle(
+                                          color: Colors.white70,
+                                          fontFamily: "Montserrat",
+                                          fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            child: Container(
+                                          height: 1,
+                                          color: Colors.white12,
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(flex: 5, child: Container()),
+                                        Expanded(
+                                            flex: 4,
+                                            child: Container(
+                                              child: BarChartSample1(),
+                                            ))
+                                      ],
+                                    ),
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
+                                    // Row(
+                                    //   children: [
+                                    //     Expanded(
+                                    //         child: Container(
+                                    //       height: 1,
+                                    //       color: Colors.white12,
+                                    //     )),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
+                                    // Expanded(
+                                    //     child: Container(
+                                    //   decoration: BoxDecoration(
+                                    //       color: Color.fromARGB(59, 27, 27, 27)
+                                    //           .withOpacity(0.8),
+                                    //       borderRadius:
+                                    //           BorderRadius.all(Radius.circular(16))),
+                                    //   child: Center(
+                                    //     child: Text(
+                                    //       "COMING SOON!",
+                                    //       style:
+                                    //           TextStyle(color: Colors.white, fontSize: 16),
+                                    //     ),
+                                    //   ),
+                                    // )),
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Expanded(
+                                    //       child: Padding(
+                                    //         padding:
+                                    //             const EdgeInsets.symmetric(horizontal: 8.0),
+                                    //         child: Container(
+                                    //           width: 100,
+                                    //           height: 40,
+                                    //           child: ElevatedButton(
+                                    //             onPressed: () {},
+                                    //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    //             style: ElevatedButton.styleFrom(
+                                    //                 shape: RoundedRectangleBorder(
+                                    //                     borderRadius:
+                                    //                         BorderRadius.circular(8.0),
+                                    //                     side: BorderSide(color: MainShade)),
+                                    //                 backgroundColor: Colors.transparent,
+                                    //                 elevation: 12.0,
+                                    //                 textStyle: const TextStyle(
+                                    //                     color: Colors.white)),
+                                    //             child: const Text(
+                                    //               'Weekly',
+                                    //               style: TextStyle(
+                                    //                   fontFamily: "Montserrat",
+                                    //                   fontWeight: FontWeight.w600,
+                                    //                   color: Colors.white70,
+                                    //                   fontSize: 12),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //     Expanded(
+                                    //       child: Padding(
+                                    //         padding:
+                                    //             const EdgeInsets.symmetric(horizontal: 8.0),
+                                    //         child: Container(
+                                    //           width: 100,
+                                    //           height: 40,
+                                    //           child: ElevatedButton(
+                                    //             onPressed: () {},
+                                    //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    //             style: ElevatedButton.styleFrom(
+                                    //                 shape: RoundedRectangleBorder(
+                                    //                     borderRadius:
+                                    //                         BorderRadius.circular(8.0),
+                                    //                     side: BorderSide(color: MainShade)),
+                                    //                 backgroundColor: Colors.transparent,
+                                    //                 elevation: 12.0,
+                                    //                 textStyle: const TextStyle(
+                                    //                     color: Colors.white)),
+                                    //             child: const Text(
+                                    //               'Monthly',
+                                    //               style: TextStyle(
+                                    //                   fontFamily: "Montserrat",
+                                    //                   fontWeight: FontWeight.w600,
+                                    //                   color: Colors.white70,
+                                    //                   fontSize: 12),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //     Expanded(
+                                    //       child: Padding(
+                                    //         padding:
+                                    //             const EdgeInsets.symmetric(horizontal: 8.0),
+                                    //         child: Container(
+                                    //           width: 100,
+                                    //           height: 40,
+                                    //           child: ElevatedButton(
+                                    //             onPressed: () {},
+                                    //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                    //             style: ElevatedButton.styleFrom(
+                                    //                 shape: RoundedRectangleBorder(
+                                    //                     borderRadius:
+                                    //                         BorderRadius.circular(8.0),
+                                    //                     side: BorderSide(color: MainShade)),
+                                    //                 backgroundColor: Colors.transparent,
+                                    //                 elevation: 12.0,
+                                    //                 textStyle: const TextStyle(
+                                    //                     color: Colors.white)),
+                                    //             child: const Text(
+                                    //               'Yearly',
+                                    //               style: TextStyle(
+                                    //                   fontFamily: "Montserrat",
+                                    //                   fontWeight: FontWeight.w600,
+                                    //                   color: Colors.white70,
+                                    //                   fontSize: 12),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      )
               ],
             ),
           ),
           SizedBox(
             width: 20,
           ),
-          ClipRRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                  height: 720,
-                  width: 550,
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Color.fromARGB(26, 75, 75, 75).withAlpha(80)),
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: darkGlassMorphismGradient()),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Statistics",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontFamily: "Montserrat",
-                              fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              height: 1,
-                              color: Colors.white12,
-                            )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(flex: 5, child: Container()),
-                            Expanded(
-                                flex: 4,
-                                child: Container(
-                                  child: BarChartSample1(),
-                                ))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              height: 1,
-                              color: Colors.white12,
-                            )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(59, 27, 27, 27)
-                                  .withOpacity(0.8),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                          child: Center(
-                            child: Text(
-                              "COMING SOON!",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
+          SizeScreenW < 1200
+              ? SizedBox(
+                  width: 1,
+                )
+              : ClipRRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                        width: 550,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color.fromARGB(26, 75, 75, 75)
+                                    .withAlpha(80)),
+                            borderRadius: BorderRadius.circular(16),
+                            gradient: darkGlassMorphismGradient()),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Statistics",
+                                style: TextStyle(
+                                    color: Colors.white70,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 16),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    height: 1,
+                                    color: Colors.white12,
+                                  )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      flex: 5,
+                                      child: SizedBox(
+                                        height: 200,
+                                        child: FutureBuilder<
+                                            List<DocumentSnapshot>>(
+                                          future: getData(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            } else if (snapshot.hasError ||
+                                                snapshot.data == null) {
+                                              return Text(
+                                                  'Error: ${snapshot.error ?? "Failed to load data"}');
+                                            } else {
+                                              return FutureBuilder<
+                                                  List<PieChartSectionData>>(
+                                                future:
+                                                    getSections(snapshot.data!),
+                                                builder: (context,
+                                                    sectionsSnapshot) {
+                                                  if (sectionsSnapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  } else if (sectionsSnapshot
+                                                          .hasError ||
+                                                      sectionsSnapshot.data ==
+                                                          null) {
+                                                    return Text(
+                                                        'Error: ${sectionsSnapshot.error ?? "Failed to load sections"}');
+                                                  } else {
+                                                    return PieChart(
+                                                      PieChartData(
+                                                        sectionsSpace: 8,
+                                                        sections:
+                                                            sectionsSnapshot
+                                                                .data!,
+                                                        // Other configurations for your pie chart
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      )),
+                                  Expanded(
+                                      flex: 4,
+                                      child: Container(
+                                        child: BarChartSample1(),
+                                      ))
+                                ],
+                              ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Row(
+                              //   children: [
+                              //     Expanded(
+                              //         child: Container(
+                              //       height: 1,
+                              //       color: Colors.white12,
+                              //     )),
+                              //   ],
+                              // ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Expanded(
+                              //     child: Container(
+                              //   decoration: BoxDecoration(
+                              //       color: Color.fromARGB(59, 27, 27, 27)
+                              //           .withOpacity(0.8),
+                              //       borderRadius:
+                              //           BorderRadius.all(Radius.circular(16))),
+                              //   child: Center(
+                              //     child: Text(
+                              //       "COMING SOON!",
+                              //       style:
+                              //           TextStyle(color: Colors.white, fontSize: 16),
+                              //     ),
+                              //   ),
+                              // )),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Expanded(
+                              //       child: Padding(
+                              //         padding:
+                              //             const EdgeInsets.symmetric(horizontal: 8.0),
+                              //         child: Container(
+                              //           width: 100,
+                              //           height: 40,
+                              //           child: ElevatedButton(
+                              //             onPressed: () {},
+                              //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                              //             style: ElevatedButton.styleFrom(
+                              //                 shape: RoundedRectangleBorder(
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(8.0),
+                              //                     side: BorderSide(color: MainShade)),
+                              //                 backgroundColor: Colors.transparent,
+                              //                 elevation: 12.0,
+                              //                 textStyle: const TextStyle(
+                              //                     color: Colors.white)),
+                              //             child: const Text(
+                              //               'Weekly',
+                              //               style: TextStyle(
+                              //                   fontFamily: "Montserrat",
+                              //                   fontWeight: FontWeight.w600,
+                              //                   color: Colors.white70,
+                              //                   fontSize: 12),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Expanded(
+                              //       child: Padding(
+                              //         padding:
+                              //             const EdgeInsets.symmetric(horizontal: 8.0),
+                              //         child: Container(
+                              //           width: 100,
+                              //           height: 40,
+                              //           child: ElevatedButton(
+                              //             onPressed: () {},
+                              //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                              //             style: ElevatedButton.styleFrom(
+                              //                 shape: RoundedRectangleBorder(
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(8.0),
+                              //                     side: BorderSide(color: MainShade)),
+                              //                 backgroundColor: Colors.transparent,
+                              //                 elevation: 12.0,
+                              //                 textStyle: const TextStyle(
+                              //                     color: Colors.white)),
+                              //             child: const Text(
+                              //               'Monthly',
+                              //               style: TextStyle(
+                              //                   fontFamily: "Montserrat",
+                              //                   fontWeight: FontWeight.w600,
+                              //                   color: Colors.white70,
+                              //                   fontSize: 12),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Expanded(
+                              //       child: Padding(
+                              //         padding:
+                              //             const EdgeInsets.symmetric(horizontal: 8.0),
+                              //         child: Container(
+                              //           width: 100,
+                              //           height: 40,
+                              //           child: ElevatedButton(
+                              //             onPressed: () {},
+                              //             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                              //             style: ElevatedButton.styleFrom(
+                              //                 shape: RoundedRectangleBorder(
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(8.0),
+                              //                     side: BorderSide(color: MainShade)),
+                              //                 backgroundColor: Colors.transparent,
+                              //                 elevation: 12.0,
+                              //                 textStyle: const TextStyle(
+                              //                     color: Colors.white)),
+                              //             child: const Text(
+                              //               'Yearly',
+                              //               style: TextStyle(
+                              //                   fontFamily: "Montserrat",
+                              //                   fontWeight: FontWeight.w600,
+                              //                   color: Colors.white70,
+                              //                   fontSize: 12),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
                           ),
                         )),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Container(
-                                  width: 100,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            side: BorderSide(color: MainShade)),
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 12.0,
-                                        textStyle: const TextStyle(
-                                            color: Colors.white)),
-                                    child: const Text(
-                                      'Weekly',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white70,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Container(
-                                  width: 100,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            side: BorderSide(color: MainShade)),
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 12.0,
-                                        textStyle: const TextStyle(
-                                            color: Colors.white)),
-                                    child: const Text(
-                                      'Monthly',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white70,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Container(
-                                  width: 100,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            side: BorderSide(color: MainShade)),
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 12.0,
-                                        textStyle: const TextStyle(
-                                            color: Colors.white)),
-                                    child: const Text(
-                                      'Yearly',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white70,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          )
+                  ),
+                )
         ],
       ),
     );

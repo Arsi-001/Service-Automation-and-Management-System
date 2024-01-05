@@ -15,15 +15,11 @@ import 'package:s_a_m_s/main.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:unicons/unicons.dart';
 
-class TableInfo extends StatefulWidget {
-  const TableInfo({super.key});
+class TableInfo extends StatelessWidget {
+  TableInfo({super.key});
 
-  @override
-  State<TableInfo> createState() => _TableInfoState();
-}
-
-class _TableInfoState extends State<TableInfo> {
   ScrollController con = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     var sw = MediaQuery.of(context).size.width;
@@ -51,348 +47,342 @@ class _DtableState extends State<Dtable> {
 
   @override
   Widget build(BuildContext context) {
-    print(membercol);
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: 1080 - 150,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-          child: StreamBuilder(
-              stream: isdefaulter
-                  ? membercol.where("Defaulter", isEqualTo: true).snapshots()
-                  : membercol.orderBy("idnum", descending: false).snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  return Center(
-                    child: Container(
-                      width: 1400,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                ClipRRect(
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10.0, sigmaY: 10.0),
-                                    child: Container(
-                                      height: 200,
-                                      width: 350,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Color.fromARGB(
-                                                      26, 104, 104, 104)
-                                                  .withAlpha(80)),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          gradient:
-                                              darkGlassMorphismGradient()),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            UniconsLine.dumbbell,
-                                            size: 60,
-                                            color: Colors.white70,
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Text(
-                                            (streamSnapshot.data?.docs.length)
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w200,
-                                                color: Colors.white70,
-                                                letterSpacing: 5,
-                                                fontSize: 16),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            "MEMBERS",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white70,
-                                                letterSpacing: 5,
-                                                fontSize: 16),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                    flex: widget.sw < 930 ? 0 : 1,
-                                    child: SizedBox()),
-                                Expanded(
-                                  flex: widget.sw < 1090 ? 5 : 2,
+    print("THIS IS THE COLLECTION: " + "$membercol");
+    return SizedBox(
+      height: 1080 - 200,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+        child: StreamBuilder(
+            stream: isdefaulter
+                ? membercol.where("Defaulter", isEqualTo: true).snapshots()
+                : membercol.orderBy("idnum", descending: false).snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return Center(
+                  child: SizedBox(
+                    width: 1400,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              ClipRRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
                                   child: Container(
-                                    height: 100,
-                                    child: Row(
+                                    height: 200,
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color.fromARGB(
+                                                    26, 104, 104, 104)
+                                                .withAlpha(80)),
+                                        borderRadius: BorderRadius.circular(16),
+                                        gradient: darkGlassMorphismGradient()),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        // Text("This is the text: $result"),
-                                        // Expanded(
-                                        //   flex: 1,
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.symmetric(
-                                        //         horizontal: 8.0),
-                                        //     child: Container(
-                                        //       width: 100,
-                                        //       height: 40,
-                                        //       child: ElevatedButton(
-                                        //         onPressed: () async {
-                                        //           var res = await Navigator.push(
-                                        //               context,
-                                        //               MaterialPageRoute(
-                                        //                 builder: (context) =>
-                                        //                     const SimpleBarcodeScannerPage(
-                                        //                   centerTitle: true,
-                                        //                 ),
-                                        //               ));
-                                        //           setState(() {
-                                        //             if (res is String) {
-                                        //               result = res;
-                                        //             }
-                                        //           });
-                                        //         },
-                                        //         // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                        //         style: ElevatedButton.styleFrom(
-                                        //             shape: RoundedRectangleBorder(
-                                        //                 borderRadius:
-                                        //                     BorderRadius.circular(
-                                        //                         12.0),
-                                        //                 side: BorderSide(
-                                        //                     color:
-                                        //                         Colors.blueAccent)),
-                                        //             backgroundColor: Blu,
-                                        //             elevation: 12.0,
-                                        //             textStyle: const TextStyle(
-                                        //                 color: Colors.white)),
-                                        //         child: const Text(
-                                        //           'Open Scanner',
-                                        //           style: TextStyle(
-                                        //               fontFamily: "Montserrat",
-                                        //               fontWeight: FontWeight.w600,
-                                        //               color: Colors.white70,
-                                        //               fontSize: 12),
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Container(
-                                            width: 150,
-                                            height: 40,
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).push(
-                                                      HeroDialogRoute(
-                                                          builder: (context) {
-                                                return AddUser(
-                                                  mode: "Members",
-                                                  modeletter: "M",
-                                                  colref: membercol,
-                                                );
-                                              })),
-                                              // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                      side: BorderSide(
-                                                          color: MainShade)),
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  elevation: 12.0,
-                                                  textStyle: const TextStyle(
-                                                      color: Colors.white)),
-                                              child: const Text(
-                                                'Add Member',
-                                                style: TextStyle(
-                                                    fontFamily: "Montserrat",
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white70,
-                                                    fontSize: 12),
-                                              ),
-                                            ),
-                                          ),
+                                        Icon(
+                                          UniconsLine.dumbbell,
+                                          size: 60,
+                                          color: Colors.white70,
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Container(
-                                            width: 200,
-                                            height: 40,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isdefaulter
-                                                      ? isdefaulter = false
-                                                      : isdefaulter = true;
-                                                });
-
-                                                // if (isdefaulter == false) {
-                                                //   isdefaulter = true;
-                                                // } else {
-                                                //   isdefaulter = false;
-                                                // }
-                                              },
-                                              // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                        color: MainShade),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                    // side: BorderSide(
-                                                    //     color:
-                                                    //         Colors.blueAccent)
-                                                  ),
-                                                  backgroundColor: isdefaulter
-                                                      ? Colors.red
-                                                      : Colors.transparent,
-                                                  elevation: 12.0,
-                                                  textStyle: const TextStyle(
-                                                      color: Colors.white)),
-                                              child: const Text(
-                                                'Defaulter Table',
-                                                style: TextStyle(
-                                                    fontFamily: "Montserrat",
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white70,
-                                                    fontSize: 12),
-                                              ),
-                                            ),
-                                          ),
+                                        SizedBox(
+                                          height: 20,
                                         ),
-                                        // Expanded(
-                                        //   flex: 2,
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.symmetric(
-                                        //         horizontal: 8.0),
-                                        //     child: RoundedFuncButton(
-                                        //       func: null,
-                                        //       buttTxt: "SEARCH MEMBER",
-                                        //       buttTxtcol: Colors.white,
-                                        //       buttbordercol: Blu,
-                                        //       buttcol: lightBlu,
-                                        //       buttfont: widget.sw < 630
-                                        //           ? widget.sw < 300
-                                        //               ? 8
-                                        //               : 10
-                                        //           : Dtxt,
-                                        //       buttheight: DbuttonH,
-                                        //       butticon: null,
-                                        //       iconhere: false,
-                                        //     ),
-                                        //   ),
-                                        // ),
+                                        Text(
+                                          (streamSnapshot.data?.docs.length)
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w200,
+                                              color: Colors.white70,
+                                              letterSpacing: 5,
+                                              fontSize: 16),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "MEMBERS",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white70,
+                                              letterSpacing: 5,
+                                              fontSize: 16),
+                                        )
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            RawScrollbar(
-                              thickness: 10,
-                              thumbColor: MainShade,
-                              trackColor: Colors.white12,
-                              trackBorderColor: Colors.white30,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              controller: con,
-                              child: SingleChildScrollView(
-                                controller: con,
-                                scrollDirection: Axis.horizontal,
+                                ),
+                              ),
+                              Expanded(
+                                  flex: widget.sw < 930 ? 0 : 1,
+                                  child: SizedBox()),
+                              Expanded(
+                                flex: widget.sw < 1090 ? 5 : 2,
                                 child: Container(
-                                  height: 500,
-                                  width: 1400,
-                                  decoration: BoxDecoration(
-                                      color: LightShade,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: Column(
+                                  height: 100,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      TableHeaderRow(
-                                        sw: widget.sw,
-                                        rowColor: Colors.white10,
+                                      // Text("This is the text: $result"),
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.symmetric(
+                                      //         horizontal: 8.0),
+                                      //     child: Container(
+                                      //       width: 100,
+                                      //       height: 40,
+                                      //       child: ElevatedButton(
+                                      //         onPressed: () async {
+                                      //           var res = await Navigator.push(
+                                      //               context,
+                                      //               MaterialPageRoute(
+                                      //                 builder: (context) =>
+                                      //                     const SimpleBarcodeScannerPage(
+                                      //                   centerTitle: true,
+                                      //                 ),
+                                      //               ));
+                                      //           setState(() {
+                                      //             if (res is String) {
+                                      //               result = res;
+                                      //             }
+                                      //           });
+                                      //         },
+                                      //         // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                      //         style: ElevatedButton.styleFrom(
+                                      //             shape: RoundedRectangleBorder(
+                                      //                 borderRadius:
+                                      //                     BorderRadius.circular(
+                                      //                         12.0),
+                                      //                 side: BorderSide(
+                                      //                     color:
+                                      //                         Colors.blueAccent)),
+                                      //             backgroundColor: Blu,
+                                      //             elevation: 12.0,
+                                      //             textStyle: const TextStyle(
+                                      //                 color: Colors.white)),
+                                      //         child: const Text(
+                                      //           'Open Scanner',
+                                      //           style: TextStyle(
+                                      //               fontFamily: "Montserrat",
+                                      //               fontWeight: FontWeight.w600,
+                                      //               color: Colors.white70,
+                                      //               fontSize: 12),
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 150,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).push(
+                                                    HeroDialogRoute(
+                                                        builder: (context) {
+                                              return AddUser(
+                                                mode: "Members",
+                                                modeletter: "M",
+                                                colref: membercol,
+                                              );
+                                            })),
+                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                    side: BorderSide(
+                                                        color: MainShade)),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                elevation: 12.0,
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white)),
+                                            child: const Text(
+                                              'Add Member',
+                                              style: TextStyle(
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white70,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      Container(
-                                          height: 400,
-                                          child: ListView.builder(
-                                            itemCount: streamSnapshot.data!.docs
-                                                .length, //number of rows
-                                            itemBuilder: (context, index) {
-                                              final DocumentSnapshot
-                                                  documentSnapshot =
-                                                  streamSnapshot
-                                                      .data!.docs[index];
-                                              return TableRow(
-                                                  context: context,
-                                                  documentsnap:
-                                                      documentSnapshot,
-                                                  membersclass: membercol,
-                                                  rowColor: LightShade,
-                                                  id: documentSnapshot["ID"],
-                                                  sw: widget.sw,
-                                                  member: documentSnapshot[
-                                                          "First name"] +
-                                                      " " +
-                                                      documentSnapshot[
-                                                          "Last name"],
-                                                  gender: documentSnapshot[
-                                                      "Gender"],
-                                                  package: documentSnapshot[
-                                                      "Package"],
-                                                  feestatus: documentSnapshot[
-                                                      "Fee Status"],
-                                                  platform: documentSnapshot[
-                                                      "Platform"],
-                                                  startingDate:
-                                                      documentSnapshot[
-                                                          "Start Date"],
-                                                  contact: documentSnapshot[
-                                                      "Phone Number"],
-                                                  email:
-                                                      documentSnapshot["Email"],
-                                                  address: documentSnapshot[
-                                                      "Address"]);
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 200,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isdefaulter
+                                                    ? isdefaulter = false
+                                                    : isdefaulter = true;
+                                              });
+
+                                              // if (isdefaulter == false) {
+                                              //   isdefaulter = true;
+                                              // } else {
+                                              //   isdefaulter = false;
+                                              // }
                                             },
-                                          )),
+                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: MainShade),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                  // side: BorderSide(
+                                                  //     color:
+                                                  //         Colors.blueAccent)
+                                                ),
+                                                backgroundColor: isdefaulter
+                                                    ? Colors.red
+                                                    : Colors.transparent,
+                                                elevation: 12.0,
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white)),
+                                            child: const Text(
+                                              'Defaulter Table',
+                                              style: TextStyle(
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white70,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // Expanded(
+                                      //   flex: 2,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.symmetric(
+                                      //         horizontal: 8.0),
+                                      //     child: RoundedFuncButton(
+                                      //       func: null,
+                                      //       buttTxt: "SEARCH MEMBER",
+                                      //       buttTxtcol: Colors.white,
+                                      //       buttbordercol: Blu,
+                                      //       buttcol: lightBlu,
+                                      //       buttfont: widget.sw < 630
+                                      //           ? widget.sw < 300
+                                      //               ? 8
+                                      //               : 10
+                                      //           : Dtxt,
+                                      //       buttheight: DbuttonH,
+                                      //       butticon: null,
+                                      //       iconhere: false,
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          RawScrollbar(
+                            thickness: 10,
+                            thumbColor: MainShade,
+                            trackColor: Colors.white12,
+                            trackBorderColor: Colors.white30,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            controller: con,
+                            child: SingleChildScrollView(
+                              controller: con,
+                              scrollDirection: Axis.horizontal,
+                              child: Container(
+                                height: 500,
+                                width: 1400,
+                                decoration: BoxDecoration(
+                                    color: LightShade,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12))),
+                                child: Column(
+                                  children: [
+                                    TableHeaderRow(
+                                      sw: widget.sw,
+                                      rowColor: Colors.white10,
+                                    ),
+                                    Container(
+                                        height: 400,
+                                        child: ListView.builder(
+                                          itemCount: streamSnapshot.data!.docs
+                                              .length, //number of rows
+                                          itemBuilder: (context, index) {
+                                            final DocumentSnapshot
+                                                documentSnapshot =
+                                                streamSnapshot
+                                                    .data!.docs[index];
+                                            return TableRow(
+                                                context: context,
+                                                documentsnap: documentSnapshot,
+                                                membersclass: membercol,
+                                                rowColor: LightShade,
+                                                id: documentSnapshot["ID"],
+                                                sw: widget.sw,
+                                                age: documentSnapshot["Age"],
+                                                member: documentSnapshot[
+                                                        "First name"] +
+                                                    " " +
+                                                    documentSnapshot[
+                                                        "Last name"],
+                                                gender:
+                                                    documentSnapshot["Gender"],
+                                                package:
+                                                    documentSnapshot["Package"],
+                                                feestatus: documentSnapshot[
+                                                    "Fee Status"],
+                                                platform: documentSnapshot[
+                                                    "Platform"],
+                                                startingDate: documentSnapshot[
+                                                    "Start Date"],
+                                                contact: documentSnapshot[
+                                                    "Phone Number"],
+                                                email:
+                                                    documentSnapshot["Email"],
+                                                address: documentSnapshot[
+                                                    "Address"]);
+                                          },
+                                        )),
+                                  ],
+                                ),
                               ),
                             ),
-                          ]),
-                    ),
-                  );
-                } else {
-                  return const ProgressBar();
-                }
-              }),
-        ),
+                          ),
+                        ]),
+                  ),
+                );
+              } else {
+                return const ProgressBar();
+              }
+            }),
       ),
     );
   }
@@ -419,7 +409,7 @@ class TableHeaderRow extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(left: 10),
               child: const TableCell(
-                LineTru: true,
+                LineTru: false,
                 Titlecolor: Colors.white70,
                 Title: "ID",
               ),
@@ -449,6 +439,14 @@ class TableHeaderRow extends StatelessWidget {
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
+              Title: "AGE",
+            ),
+          ),
+          const Expanded(
+            flex: 3,
+            child: TableCell(
+              LineTru: false,
+              Titlecolor: Colors.white70,
               Title: "PACKAGE",
             ),
           ),
@@ -457,11 +455,11 @@ class TableHeaderRow extends StatelessWidget {
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
-              Title: "FEE STATUS",
+              Title: "FEE",
             ),
           ),
           const Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
@@ -469,7 +467,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           const Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
@@ -477,7 +475,7 @@ class TableHeaderRow extends StatelessWidget {
             ),
           ),
           const Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
@@ -532,6 +530,7 @@ class TableRow extends StatelessWidget {
     required this.documentsnap,
     required this.context,
     required this.membersclass,
+    required this.age,
   });
   final rowColor,
       id,
@@ -547,7 +546,8 @@ class TableRow extends StatelessWidget {
       context,
       documentsnap,
       membersclass,
-      address;
+      address,
+      age;
   TextEditingController _nameController = TextEditingController();
 
   Future<void> _delete([String? documentSnapshotid]) async {
@@ -594,7 +594,7 @@ class TableRow extends StatelessWidget {
               child: Center(
                 child: TableCell(
                   LineTru: false,
-                  Titlecolor: Colors.white70,
+                  Titlecolor: Colors.white,
                   Title: id,
                 ),
               ),
@@ -624,6 +624,14 @@ class TableRow extends StatelessWidget {
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
+              Title: age,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: TableCell(
+              LineTru: true,
+              Titlecolor: Colors.white70,
               Title: package,
             ),
           ),
@@ -636,7 +644,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -644,7 +652,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -652,7 +660,7 @@ class TableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: TableCell(
               LineTru: true,
               Titlecolor: Colors.white70,
@@ -684,7 +692,7 @@ class TableRow extends StatelessWidget {
                     onPressed: () => _feestatus(documentsnap.id, feestatus),
                     icon: Icon(
                       UniconsLine.dollar_sign_alt,
-                      color: feestatus == "Paid" ? Colors.blueGrey : MainShade,
+                      color: feestatus == "Paid" ? Colors.green : MainShade,
                     ),
                   ),
                   IconButton(

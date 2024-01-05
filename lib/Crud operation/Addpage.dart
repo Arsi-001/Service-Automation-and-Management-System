@@ -26,6 +26,8 @@ class _AddUserState extends State<AddUser> {
   TextEditingController emailCont = TextEditingController();
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
+  TextEditingController ageCont = TextEditingController();
+
   var genders = ["Male", "Female"];
 
   DateTime selectedDate = DateTime.now();
@@ -84,6 +86,19 @@ class _AddUserState extends State<AddUser> {
   final _formKey = GlobalKey<FormState>();
   Future<bool> _onWillPop() async {
     return false; //<-- SEE HERE
+  }
+
+  @override
+  void dispose() {
+    fNameCont.dispose();
+    lNameCont.dispose();
+    emailCont.dispose();
+    numberCont.dispose();
+    addressCont.dispose();
+    ageCont.dispose();
+    lNameCont.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -250,13 +265,32 @@ class _AddUserState extends State<AddUser> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
+                                    crudTxtfield(
+                                      txtinput: TextInputType.text,
+                                      format: [
+                                        FilteringTextInputFormatter
+                                            .singleLineFormatter
+                                      ],
+                                      widht: 175,
+                                      title: "Age",
+                                      controller: ageCont,
+                                    ),
+                                    SizedBox(
+                                      width: 40,
+                                    ),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Package",
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        Text(
+                                          "Package",
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontFamily: "Montserrat",
+                                            fontSize: 12,
+                                            //fontWeight: FontWeight.w600
+                                          ),
+                                        ),
                                         SizedBox(
                                           height: 6,
                                         ),
@@ -342,9 +376,15 @@ class _AddUserState extends State<AddUser> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Platform",
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        Text(
+                                          "Platform",
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontFamily: "Montserrat",
+                                            fontSize: 12,
+                                            //fontWeight: FontWeight.w600
+                                          ),
+                                        ),
                                         SizedBox(
                                           height: 6,
                                         ),
@@ -429,7 +469,12 @@ class _AddUserState extends State<AddUser> {
                                       children: [
                                         Text(
                                           "Starting Date",
-                                          style: TextStyle(color: Colors.white),
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontFamily: "Montserrat",
+                                            fontSize: 12,
+                                            //fontWeight: FontWeight.w600
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 6,
@@ -470,9 +515,15 @@ class _AddUserState extends State<AddUser> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Gender",
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        Text(
+                                          "Gender",
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontFamily: "Montserrat",
+                                            fontSize: 12,
+                                            //fontWeight: FontWeight.w600
+                                          ),
+                                        ),
                                         SizedBox(
                                           height: 6,
                                         ),
@@ -539,8 +590,11 @@ class _AddUserState extends State<AddUser> {
                                             final selectD =
                                                 dateFormat.format(selectedDate);
                                             emailCont.clear();
+                                            final age = ageCont.text;
+                                            ageCont.clear();
 
                                             addMember(
+                                              age: age,
                                               email: email,
                                               idnum: userIDnum,
                                               id: userID,
@@ -615,6 +669,7 @@ class _AddUserState extends State<AddUser> {
       {required String fname,
       required String lname,
       required String email,
+      required String age,
       required String? gender,
       required String? package,
       required String? platform,
@@ -625,12 +680,13 @@ class _AddUserState extends State<AddUser> {
       required id,
       required idnum}) async {
     final docUser = FirebaseFirestore.instance
-        .collection("/TGym/GYM/Members")
+        .collection("/$colname/$clientplat/Members")
         .doc(id + (idnum + 1).toString());
 
     final json = {
       "idnum": idnum + 1,
       "ID": id + (idnum + 1).toString(),
+      "Age": age,
       "Fee Status": "Paid",
       "First name": fname,
       "Last name": lname,

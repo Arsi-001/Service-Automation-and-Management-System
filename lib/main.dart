@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -110,7 +111,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final TableInfo _membertable = const TableInfo();
+  final TableInfo _membertable = TableInfo();
   final StaffTableInfo _stafftable = const StaffTableInfo();
   final AltDash _altDash = const AltDash();
   final Dash _dash = const Dash();
@@ -207,7 +208,7 @@ class _HomepageState extends State<Homepage> {
                   child: Stack(
                     children: [
                       Container(
-                        height: 200,
+                        height: 250,
                         decoration: BoxDecoration(
                           gradient: multigradient,
                         ),
@@ -222,11 +223,7 @@ class _HomepageState extends State<Homepage> {
                                     _showPage = _pageSelect(index);
                                   });
                                 }),
-                            ResponsiveLayout(
-                              Desktop: _showPage,
-                              Mobile: Placeholder(),
-                              Tablet: Placeholder(),
-                            ),
+                            _showPage,
                           ],
                         ),
                       ),
