@@ -1,5 +1,4 @@
 import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -241,7 +240,7 @@ class Activity_Info extends StatelessWidget {
                               itemBuilder: (context, i) {
                                 final DocumentSnapshot documentSnapshot =
                                     streamSnapshot.data!.docs[i];
-                                return ActivityProfileBubble(
+                                return DeskActivityProfileBubble(
                                   id: documentSnapshot.id,
                                   name: documentSnapshot["Name"],
                                   feestatus: documentSnapshot["Fee Status"],
@@ -772,8 +771,8 @@ class Billing_Packages_Info extends StatelessWidget {
   }
 }
 
-class ActivityProfileBubble extends StatelessWidget {
-  const ActivityProfileBubble({
+class DeskActivityProfileBubble extends StatelessWidget {
+  const DeskActivityProfileBubble({
     super.key,
     required this.id,
     required this.sw,
@@ -789,7 +788,144 @@ class ActivityProfileBubble extends StatelessWidget {
 
   Future<void> _deletemember([String? documentSnapshotid]) async {
     var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
-    await recordscol.doc(documentSnapshotid).update(json);
+    await activitycol.doc(documentSnapshotid).delete();
+    try {
+      await recordscol.doc(documentSnapshotid).update(json);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+            color: LightShade,
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: Row(
+          children: [
+            Container(
+              height: 36,
+              decoration: BoxDecoration(
+                  color: MainShade,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: Image.asset(
+                "assets/images/profile_pic.png",
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                      fontSize: Dtxt),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  "$platform - $package Package".toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: MainShade,
+                      fontSize: Dtxt - 3),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "FEE - ",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white70,
+                          fontSize: Dtxt - 3),
+                    ),
+                    Text(
+                      "$feestatus".toUpperCase(),
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: feestatus == "Paid"
+                              ? Colors.greenAccent
+                              : Colors.redAccent,
+                          fontSize: Dtxt - 3),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Spacer(),
+            Container(
+              height: 30,
+              decoration: BoxDecoration(
+                  border: Border(
+                      right: BorderSide(color: Colors.white24, width: 2))),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Center(
+                child: Text(
+                  timein,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                      fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            Center(
+                child: Icon(Icons.monetization_on_outlined,
+                    color: defaulters ? Colors.redAccent : Colors.greenAccent)),
+            SizedBox(
+              width: 12,
+            ),
+            IconButton(
+                onPressed: () => _deletemember(id),
+                icon: Icon(Icons.exit_to_app, color: Colors.white70)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MobActivityProfileBubble extends StatelessWidget {
+  const MobActivityProfileBubble({
+    super.key,
+    required this.id,
+    required this.sw,
+    required this.name,
+    required this.package,
+    required this.platform,
+    required this.timein,
+    required this.feestatus,
+    required this.defaulters,
+  });
+
+  final sw, name, package, platform, timein, feestatus, defaulters, id;
+
+  Future<void> _deletemember([String? documentSnapshotid]) async {
+    var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
+
+    /// await recordscol.doc(documentSnapshotid).update(json);
     await activitycol.doc(documentSnapshotid).delete();
   }
 
@@ -797,15 +933,16 @@ class ActivityProfileBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            height: 65,
-            decoration: BoxDecoration(
-                color: LightShade,
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Row(
+      child: Container(
+        width: 220,
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+            color: LightShade,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
                 Container(
                   height: 36,
@@ -870,42 +1007,41 @@ class ActivityProfileBubble extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          right: BorderSide(color: Colors.white24, width: 2))),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Center(
-                    child: Text(
-                      timein,
-                      style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white70,
-                          fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
-                    ),
-                  ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.door_front_door, color: Colors.blueAccent),
                 ),
-                SizedBox(
-                  width: 16,
-                ),
-                Center(
-                    child: Icon(Icons.monetization_on_outlined,
-                        color: defaulters
-                            ? Colors.redAccent
-                            : Colors.greenAccent)),
-                SizedBox(
-                  width: 12,
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.monetization_on_outlined,
+                      color:
+                          defaulters ? Colors.redAccent : Colors.greenAccent),
                 ),
                 IconButton(
                     onPressed: () => _deletemember(id),
                     icon: Icon(Icons.exit_to_app, color: Colors.white70)),
+                Spacer(),
+                Text(
+                  timein,
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontFamily: "Montserrat",
+                      fontSize: 12),
+                )
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

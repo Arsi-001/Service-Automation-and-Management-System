@@ -38,7 +38,7 @@ class BarChartSample1State extends State<BarChartSample1> {
       aspectRatio: 1,
       child: Container(
         decoration: BoxDecoration(
-            color: Lightgrey,
+            color: Colors.white.withOpacity(0.3),
             //  border: Border.all(color: MainShade),
             borderRadius: BorderRadius.all(Radius.circular(16))),
         child: Stack(
@@ -51,7 +51,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   const Text(
                     'Attendance',
                     style: TextStyle(
-                      color: MainShade,
+                      color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -62,7 +62,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   Text(
                     'Weekly Report',
                     style: TextStyle(
-                      color: MainShade.withOpacity(0.3),
+                      color: Colors.white.withOpacity(0.8),
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -92,7 +92,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 child: IconButton(
                   icon: Icon(
                     isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-                    color: MainShade,
+                    color: Colors.white,
                   ),
                   onPressed: () {
                     setState(() {

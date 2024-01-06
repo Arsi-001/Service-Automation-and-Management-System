@@ -11,18 +11,33 @@ import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
 //import 'package:pie_chart/pie_chart.dart';
 import 'package:s_a_m_s/Constant.dart';
+import 'package:s_a_m_s/Dashboard/MobDash.dart';
+import 'package:s_a_m_s/Responsive.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 import 'package:s_a_m_s/weeklychceker.dart';
 import 'package:unicons/unicons.dart';
 
-class AltDash extends StatefulWidget {
-  const AltDash({super.key});
+class Dash extends StatelessWidget {
+  const Dash({super.key});
 
   @override
-  State<AltDash> createState() => _AltDashState();
+  Widget build(BuildContext context) {
+    return ResponsiveLayout(
+      Desktop: DeskDash(),
+      Tablet: DeskDash(),
+      Mobile: MobDash(),
+    );
+  }
 }
 
-class _AltDashState extends State<AltDash> {
+class DeskDash extends StatefulWidget {
+  const DeskDash({super.key});
+
+  @override
+  State<DeskDash> createState() => _DeskDashState();
+}
+
+class _DeskDashState extends State<DeskDash> {
   TextEditingController activitycont = TextEditingController();
 
   Future<List<DocumentSnapshot>> getData() async {
@@ -519,7 +534,7 @@ class _AltDashState extends State<AltDash> {
                                           final DocumentSnapshot
                                               documentSnapshot =
                                               streamSnapshot.data!.docs[i];
-                                          return ActivityProfileBubble(
+                                          return DeskActivityProfileBubble(
                                             id: documentSnapshot.id,
                                             name: documentSnapshot["Name"],
                                             feestatus:
@@ -598,7 +613,60 @@ class _AltDashState extends State<AltDash> {
                                     ),
                                     Row(
                                       children: [
-                                        Expanded(flex: 5, child: Container()),
+                                        Expanded(
+                                            flex: 5,
+                                            child: SizedBox(
+                                              height: 200,
+                                              child: FutureBuilder<
+                                                  List<DocumentSnapshot>>(
+                                                future: getData(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  } else if (snapshot
+                                                          .hasError ||
+                                                      snapshot.data == null) {
+                                                    return Text(
+                                                        'Error: ${snapshot.error ?? "Failed to load data"}');
+                                                  } else {
+                                                    return FutureBuilder<
+                                                        List<
+                                                            PieChartSectionData>>(
+                                                      future: getSections(
+                                                          snapshot.data!),
+                                                      builder: (context,
+                                                          sectionsSnapshot) {
+                                                        if (sectionsSnapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return CircularProgressIndicator();
+                                                        } else if (sectionsSnapshot
+                                                                .hasError ||
+                                                            sectionsSnapshot
+                                                                    .data ==
+                                                                null) {
+                                                          return Text(
+                                                              'Error: ${sectionsSnapshot.error ?? "Failed to load sections"}');
+                                                        } else {
+                                                          return PieChart(
+                                                            PieChartData(
+                                                              sectionsSpace: 8,
+                                                              sections:
+                                                                  sectionsSnapshot
+                                                                      .data!,
+                                                              // Other configurations for your pie chart
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            )),
                                         Expanded(
                                             flex: 4,
                                             child: Container(

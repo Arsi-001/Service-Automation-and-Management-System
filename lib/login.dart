@@ -91,40 +91,73 @@ class _LoginPageState extends State<LoginPage> {
                     //   height: 40,
                     // ),
                     SizeScreenW < 900
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 80,
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 43, 43, 43),
-                                    border:
-                                        Border.all(color: MainShade, width: 2),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: Image.asset(
-                                  "assets/images/sams_logo.png",
-                                  fit: BoxFit.scaleDown,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "SAMS",
-                                style: TextStyle(
-                                    letterSpacing: 6,
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 48,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          )
+                        ? SizeScreenW < 280
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 80,
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 43, 43, 43),
+                                        border: Border.all(
+                                            color: MainShade, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Image.asset(
+                                      "assets/images/sams_logo.png",
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "SAMS",
+                                    style: TextStyle(
+                                        letterSpacing: 6,
+                                        fontFamily: "Montserrat",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 48,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 80,
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 43, 43, 43),
+                                        border: Border.all(
+                                            color: MainShade, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Image.asset(
+                                      "assets/images/sams_logo.png",
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "SAMS",
+                                    style: TextStyle(
+                                        letterSpacing: 6,
+                                        fontFamily: "Montserrat",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 48,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              )
                         : SizedBox(
-                            height: 1,
+                            width: 1,
                           ),
                     SizedBox(
                       height: 40,
@@ -262,14 +295,12 @@ class _LoginPageState extends State<LoginPage> {
                             filter:
                                 ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                             child: Container(
-                              width: SizeScreenW < 550
-                                  ? SizeScreenW < 400
-                                      ? 260
-                                      : 380
-                                  : 450,
+                              width:
+                                  SizeScreenW < 550 ? SizeScreenW * 0.90 : 450,
                               height: 550,
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 60, vertical: 60),
+                                  horizontal: SizeScreenW < 630 ? 30 : 60,
+                                  vertical: 60),
                               decoration: BoxDecoration(
                                   //border: Border.all(color: Colors.white, width: 2),
                                   borderRadius: BorderRadius.only(
@@ -396,10 +427,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   Spacer(),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment: SizeScreenW < 600
+                                        ? MainAxisAlignment.center
+                                        : MainAxisAlignment.end,
                                     children: [
                                       Container(
-                                        width: 150,
+                                        width: 100,
                                         height: 40,
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.all(
@@ -417,14 +450,20 @@ class _LoginPageState extends State<LoginPage> {
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          10.0),
+                                                          5.0),
                                                   side: BorderSide(
                                                       color: MainShade)),
                                               backgroundColor: MainShade,
                                               elevation: 12.0,
                                               textStyle: const TextStyle(
                                                   color: Colors.red)),
-                                          child: const Text('LOGIN'),
+                                          child: const Text(
+                                            'LOGIN',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Lato",
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
                                     ],

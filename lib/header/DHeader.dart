@@ -2,12 +2,40 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:s_a_m_s/Constant.dart';
+import 'package:s_a_m_s/Responsive.dart';
+import 'package:s_a_m_s/header/MHeader.dart';
 import 'package:unicons/unicons.dart';
+
+class Header extends StatelessWidget {
+  final Function(int i) callback;
+  Header({
+    super.key,
+    required this.callback,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveLayout(
+      Desktop: DesktopHeader(
+        callback: callback,
+      ),
+      Tablet: DesktopHeader(
+        callback: callback,
+      ),
+      Mobile: MobHeader(
+        callback: callback,
+      ),
+    );
+  }
+}
 
 class DesktopHeader extends StatefulWidget {
   final Function(int i) callback;
-  final colname;
-  DesktopHeader({super.key, required this.callback, required this.colname});
+
+  DesktopHeader({
+    super.key,
+    required this.callback,
+  });
 
   @override
   State<DesktopHeader> createState() => _DesktopHeaderState();
@@ -74,7 +102,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                         activeColor:
                             Colors.white, // selected icon and text color
                         iconSize: 24, // tab button icon size
-                        textSize: 14,
+                      
                         // selected tab background color
                         padding: EdgeInsets.symmetric(
                             horizontal: 10,
@@ -100,7 +128,7 @@ class _DesktopHeaderState extends State<DesktopHeader> {
                           ),
                           GButton(
                             icon: UniconsLine.estate,
-                            text: '$SizeScreenW',
+                            text: 'HOME',
                             textStyle: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.w600,

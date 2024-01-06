@@ -8,9 +8,9 @@ import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/Splashscreen.dart';
-import 'package:s_a_m_s/Table/MemberTable.dart';
+import 'package:s_a_m_s/Table/MemberTable/MemberTable.dart';
 import 'package:s_a_m_s/Table/StaffTable.dart';
-import 'package:s_a_m_s/alt_Dash.dart';
+import 'package:s_a_m_s/Dashboard/DeskDash.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
 
@@ -113,8 +113,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final TableInfo _membertable = TableInfo();
   final StaffTableInfo _stafftable = const StaffTableInfo();
-  final AltDash _altDash = const AltDash();
-  final Dash _dash = const Dash();
+  final Dash _altDash = Dash();
 
   final user = FirebaseAuth.instance.currentUser!;
   Future getcolname() async {
@@ -137,7 +136,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
   }
 
-  Widget _showPage = new AltDash();
+  Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
       case 1:
@@ -216,13 +215,11 @@ class _HomepageState extends State<Homepage> {
                       SingleChildScrollView(
                         child: Column(
                           children: [
-                            DesktopHeader(
-                                colname: "snapshot.data",
-                                callback: (index) {
-                                  setState(() {
-                                    _showPage = _pageSelect(index);
-                                  });
-                                }),
+                            Header(callback: (index) {
+                              setState(() {
+                                _showPage = _pageSelect(index);
+                              });
+                            }),
                             _showPage,
                           ],
                         ),
