@@ -78,11 +78,6 @@ class _AddUserState extends State<AddUser> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final _formKey = GlobalKey<FormState>();
   Future<bool> _onWillPop() async {
     return false; //<-- SEE HERE
@@ -96,7 +91,6 @@ class _AddUserState extends State<AddUser> {
     numberCont.dispose();
     addressCont.dispose();
     ageCont.dispose();
-    lNameCont.dispose();
 
     super.dispose();
   }

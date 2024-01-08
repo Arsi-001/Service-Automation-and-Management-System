@@ -166,8 +166,7 @@ class _DeskTableState extends State<DeskTable> {
                                                             12.0),
                                                     side: BorderSide(
                                                         color: MainShade)),
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                backgroundColor: MainShade,
                                                 elevation: 12.0,
                                                 textStyle: const TextStyle(
                                                     color: Colors.white)),
@@ -176,7 +175,7 @@ class _DeskTableState extends State<DeskTable> {
                                               style: TextStyle(
                                                   fontFamily: "Montserrat",
                                                   fontWeight: FontWeight.w600,
-                                                  color: Colors.white70,
+                                                  color: Colors.white,
                                                   fontSize: 12),
                                             ),
                                           ),
@@ -216,7 +215,7 @@ class _DeskTableState extends State<DeskTable> {
                                                 ),
                                                 backgroundColor: isdefaulter
                                                     ? Colors.red
-                                                    : Colors.transparent,
+                                                    : MainShade,
                                                 elevation: 12.0,
                                                 textStyle: const TextStyle(
                                                     color: Colors.white)),
@@ -225,7 +224,7 @@ class _DeskTableState extends State<DeskTable> {
                                               style: TextStyle(
                                                   fontFamily: "Montserrat",
                                                   fontWeight: FontWeight.w600,
-                                                  color: Colors.white70,
+                                                  color: Colors.white,
                                                   fontSize: 12),
                                             ),
                                           ),

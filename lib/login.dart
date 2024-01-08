@@ -348,7 +348,7 @@ class _LoginPageState extends State<LoginPage> {
                                       children: [
                                         TextFormField(
                                           controller: Uname,
-                                          textInputAction: TextInputAction.done,
+                                          textInputAction: TextInputAction.next,
                                           style: TextStyle(
                                               fontSize: 14,
                                               height: 2.0,
@@ -403,7 +403,7 @@ class _LoginPageState extends State<LoginPage> {
                                         horizontal: 20, vertical: 5),
                                     child: TextFormField(
                                       controller: Upass,
-                                      textInputAction: TextInputAction.done,
+                                      textInputAction: TextInputAction.next,
                                       obscureText: true,
                                       style: TextStyle(
                                           fontSize: 14,

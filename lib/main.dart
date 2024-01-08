@@ -145,7 +145,7 @@ class _HomepageState extends State<Homepage> {
         return _altDash;
 
       default:
-        return SizedBox(
+        return Container(
           height: 500,
           child: Center(
             child: Column(

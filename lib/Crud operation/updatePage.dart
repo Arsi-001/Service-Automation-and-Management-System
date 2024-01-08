@@ -23,6 +23,7 @@ class _UpdateUserState extends State<UpdateUser> {
   TextEditingController emailCont = TextEditingController();
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
+  TextEditingController ageCont = TextEditingController();
   var genders = ["Male", "Female"];
 
   late DateTime selectedDate;
@@ -32,13 +33,12 @@ class _UpdateUserState extends State<UpdateUser> {
   String userID = "";
   Future<String?> getID() async {
     try {
-      DocumentSnapshot snapshot =
-          await FirebaseFirestore.instance.collection('TGym').doc("GYM").get();
-
-      var snap = await FirebaseFirestore.instance
-          .collection('/TGym/GYM/Members')
-          .orderBy("idnum", descending: false)
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('$colname')
+          .doc("$clientplat")
           .get();
+
+      var snap = await membercol.orderBy("idnum", descending: false).get();
       var mID = 0;
       if (snap.size != 0) {
         mID = snap.docs.last["idnum"];
@@ -84,6 +84,7 @@ class _UpdateUserState extends State<UpdateUser> {
     emailCont.text = widget.docsnap["Email"];
     addressCont.text = widget.docsnap["Address"];
     numberCont.text = widget.docsnap["Phone Number"];
+    ageCont.text = widget.docsnap["Age"];
     selectedDate = (widget.docsnap['Date'] as Timestamp).toDate();
     ;
     super.initState();
@@ -96,8 +97,8 @@ class _UpdateUserState extends State<UpdateUser> {
     emailCont.dispose();
     numberCont.dispose();
     addressCont.dispose();
-    // ageCont.dispose();
-    lNameCont.dispose();
+
+    ageCont.dispose();
 
     super.dispose();
   }
@@ -253,6 +254,19 @@ class _UpdateUserState extends State<UpdateUser> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
+                                    crudTxtfield(
+                                      txtinput: TextInputType.text,
+                                      format: [
+                                        FilteringTextInputFormatter
+                                            .singleLineFormatter
+                                      ],
+                                      widht: 175,
+                                      title: "Age",
+                                      controller: ageCont,
+                                    ),
+                                    SizedBox(
+                                      width: 40,
+                                    ),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -266,7 +280,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                         StreamBuilder(
                                             stream: FirebaseFirestore.instance
                                                 .collection(
-                                                    "/TGym/GYM/Packages")
+                                                    "/$colname/$clientplat/Packages")
                                                 .snapshots(),
                                             builder: (context, snapshot) {
                                               List<DropdownMenuItem>
@@ -356,7 +370,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                         ),
                                         StreamBuilder(
                                             stream: FirebaseFirestore.instance
-                                                .collection("/TGym")
+                                                .collection("/$colname")
                                                 .snapshots(),
                                             builder: (context, snapshot) {
                                               List<DropdownMenuItem>
@@ -624,8 +638,7 @@ class _UpdateUserState extends State<UpdateUser> {
       required DateTime date,
       required id,
       required idnum}) async {
-    final docUser =
-        FirebaseFirestore.instance.collection("/TGym/GYM/Members").doc(id);
+    final docUser = membercol.doc(id);
 
     final json = {
       "Fee Status": "Paid",

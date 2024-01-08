@@ -7,6 +7,7 @@ class Placeholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.transparent,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

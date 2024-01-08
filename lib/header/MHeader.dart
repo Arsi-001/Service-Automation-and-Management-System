@@ -132,7 +132,6 @@ class _MobHeaderState extends State<MobHeader> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    width: 200,
                     decoration: BoxDecoration(
                         color: Colors.black26,
                         border: Border.all(color: MainShade, width: 2),

@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 
 const DarkShade = Color(0xFF080808);
 const LightShade = Color.fromARGB(255, 25, 25, 25);
-const MainShade = Color(0xFFFF7F01);
+const MainShade = Blu_alt;
+//const MainShade = Color(0xFFFF7F01);
 const ThemeItemcolbackground = Colors.black87;
 
 //Main Theme Settings
@@ -63,10 +64,14 @@ var Logingradient = LinearGradient(
 var multigradient = LinearGradient(
     begin: Alignment(0.1, 0.8),
     end: Alignment(0.3, -0.1),
-    colors: [
-      Color.fromARGB(255, 255, 149, 43),
-      Color.fromARGB(255, 252, 121, 70)
-    ]);
+    colors: [Blu, Color.fromARGB(255, 29, 102, 163)]);
+// var multigradient = LinearGradient(
+//     begin: Alignment(0.1, 0.8),
+//     end: Alignment(0.3, -0.1),
+//     colors: [
+//       Color.fromARGB(255, 255, 149, 43),
+//       Color.fromARGB(255, 252, 121, 70)
+//     ]);
 
 const glassmorphRed = LinearGradient(
     begin: Alignment(-0.3, 0.8),

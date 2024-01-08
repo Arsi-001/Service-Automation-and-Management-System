@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:s_a_m_s/Constant.dart';
 
 /// {@template hero_dialog_route}
 /// Custom [PageRoute] that creates an overlay dialog (popup effect).
@@ -29,7 +30,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => Colors.black87;
+  Color get barrierColor => MainShade.withOpacity(0.8);
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
