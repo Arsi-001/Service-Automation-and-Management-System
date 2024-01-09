@@ -7,10 +7,12 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Crud%20operation/updatePage.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 
-class AttendacePopUp extends StatelessWidget {
+class LockerPopUp extends StatelessWidget {
   /// {@macro add_todo_popup_card}
-  AttendacePopUp({
+  final memberid;
+  LockerPopUp({
     Key? key,
+    required this.memberid,
   }) : super(key: key);
   Future<bool> _onWillPop() async {
     return false; //<-- SEE HERE
@@ -25,9 +27,9 @@ class AttendacePopUp extends StatelessWidget {
         child: Hero(
           tag: heroAddTodo,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
             height: 200,
-            width: 300,
+            width: 250,
             decoration: BoxDecoration(
                 color: LightShade,
                 borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -38,59 +40,68 @@ class AttendacePopUp extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Attendance Mode",
+                      "Assign Locker",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Montserrat",
                           fontSize: 14),
                     ),
+                    Divider(
+                      color: Colors.white12,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 55,
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(color: Colors.white)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "TG-M-",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: "Montserrat"),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
+                        // SizedBox(
+                        //   height: 55,
+                        //   // decoration: BoxDecoration(
+                        //   //     border: Border.all(color: Colors.white)),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: [
+                        //       Text(
+                        //         "Locker Number",
+                        //         style: TextStyle(
+                        //             color: Colors.white,
+                        //             fontSize: 14,
+                        //             fontFamily: "Montserrat"),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+
                         crudTxtfield(
                           txtinput: TextInputType.text,
                           format: [
                             FilteringTextInputFormatter.singleLineFormatter
                           ],
-                          widht: 100,
-                          title: "ID Number",
+                          widht: 200,
+                          title: "Locker Number",
                           controller: idcont,
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
                         Container(
-                          width: 120,
-                          height: 40,
+                          width: 100,
+                          height: 30,
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: ElevatedButton(
-                            onPressed: () => addMember(
-                              id: idcont.text,
-                            ),
+                            onPressed: () {
+                              addMember(
+                                id: memberid,
+                                locker: idcont.text,
+                              );
+
+                              Navigator.pop(context);
+                            },
                             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
 
                             style: ElevatedButton.styleFrom(
@@ -105,8 +116,8 @@ class AttendacePopUp extends StatelessWidget {
                           width: 20,
                         ),
                         Container(
-                          width: 100,
-                          height: 40,
+                          width: 80,
+                          height: 30,
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
@@ -134,27 +145,16 @@ class AttendacePopUp extends StatelessWidget {
 
   Future addMember({
     required id,
+    required locker,
   }) async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await membercol.doc("TG-M-$id").get();
+      final docUser = activitycol.doc("$id");
 
-      if (documentSnapshot.exists) {
-        var data = documentSnapshot.data();
-        final docUser = activitycol.doc(data?["ID"]);
-
-        final json = {
-          "Name": data?["First name"] + " " + data?["Last name"],
-          "Fee Status": data?["Fee Status"],
-          "Package": data?["Package"],
-          "Platform": data?["Platform"],
-          "Time In": "${DateFormat.jm().format(DateTime.now())}",
-          "Defaulter": data?["Defaulter"]
-        };
-        await docUser.set(json);
-      } else {
-        print('Document $id does not exist in the collection.');
-      }
+      final json = {"Locker": locker};
+      print(locker);
+      print(id);
+      await docUser.update(json);
+      lockerOn = true;
     } catch (e) {
       print('Error fetching data: $e');
     }

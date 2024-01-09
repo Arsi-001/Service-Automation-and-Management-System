@@ -582,7 +582,7 @@ class _MobDashState extends State<MobDash> {
                     child: Container(
                       height: 500,
                       padding: EdgeInsets.symmetric(
-                          horizontal: SizeScreenW < 530 ? 10 : 40,
+                          horizontal: SizeScreenW < 540 ? 10 : 40,
                           vertical: 30),
                       decoration: BoxDecoration(
                           border: Border.all(
@@ -845,14 +845,18 @@ class _MobDashState extends State<MobDash> {
                                   Expanded(
                                     child: SizedBox(
                                       child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        reverse: true,
                                         itemCount:
                                             streamSnapshot.data?.docs.length,
                                         itemBuilder: (context, i) {
                                           final DocumentSnapshot
                                               documentSnapshot =
                                               streamSnapshot.data!.docs[i];
-                                          return SizeScreenW < 460
+                                          return SizeScreenW < 480
                                               ? MobActivityProfileBubble(
+                                                  locker: documentSnapshot[
+                                                      "Locker"],
                                                   id: documentSnapshot.id,
                                                   name:
                                                       documentSnapshot["Name"],
@@ -871,6 +875,8 @@ class _MobDashState extends State<MobDash> {
                                                 )
                                               : DeskActivityProfileBubble(
                                                   id: documentSnapshot.id,
+                                                  locker: documentSnapshot[
+                                                      "Locker"],
                                                   name:
                                                       documentSnapshot["Name"],
                                                   feestatus: documentSnapshot[

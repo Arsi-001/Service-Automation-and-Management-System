@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Constant.dart';
-import 'package:s_a_m_s/Crud%20operation/Attendace.dart';
+import 'package:s_a_m_s/Crud%20operation/AssignLocker.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:unicons/unicons.dart';
@@ -196,7 +196,9 @@ class Activity_Info extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () => Navigator.of(context)
                                     .push(HeroDialogRoute(builder: (context) {
-                                  return AttendacePopUp();
+                                  return LockerPopUp(
+                                    memberid: "DDD",
+                                  );
                                 })),
                                 // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
                                 style: ElevatedButton.styleFrom(
@@ -241,6 +243,7 @@ class Activity_Info extends StatelessWidget {
                                 final DocumentSnapshot documentSnapshot =
                                     streamSnapshot.data!.docs[i];
                                 return DeskActivityProfileBubble(
+                                  locker: "",
                                   id: documentSnapshot.id,
                                   name: documentSnapshot["Name"],
                                   feestatus: documentSnapshot["Fee Status"],
@@ -772,7 +775,7 @@ class Billing_Packages_Info extends StatelessWidget {
 }
 
 class DeskActivityProfileBubble extends StatelessWidget {
-  const DeskActivityProfileBubble({
+  DeskActivityProfileBubble({
     super.key,
     required this.id,
     required this.sw,
@@ -781,10 +784,11 @@ class DeskActivityProfileBubble extends StatelessWidget {
     required this.platform,
     required this.timein,
     required this.feestatus,
+    required this.locker,
     required this.defaulters,
   });
 
-  final sw, name, package, platform, timein, feestatus, defaulters, id;
+  final sw, name, package, platform, timein, feestatus, defaulters, id, locker;
 
   Future<void> _deletemember([String? documentSnapshotid]) async {
     var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
@@ -866,6 +870,14 @@ class DeskActivityProfileBubble extends StatelessWidget {
                               : Colors.redAccent,
                           fontSize: Dtxt - 3),
                     ),
+                    Text(
+                      locker == "" ? "" : " - Locker $locker ".toUpperCase(),
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white70,
+                          fontSize: Dtxt - 3),
+                    ),
                   ],
                 ),
               ],
@@ -888,15 +900,20 @@ class DeskActivityProfileBubble extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: 16,
-            ),
+            IconButton(
+                onPressed: () => Navigator.of(context)
+                        .push(HeroDialogRoute(builder: (context) {
+                      return LockerPopUp(
+                        memberid: id,
+                      );
+                    })),
+                icon: Icon(
+                  Icons.door_back_door,
+                  color: Colors.white,
+                )),
             Center(
                 child: Icon(Icons.monetization_on_outlined,
                     color: defaulters ? Colors.redAccent : Colors.greenAccent)),
-            SizedBox(
-              width: 12,
-            ),
             IconButton(
                 onPressed: () => _deletemember(id),
                 icon: Icon(Icons.exit_to_app, color: Colors.white70)),
@@ -917,10 +934,11 @@ class MobActivityProfileBubble extends StatelessWidget {
     required this.platform,
     required this.timein,
     required this.feestatus,
+    required this.locker,
     required this.defaulters,
   });
 
-  final sw, name, package, platform, timein, feestatus, defaulters, id;
+  final sw, name, package, platform, timein, feestatus, defaulters, id, locker;
 
   Future<void> _deletemember([String? documentSnapshotid]) async {
     var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
@@ -1003,6 +1021,16 @@ class MobActivityProfileBubble extends StatelessWidget {
                                   : Colors.redAccent,
                               fontSize: Dtxt - 3),
                         ),
+                        locker == ""
+                            ? Text("")
+                            : Text(
+                                " - Locker $locker".toUpperCase(),
+                                style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white70,
+                                    fontSize: Dtxt - 3),
+                              )
                       ],
                     ),
                   ],
@@ -1018,9 +1046,16 @@ class MobActivityProfileBubble extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.door_front_door, color: Colors.blueAccent),
-                ),
+                    onPressed: () => Navigator.of(context)
+                            .push(HeroDialogRoute(builder: (context) {
+                          return LockerPopUp(
+                            memberid: id,
+                          );
+                        })),
+                    icon: Icon(
+                      Icons.door_back_door,
+                      color: Colors.white,
+                    )),
                 IconButton(
                   onPressed: () {},
                   icon: Icon(Icons.monetization_on_outlined,
@@ -1278,7 +1313,7 @@ class crudTxtfield extends StatelessWidget {
           width: widht,
           padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-              color: DarkShade,
+              color: Colors.white12,
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: TextFormField(
             decoration: InputDecoration(

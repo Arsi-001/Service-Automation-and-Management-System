@@ -89,7 +89,7 @@ class _DeskDashState extends State<DeskDash> {
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat dateformat2 = DateFormat.d();
-  Future addMember({
+  Future addActiveMember({
     required id,
   }) async {
     try {
@@ -109,7 +109,8 @@ class _DeskDashState extends State<DeskDash> {
           "Time In": DateFormat.jm().format(DateTime.now()),
           "Defaulter": data?["Defaulter"],
           "Date": dateFormat.format(DateTime.now()),
-          "Day": (dateformat2.format(DateTime.now()))
+          "Day": (dateformat2.format(DateTime.now())),
+          "Locker": "",
         };
 
         await docUser.set(json);
@@ -476,7 +477,8 @@ class _DeskDashState extends State<DeskDash> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          addMember(id: activitycont.text);
+                                          addActiveMember(
+                                              id: activitycont.text);
                                           activitycont.clear();
                                         },
 
@@ -528,6 +530,7 @@ class _DeskDashState extends State<DeskDash> {
                                   Expanded(
                                     child: Container(
                                       child: ListView.builder(
+                                        reverse: true,
                                         itemCount:
                                             streamSnapshot.data?.docs.length,
                                         itemBuilder: (context, i) {
@@ -536,6 +539,7 @@ class _DeskDashState extends State<DeskDash> {
                                               streamSnapshot.data!.docs[i];
                                           return DeskActivityProfileBubble(
                                             id: documentSnapshot.id,
+                                            locker: documentSnapshot["Locker"],
                                             name: documentSnapshot["Name"],
                                             feestatus:
                                                 documentSnapshot["Fee Status"],

@@ -183,7 +183,7 @@ class _HomepageState extends State<Homepage> {
               // colname = snapshot.data!.docs.first["collectionName"];
               // clientName = snapshot.data!.docs.first["clientName"];
               // initials = snapshot.data!.docs.first["initials"];
-              print(snapshot.data);
+
               print(colname);
               print("this:" + "$initials");
               return Scaffold(
