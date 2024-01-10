@@ -9,7 +9,7 @@ import 'package:s_a_m_s/Constant.dart';
 import 'package:s_a_m_s/Dashboard.dart';
 import 'package:s_a_m_s/Splashscreen.dart';
 import 'package:s_a_m_s/Table/MemberTable/MemberTable.dart';
-import 'package:s_a_m_s/Table/StaffTable.dart';
+import 'package:s_a_m_s/Table/StaffTable/StaffTable.dart';
 import 'package:s_a_m_s/Dashboard/DeskDash.dart';
 import 'package:s_a_m_s/header/DHeader.dart';
 import 'package:s_a_m_s/Responsive.dart';
@@ -112,7 +112,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final TableInfo _membertable = TableInfo();
-  final StaffTableInfo _stafftable = const StaffTableInfo();
+  final STableInfo _stafftable = STableInfo();
   final Dash _altDash = Dash();
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -139,10 +139,14 @@ class _HomepageState extends State<Homepage> {
   Widget _showPage = new Dash();
   Widget _pageSelect(int page) {
     switch (page) {
+      case 0:
+        return _stafftable;
       case 1:
         return _membertable;
       case 2:
         return _altDash;
+      case 3:
+        return _stafftable;
 
       default:
         return Container(

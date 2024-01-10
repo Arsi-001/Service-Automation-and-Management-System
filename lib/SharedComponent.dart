@@ -243,6 +243,7 @@ class Activity_Info extends StatelessWidget {
                                 final DocumentSnapshot documentSnapshot =
                                     streamSnapshot.data!.docs[i];
                                 return DeskActivityProfileBubble(
+                                  mode: "M",
                                   locker: "",
                                   id: documentSnapshot.id,
                                   name: documentSnapshot["Name"],
@@ -774,6 +775,130 @@ class Billing_Packages_Info extends StatelessWidget {
   }
 }
 
+class SDeskActivityProfileBubble extends StatelessWidget {
+  SDeskActivityProfileBubble({
+    super.key,
+    required this.id,
+    required this.sw,
+    required this.name,
+    required this.platform,
+    required this.timein,
+    required this.time,
+    required this.designation,
+  });
+
+  final sw, name, time, platform, timein, designation, id;
+
+  Future<void> _deletemember([String? documentSnapshotid]) async {
+    var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
+    await activitycol.doc(documentSnapshotid).delete();
+    try {
+      await recordscol.doc(documentSnapshotid).update(json);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+            color: LightShade,
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: Row(
+          children: [
+            Container(
+              height: 36,
+              decoration: BoxDecoration(
+                  color: MainShade,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: Image.asset(
+                "assets/images/profile_pic.png",
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                      fontSize: Dtxt),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  "$platform - $designation".toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: MainShade,
+                      fontSize: Dtxt - 3),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "TIME - ",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white70,
+                          fontSize: Dtxt - 3),
+                    ),
+                    Text(
+                      "$time".toUpperCase(),
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white70,
+                          fontSize: Dtxt - 3),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Spacer(),
+            Container(
+              height: 30,
+              decoration: BoxDecoration(
+                  border: Border(
+                      right: BorderSide(color: Colors.white24, width: 2))),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Center(
+                child: Text(
+                  timein,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70,
+                      fontSize: sw < 910 ? Dtxt - 2 : Dtxt),
+                ),
+              ),
+            ),
+            IconButton(
+                onPressed: () => _deletemember(id),
+                icon: Icon(Icons.exit_to_app, color: Colors.white70)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class DeskActivityProfileBubble extends StatelessWidget {
   DeskActivityProfileBubble({
     super.key,
@@ -786,9 +911,19 @@ class DeskActivityProfileBubble extends StatelessWidget {
     required this.feestatus,
     required this.locker,
     required this.defaulters,
+    required this.mode,
   });
 
-  final sw, name, package, platform, timein, feestatus, defaulters, id, locker;
+  final sw,
+      name,
+      package,
+      platform,
+      timein,
+      feestatus,
+      defaulters,
+      id,
+      locker,
+      mode;
 
   Future<void> _deletemember([String? documentSnapshotid]) async {
     var json = {"Time Out": DateFormat.jm().format(DateTime.now())};
@@ -853,7 +988,7 @@ class DeskActivityProfileBubble extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "FEE - ",
+                      mode == "S" ? "TIME - " : "FEE - ",
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w600,

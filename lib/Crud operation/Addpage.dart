@@ -29,6 +29,7 @@ class _AddUserState extends State<AddUser> {
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
   TextEditingController ageCont = TextEditingController();
+  TextEditingController desigCont = TextEditingController();
 
   var genders = ["Male", "Female"];
 
@@ -93,6 +94,7 @@ class _AddUserState extends State<AddUser> {
     numberCont.dispose();
     addressCont.dispose();
     ageCont.dispose();
+    desigCont.dispose();
 
     super.dispose();
   }
@@ -108,7 +110,7 @@ class _AddUserState extends State<AddUser> {
             tag: heroAddTodo,
             child: ClipRRect(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
                 child: SizedBox(
                   height: 700,
                   width: 1100,
@@ -128,9 +130,10 @@ class _AddUserState extends State<AddUser> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 30, vertical: 40),
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: MainShade),
+                                      border: Border.all(
+                                          color: MainShade, width: 0.5),
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
+                                          Radius.circular(12))),
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -295,109 +298,129 @@ class _AddUserState extends State<AddUser> {
                                           SizedBox(
                                             width: 40,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Package",
-                                                style: const TextStyle(
-                                                  color: Colors.white70,
-                                                  fontFamily: "Montserrat",
-                                                  fontSize: 12,
-                                                  //fontWeight: FontWeight.w600
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 6,
-                                              ),
-                                              StreamBuilder(
-                                                  stream:
-                                                      packagecol.snapshots(),
-                                                  builder: (context, snapshot) {
-                                                    List<DropdownMenuItem>
-                                                        packageslist = [];
-                                                    if (!snapshot.hasData) {
-                                                      return CircularProgressIndicator();
-                                                    } else {
-                                                      final packages = snapshot
-                                                          .data?.docs
-                                                          .toList();
-
-                                                      packageslist.add(
-                                                          DropdownMenuItem(
-                                                              value: "0",
-                                                              child: Text(
-                                                                  "Select Package")));
-                                                      for (var data
-                                                          in packages!) {
-                                                        packageslist.add(
-                                                            DropdownMenuItem(
-                                                                value: data[
-                                                                    "name"],
-                                                                child: Text(
-                                                                  data["name"],
-                                                                )));
-                                                      }
-                                                    }
-                                                    return Container(
-                                                      height: 50,
-                                                      width: 175,
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 20),
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white12,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10))),
-                                                      child: Center(
-                                                        child:
-                                                            DropdownButtonHideUnderline(
-                                                          child:
-                                                              DropdownButtonFormField(
-                                                            decoration:
-                                                                InputDecoration(
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    errorMaxLines:
-                                                                        1,
-                                                                    errorStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          10,
-                                                                    )),
-                                                            validator: (value) {
-                                                              if (value ==
-                                                                  "0") {
-                                                                return "Please select a valid option";
-                                                              }
-                                                            },
-                                                            value:
-                                                                selectedpackage,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                            items: packageslist,
-                                                            dropdownColor:
-                                                                DarkShade,
-                                                            onChanged:
-                                                                (clientvalue) {
-                                                              setState(() {
-                                                                selectedpackage =
-                                                                    clientvalue;
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
+                                          widget.modeletter == "S"
+                                              ? crudTxtfield(
+                                                  title: "Designation",
+                                                  widht: 250,
+                                                  controller: desigCont,
+                                                  txtinput: TextInputType.text,
+                                                  format: [
+                                                    FilteringTextInputFormatter
+                                                        .singleLineFormatter
+                                                  ],
+                                                )
+                                              : Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Package",
+                                                      style: const TextStyle(
+                                                        color: Colors.white70,
+                                                        fontFamily:
+                                                            "Montserrat",
+                                                        fontSize: 12,
+                                                        //fontWeight: FontWeight.w600
                                                       ),
-                                                    );
-                                                  }),
-                                            ],
-                                          ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    StreamBuilder(
+                                                        stream: packagecol
+                                                            .snapshots(),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          List<DropdownMenuItem>
+                                                              packageslist = [];
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return CircularProgressIndicator();
+                                                          } else {
+                                                            final packages =
+                                                                snapshot
+                                                                    .data?.docs
+                                                                    .toList();
+
+                                                            packageslist.add(
+                                                                DropdownMenuItem(
+                                                                    value: "0",
+                                                                    child: Text(
+                                                                        "Select Package")));
+                                                            for (var data
+                                                                in packages!) {
+                                                              packageslist.add(
+                                                                  DropdownMenuItem(
+                                                                      value: data[
+                                                                          "name"],
+                                                                      child:
+                                                                          Text(
+                                                                        data[
+                                                                            "name"],
+                                                                      )));
+                                                            }
+                                                          }
+                                                          return Container(
+                                                            height: 50,
+                                                            width: 175,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        20),
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .white12,
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10))),
+                                                            child: Center(
+                                                              child:
+                                                                  DropdownButtonHideUnderline(
+                                                                child:
+                                                                    DropdownButtonFormField(
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          border: InputBorder
+                                                                              .none,
+                                                                          errorMaxLines:
+                                                                              1,
+                                                                          errorStyle:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                10,
+                                                                          )),
+                                                                  validator:
+                                                                      (value) {
+                                                                    if (value ==
+                                                                        "0") {
+                                                                      return "Please select a valid option";
+                                                                    }
+                                                                  },
+                                                                  value:
+                                                                      selectedpackage,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                  items:
+                                                                      packageslist,
+                                                                  dropdownColor:
+                                                                      DarkShade,
+                                                                  onChanged:
+                                                                      (clientvalue) {
+                                                                    setState(
+                                                                        () {
+                                                                      selectedpackage =
+                                                                          clientvalue;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                  ],
+                                                ),
                                           SizedBox(
                                             width: 40,
                                           ),
@@ -639,7 +662,8 @@ class _AddUserState extends State<AddUser> {
                                                   final number =
                                                       numberCont.text;
                                                   numberCont.clear();
-
+                                                  final designation =
+                                                      desigCont.text;
                                                   final address =
                                                       addressCont.text;
                                                   addressCont.clear();
@@ -650,21 +674,41 @@ class _AddUserState extends State<AddUser> {
                                                   final age = ageCont.text;
                                                   ageCont.clear();
 
-                                                  addMember(
-                                                    age: age,
-                                                    email: email,
-                                                    idnum: userIDnum,
-                                                    id: userID,
-                                                    fname: firstname,
-                                                    lname: lastname,
-                                                    gender: Selectedgender,
-                                                    package: package,
-                                                    platform: platform,
-                                                    number: number,
-                                                    startdate: selectD,
-                                                    date: selectedDate,
-                                                    address: address,
-                                                  );
+                                                  widget.modeletter == "S"
+                                                      ? addStaff(
+                                                          time: "6:00PM",
+                                                          age: age,
+                                                          email: email,
+                                                          idnum: userIDnum,
+                                                          id: userID,
+                                                          fname: firstname,
+                                                          lname: lastname,
+                                                          gender:
+                                                              Selectedgender,
+                                                          designation:
+                                                              designation,
+                                                          platform: platform,
+                                                          number: number,
+                                                          startdate: selectD,
+                                                          date: selectedDate,
+                                                          address: address,
+                                                        )
+                                                      : addMember(
+                                                          age: age,
+                                                          email: email,
+                                                          idnum: userIDnum,
+                                                          id: userID,
+                                                          fname: firstname,
+                                                          lname: lastname,
+                                                          gender:
+                                                              Selectedgender,
+                                                          package: package,
+                                                          platform: platform,
+                                                          number: number,
+                                                          startdate: selectD,
+                                                          date: selectedDate,
+                                                          address: address,
+                                                        );
                                                   selectedDate = DateTime.now();
                                                   selectedpackage = "0";
                                                   selectedplatform = "0";
@@ -726,6 +770,46 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
+  Future addStaff(
+      {required String fname,
+      required String lname,
+      required String email,
+      required String age,
+      required String? gender,
+      required String designation,
+      required String? platform,
+      required String number,
+      required String address,
+      required String startdate,
+      required DateTime date,
+      required id,
+      required time,
+      required idnum}) async {
+    final docUser = FirebaseFirestore.instance
+        .collection("/$colname/$clientplat/Staff")
+        .doc(id + (idnum + 1).toString());
+
+    final json = {
+      "idnum": idnum + 1,
+      "ID": id + (idnum + 1).toString(),
+      "Age": age,
+      "Status": "Staff",
+      "First name": fname,
+      "Last name": lname,
+      "Gender": gender,
+      "Designation": designation,
+      "Platform": platform,
+      "Phone Number": number,
+      "Email": email,
+      "Address": address,
+      "Start Date": startdate,
+      "Start Time": time,
+      "Defaulter": false,
+      "Date": date
+    };
+    await docUser.set(json);
+  }
+
   Future addMember(
       {required String fname,
       required String lname,
@@ -748,6 +832,7 @@ class _AddUserState extends State<AddUser> {
       "idnum": idnum + 1,
       "ID": id + (idnum + 1).toString(),
       "Age": age,
+      "Status": "Member",
       "Fee Status": "Paid",
       "First name": fname,
       "Last name": lname,

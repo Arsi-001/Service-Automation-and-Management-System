@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:s_a_m_s/Crud%20operation/Addpage.dart';
 import 'package:s_a_m_s/Constant.dart';
-import 'package:s_a_m_s/Crud%20operation/updatePage.dart';
+import 'package:s_a_m_s/Crud%20operation/UpdatePage.dart';
 import 'package:s_a_m_s/SharedComponent.dart';
 
 class LockerPopUp extends StatelessWidget {

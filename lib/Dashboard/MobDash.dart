@@ -112,6 +112,7 @@ class _MobDashState extends State<MobDash> {
   final int closingHour = 1; // 5:00 PM
   final int closingMinute = 0;
   int touchedIndex = -1;
+  String mode = "M";
   // int endTime = closingTimeToday.millisecondsSinceEpoch -
   //     DateTime.now().millisecondsSinceEpoch;
   Map<String, double> dataMap = {
@@ -645,6 +646,18 @@ class _MobDashState extends State<MobDash> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (mode == "M") {
+                                                            mode = "S";
+                                                          } else {
+                                                            mode = "M";
+                                                          }
+                                                        });
+                                                      },
+                                                      icon:
+                                                          Icon(Icons.refresh)),
                                                   Text(
                                                     "$initials" + "-M-",
                                                     style: TextStyle(
@@ -874,6 +887,7 @@ class _MobDashState extends State<MobDash> {
                                                   sw: 1080,
                                                 )
                                               : DeskActivityProfileBubble(
+                                                  mode: mode,
                                                   id: documentSnapshot.id,
                                                   locker: documentSnapshot[
                                                       "Locker"],
@@ -914,7 +928,7 @@ class _MobDashState extends State<MobDash> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                     child: Container(
-                        height: 600,
+                        height: 700,
                         padding:
                             EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                         decoration: BoxDecoration(
@@ -945,8 +959,15 @@ class _MobDashState extends State<MobDash> {
                                 height: 20,
                               ),
                               Expanded(
-                                  child: SizedBox(
-                                height: 200,
+                                  child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 30),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                height: 250,
                                 child: FutureBuilder<List<DocumentSnapshot>>(
                                   future: getData(),
                                   builder: (context, snapshot) {
@@ -990,7 +1011,11 @@ class _MobDashState extends State<MobDash> {
                               SizedBox(
                                 height: 30,
                               ),
-                              Expanded(child: Center(child: BarChartSample1())),
+                              Expanded(
+                                  child: Center(
+                                      child: SizedBox(
+                                          width: 280,
+                                          child: BarChartSample1()))),
                               // SizedBox(
                               //   height: 20,
                               // ),

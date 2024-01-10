@@ -89,6 +89,7 @@ class _DeskDashState extends State<DeskDash> {
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat dateformat2 = DateFormat.d();
+  String mode = "M";
   Future addActiveMember({
     required id,
   }) async {
@@ -111,6 +112,41 @@ class _DeskDashState extends State<DeskDash> {
           "Date": dateFormat.format(DateTime.now()),
           "Day": (dateformat2.format(DateTime.now())),
           "Locker": "",
+          "Status": "Member",
+          "Idnum": int.parse(id),
+        };
+
+        await docUser.set(json);
+        await docUser2.set(json);
+      } else {
+        print('Document $id does not exist in the collection.');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  Future addActiveStaff({
+    required id,
+  }) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await staffcol.doc("$initials-S-$id").get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data();
+        final docUser = activitycol.doc(data?["ID"]);
+        final docUser2 = recordscol.doc(data?["ID"]);
+
+        final json = {
+          "Name": data?["First name"] + " " + data?["Last name"],
+          "Designation": data?["Designation"],
+          "Platform": data?["Platform"],
+          "Status": "Staff",
+          "Time In": DateFormat.jm().format(DateTime.now()),
+          "Date": dateFormat.format(DateTime.now()),
+          "Day": (dateformat2.format(DateTime.now())),
+          "Idnum": int.parse(id),
         };
 
         await docUser.set(json);
@@ -389,7 +425,10 @@ class _DeskDashState extends State<DeskDash> {
                           borderRadius: BorderRadius.circular(16),
                           gradient: darkGlassMorphismGradient()),
                       child: StreamBuilder(
-                          stream: activitycol.snapshots(),
+                          stream: activitycol
+                              .where("Status",
+                                  isEqualTo: mode == "S" ? "Staff" : "Member")
+                              .snapshots(),
                           builder: (context,
                               AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                             if (streamSnapshot.hasData) {
@@ -439,8 +478,20 @@ class _DeskDashState extends State<DeskDash> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (mode == "M") {
+                                                      mode = "S";
+                                                    } else {
+                                                      mode = "M";
+                                                    }
+                                                  });
+                                                },
+                                                icon: Icon(Icons.refresh,
+                                                    color: MainShade)),
                                             Text(
-                                              "$initials" + "-M-",
+                                              "$initials" + "-$mode-",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.white,
@@ -477,8 +528,11 @@ class _DeskDashState extends State<DeskDash> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          addActiveMember(
-                                              id: activitycont.text);
+                                          mode == "S"
+                                              ? addActiveStaff(
+                                                  id: activitycont.text)
+                                              : addActiveMember(
+                                                  id: activitycont.text);
                                           activitycont.clear();
                                         },
 
@@ -528,31 +582,49 @@ class _DeskDashState extends State<DeskDash> {
                                     height: 10,
                                   ),
                                   Expanded(
-                                    child: Container(
+                                    child: SizedBox(
                                       child: ListView.builder(
-                                        reverse: true,
                                         itemCount:
                                             streamSnapshot.data?.docs.length,
                                         itemBuilder: (context, i) {
                                           final DocumentSnapshot
                                               documentSnapshot =
                                               streamSnapshot.data!.docs[i];
-                                          return DeskActivityProfileBubble(
-                                            id: documentSnapshot.id,
-                                            locker: documentSnapshot["Locker"],
-                                            name: documentSnapshot["Name"],
-                                            feestatus:
-                                                documentSnapshot["Fee Status"],
-                                            package:
-                                                documentSnapshot["Package"],
-                                            platform:
-                                                documentSnapshot["Platform"],
-                                            defaulters:
-                                                documentSnapshot["Defaulter"],
-                                            timein: documentSnapshot["Time In"]
-                                                .toString(),
-                                            sw: 1080,
-                                          );
+
+                                          return mode == "S"
+                                              ? SDeskActivityProfileBubble(
+                                                  id: documentSnapshot.id,
+                                                  sw: 1080,
+                                                  name:
+                                                      documentSnapshot["Name"],
+                                                  platform: documentSnapshot[
+                                                      "Platform"],
+                                                  timein: documentSnapshot[
+                                                      "Time In"],
+                                                  time: documentSnapshot[
+                                                      "Time In"],
+                                                  designation: documentSnapshot[
+                                                      "Designation"])
+                                              : DeskActivityProfileBubble(
+                                                  mode: mode,
+                                                  id: documentSnapshot.id,
+                                                  locker: documentSnapshot[
+                                                      "Locker"],
+                                                  name:
+                                                      documentSnapshot["Name"],
+                                                  feestatus: documentSnapshot[
+                                                      "Fee Status"],
+                                                  package: documentSnapshot[
+                                                      "Package"],
+                                                  platform: documentSnapshot[
+                                                      "Platform"],
+                                                  defaulters: documentSnapshot[
+                                                      "Defaulter"],
+                                                  timein: documentSnapshot[
+                                                          "Time In"]
+                                                      .toString(),
+                                                  sw: 1080,
+                                                );
                                         },
                                       ),
                                     ),
@@ -618,9 +690,18 @@ class _DeskDashState extends State<DeskDash> {
                                     Row(
                                       children: [
                                         Expanded(
-                                            flex: 5,
-                                            child: SizedBox(
-                                              height: 200,
+                                            flex: 1,
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 30),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.grey,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              height: 250,
                                               child: FutureBuilder<
                                                   List<DocumentSnapshot>>(
                                                 future: getData(),
@@ -671,9 +752,13 @@ class _DeskDashState extends State<DeskDash> {
                                                 },
                                               ),
                                             )),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
                                         Expanded(
-                                            flex: 4,
+                                            flex: 1,
                                             child: Container(
+                                              height: 250,
                                               child: BarChartSample1(),
                                             ))
                                       ],
@@ -867,9 +952,17 @@ class _DeskDashState extends State<DeskDash> {
                               Row(
                                 children: [
                                   Expanded(
-                                      flex: 5,
-                                      child: SizedBox(
-                                        height: 200,
+                                      flex: 1,
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 30),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.grey,
+                                                style: BorderStyle.solid),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        height: 250,
                                         child: FutureBuilder<
                                             List<DocumentSnapshot>>(
                                           future: getData(),
@@ -915,9 +1008,13 @@ class _DeskDashState extends State<DeskDash> {
                                           },
                                         ),
                                       )),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
                                   Expanded(
-                                      flex: 4,
-                                      child: Container(
+                                      flex: 1,
+                                      child: SizedBox(
+                                        height: 250,
                                         child: BarChartSample1(),
                                       ))
                                 ],

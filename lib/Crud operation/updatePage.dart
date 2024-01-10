@@ -9,7 +9,8 @@ import 'package:s_a_m_s/SharedComponent.dart';
 
 class UpdateUser extends StatefulWidget {
   var docsnap;
-  UpdateUser({super.key, required this.docsnap});
+  final Mode;
+  UpdateUser({super.key, required this.docsnap, required this.Mode});
 
   @override
   State<UpdateUser> createState() => _UpdateUserState();
@@ -26,6 +27,7 @@ class _UpdateUserState extends State<UpdateUser> {
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
   TextEditingController ageCont = TextEditingController();
+  TextEditingController desigCont = TextEditingController();
   var genders = ["Male", "Female"];
 
   late DateTime selectedDate;
@@ -33,35 +35,6 @@ class _UpdateUserState extends State<UpdateUser> {
 
   int userIDnum = 0;
   String userID = "";
-  Future<String?> getID() async {
-    try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection('$colname')
-          .doc("$clientplat")
-          .get();
-
-      var snap = await membercol.orderBy("idnum", descending: false).get();
-      var mID = 0;
-      if (snap.size != 0) {
-        mID = snap.docs.last["idnum"];
-      }
-
-      var finalID = snapshot.get("initials") + "-M-";
-      userIDnum = mID;
-      userID = finalID;
-
-      // Check if the document exists
-      if (snapshot.exists) {
-        // Extract the specific field you want (replace 'your_field' with the actual field name)
-        return finalID + (mID + 1).toString();
-      } else {
-        return null; // Document doesn't exist
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
-      return null; // Handle errors
-    }
-  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -79,7 +52,10 @@ class _UpdateUserState extends State<UpdateUser> {
   @override
   void initState() {
     selectedplatform = widget.docsnap["Platform"];
-    selectedpackage = widget.docsnap["Package"];
+    selectedpackage = widget.Mode == "S"
+        ? widget.docsnap["Designation"]
+        : widget.docsnap["Package"];
+    widget.Mode == "S" ? desigCont.text = widget.docsnap["Designation"] : "";
     Selectedgender = widget.docsnap["Gender"];
     fNameCont.text = widget.docsnap["First name"];
     lNameCont.text = widget.docsnap["Last name"];
@@ -99,6 +75,7 @@ class _UpdateUserState extends State<UpdateUser> {
     emailCont.dispose();
     numberCont.dispose();
     addressCont.dispose();
+    desigCont.dispose();
 
     ageCont.dispose();
 
@@ -280,104 +257,123 @@ class _UpdateUserState extends State<UpdateUser> {
                                         SizedBox(
                                           width: 40,
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Package",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            SizedBox(
-                                              height: 6,
-                                            ),
-                                            StreamBuilder(
-                                                stream: FirebaseFirestore
-                                                    .instance
-                                                    .collection(
-                                                        "/$colname/$clientplat/Packages")
-                                                    .snapshots(),
-                                                builder: (context, snapshot) {
-                                                  List<DropdownMenuItem>
-                                                      packageslist = [];
-                                                  if (!snapshot.hasData) {
-                                                    return CircularProgressIndicator();
-                                                  } else {
-                                                    final packages = snapshot
-                                                        .data?.docs
-                                                        .toList();
+                                        widget.Mode == "S"
+                                            ? crudTxtfield(
+                                                title: "Designation",
+                                                widht: 250,
+                                                controller: desigCont,
+                                                txtinput: TextInputType.text,
+                                                format: [
+                                                  FilteringTextInputFormatter
+                                                      .singleLineFormatter
+                                                ],
+                                              )
+                                            : Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("Package",
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                  SizedBox(
+                                                    height: 6,
+                                                  ),
+                                                  StreamBuilder(
+                                                      stream: FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              "/$colname/$clientplat/Packages")
+                                                          .snapshots(),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        List<DropdownMenuItem>
+                                                            packageslist = [];
+                                                        if (!snapshot.hasData) {
+                                                          return CircularProgressIndicator();
+                                                        } else {
+                                                          final packages =
+                                                              snapshot
+                                                                  .data?.docs
+                                                                  .toList();
 
-                                                    packageslist.add(
-                                                        DropdownMenuItem(
-                                                            value: "0",
-                                                            child: Text(
-                                                                "Select Package")));
-                                                    for (var data
-                                                        in packages!) {
-                                                      packageslist.add(
-                                                          DropdownMenuItem(
-                                                              value:
-                                                                  data["name"],
-                                                              child: Text(
-                                                                data["name"],
-                                                              )));
-                                                    }
-                                                  }
-                                                  return Container(
-                                                    height: 50,
-                                                    width: 175,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 20),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white12,
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                    child: Center(
-                                                      child:
-                                                          DropdownButtonHideUnderline(
-                                                        child:
-                                                            DropdownButtonFormField(
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  errorMaxLines:
-                                                                      1,
-                                                                  errorStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        10,
-                                                                  )),
-                                                          validator: (value) {
-                                                            if (value == "0") {
-                                                              return "Please select a valid option";
-                                                            }
-                                                          },
-                                                          value:
-                                                              selectedpackage,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                          items: packageslist,
-                                                          dropdownColor:
-                                                              Colors.white12,
-                                                          onChanged:
-                                                              (clientvalue) {
-                                                            setState(() {
-                                                              selectedpackage =
-                                                                  clientvalue;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
-                                          ],
-                                        ),
+                                                          packageslist.add(
+                                                              DropdownMenuItem(
+                                                                  value: "0",
+                                                                  child: Text(
+                                                                      "Select Package")));
+                                                          for (var data
+                                                              in packages!) {
+                                                            packageslist.add(
+                                                                DropdownMenuItem(
+                                                                    value: data[
+                                                                        "name"],
+                                                                    child: Text(
+                                                                      data[
+                                                                          "name"],
+                                                                    )));
+                                                          }
+                                                        }
+                                                        return Container(
+                                                          height: 50,
+                                                          width: 175,
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      20),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors
+                                                                  .white12,
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          10))),
+                                                          child: Center(
+                                                            child:
+                                                                DropdownButtonHideUnderline(
+                                                              child:
+                                                                  DropdownButtonFormField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        border: InputBorder
+                                                                            .none,
+                                                                        errorMaxLines:
+                                                                            1,
+                                                                        errorStyle:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              10,
+                                                                        )),
+                                                                validator:
+                                                                    (value) {
+                                                                  if (value ==
+                                                                      "0") {
+                                                                    return "Please select a valid option";
+                                                                  }
+                                                                },
+                                                                value:
+                                                                    selectedpackage,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                                items:
+                                                                    packageslist,
+                                                                dropdownColor:
+                                                                    Colors
+                                                                        .white12,
+                                                                onChanged:
+                                                                    (clientvalue) {
+                                                                  setState(() {
+                                                                    selectedpackage =
+                                                                        clientvalue;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }),
+                                                ],
+                                              ),
                                         SizedBox(
                                           width: 40,
                                         ),
@@ -588,7 +584,8 @@ class _UpdateUserState extends State<UpdateUser> {
                                                 final lastname = lNameCont.text;
 
                                                 final package = selectedpackage;
-
+                                                final designation =
+                                                    desigCont.text;
                                                 final platform =
                                                     selectedplatform;
                                                 final number = numberCont.text;
@@ -600,20 +597,36 @@ class _UpdateUserState extends State<UpdateUser> {
                                                 final selectD = dateFormat
                                                     .format(selectedDate);
 
-                                                updateMember(
-                                                    age: ageCont.text,
-                                                    email: email,
-                                                    idnum: userIDnum,
-                                                    id: widget.docsnap.id,
-                                                    fname: firstname,
-                                                    lname: lastname,
-                                                    gender: Selectedgender,
-                                                    package: package,
-                                                    platform: platform,
-                                                    number: number,
-                                                    startdate: selectD,
-                                                    address: address,
-                                                    date: selectedDate);
+                                                widget.Mode == "S"
+                                                    ? updateStaff(
+                                                        time: "6:00 PM",
+                                                        age: ageCont.text,
+                                                        email: email,
+                                                        idnum: userIDnum,
+                                                        id: widget.docsnap.id,
+                                                        fname: firstname,
+                                                        lname: lastname,
+                                                        gender: Selectedgender,
+                                                        desig: designation,
+                                                        platform: platform,
+                                                        number: number,
+                                                        startdate: selectD,
+                                                        address: address,
+                                                        date: selectedDate)
+                                                    : updateMember(
+                                                        age: ageCont.text,
+                                                        email: email,
+                                                        idnum: userIDnum,
+                                                        id: widget.docsnap.id,
+                                                        fname: firstname,
+                                                        lname: lastname,
+                                                        gender: Selectedgender,
+                                                        package: package,
+                                                        platform: platform,
+                                                        number: number,
+                                                        startdate: selectD,
+                                                        address: address,
+                                                        date: selectedDate);
 
                                                 setState(() {});
                                                 Navigator.pop(context);
@@ -672,6 +685,43 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
+  Future updateStaff(
+      {required String fname,
+      required String lname,
+      required String email,
+      required String? gender,
+      required String desig,
+      required String? platform,
+      required String number,
+      required String address,
+      required String startdate,
+      required String age,
+      required DateTime date,
+      required time,
+      required id,
+      required idnum}) async {
+    final docUser = FirebaseFirestore.instance
+        .collection("/$colname/$clientplat/Staff")
+        .doc(id);
+
+    final json = {
+      "Fee Status": "Paid",
+      "First name": fname,
+      "Last name": lname,
+      "Gender": gender,
+      "Age": age,
+      "Designation": desig,
+      "Platform": platform,
+      "Phone Number": number,
+      "Email": email,
+      "Address": address,
+      "Start Date": startdate,
+      "Start Time": time,
+      "Date": date
+    };
+    await docUser.update(json);
+  }
+
   Future updateMember(
       {required String fname,
       required String lname,
@@ -686,7 +736,9 @@ class _UpdateUserState extends State<UpdateUser> {
       required DateTime date,
       required id,
       required idnum}) async {
-    final docUser = membercol.doc(id);
+    final docUser = FirebaseFirestore.instance
+        .collection("/$colname/$clientplat/Members")
+        .doc(id);
 
     final json = {
       "Fee Status": "Paid",

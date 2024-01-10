@@ -13,12 +13,14 @@ import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:s_a_m_s/Crud%20operation/UpdatePage.dart';
 import 'package:s_a_m_s/Table/MemberTable/MobTable.dart';
 import 'package:s_a_m_s/Table/MemberTable/TabTable.dart';
+import 'package:s_a_m_s/Table/StaffTable/StaffMobTable.dart';
+import 'package:s_a_m_s/Table/StaffTable/StaffTabTable.dart';
 import 'package:s_a_m_s/main.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:unicons/unicons.dart';
 
-class TableInfo extends StatelessWidget {
-  TableInfo({super.key});
+class STableInfo extends StatelessWidget {
+  STableInfo({super.key});
 
   ScrollController con = ScrollController();
 
@@ -27,24 +29,24 @@ class TableInfo extends StatelessWidget {
     var sw = MediaQuery.of(context).size.width;
 
     return ResponsiveLayout(
-      Desktop: DeskTable(
+      Desktop: SDeskTable(
         sw: sw,
       ),
-      Tablet: TabTable(sw: sw),
-      Mobile: MobTable(sw: sw),
+      Tablet: STabTable(sw: sw),
+      Mobile: SMobTable(sw: sw),
     );
   }
 }
 
-class DeskTable extends StatefulWidget {
-  DeskTable({super.key, required this.sw});
+class SDeskTable extends StatefulWidget {
+  SDeskTable({super.key, required this.sw});
   final double sw;
 
   @override
-  State<DeskTable> createState() => _DeskTableState();
+  State<SDeskTable> createState() => _SDeskTableState();
 }
 
-class _DeskTableState extends State<DeskTable> {
+class _SDeskTableState extends State<SDeskTable> {
   ScrollController con = ScrollController();
 
   bool isdefaulter = false;
@@ -53,15 +55,13 @@ class _DeskTableState extends State<DeskTable> {
 
   @override
   Widget build(BuildContext context) {
-    print("THIS IS THE COLLECTION: " + "$membercol");
+    print("THIS IS THE COLLECTION: " + "$staffcol");
     return SizedBox(
       height: 1080 - 200,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
         child: StreamBuilder(
-            stream: isdefaulter
-                ? membercol.where("Defaulter", isEqualTo: true).snapshots()
-                : membercol.orderBy("idnum", descending: false).snapshots(),
+            stream: staffcol.orderBy("idnum", descending: false).snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               if (streamSnapshot.hasData) {
                 return Center(
@@ -117,7 +117,7 @@ class _DeskTableState extends State<DeskTable> {
                                           height: 10,
                                         ),
                                         Text(
-                                          "MEMBERS",
+                                          "STAFF",
                                           style: TextStyle(
                                               fontFamily: "Montserrat",
                                               fontWeight: FontWeight.w600,
@@ -153,9 +153,9 @@ class _DeskTableState extends State<DeskTable> {
                                                     HeroDialogRoute(
                                                         builder: (context) {
                                               return AddUser(
-                                                mode: "Members",
-                                                modeletter: "M",
-                                                colref: membercol,
+                                                mode: "Staff",
+                                                modeletter: "S",
+                                                colref: staffcol,
                                               );
                                             })),
                                             // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
@@ -171,7 +171,7 @@ class _DeskTableState extends State<DeskTable> {
                                                 textStyle: const TextStyle(
                                                     color: Colors.white)),
                                             child: const Text(
-                                              'Add Member',
+                                              'Add Staff',
                                               style: TextStyle(
                                                   fontFamily: "Montserrat",
                                                   fontWeight: FontWeight.w600,
@@ -181,55 +181,7 @@ class _DeskTableState extends State<DeskTable> {
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Container(
-                                          width: 200,
-                                          height: 40,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                isdefaulter
-                                                    ? isdefaulter = false
-                                                    : isdefaulter = true;
-                                              });
 
-                                              // if (isdefaulter == false) {
-                                              //   isdefaulter = true;
-                                              // } else {
-                                              //   isdefaulter = false;
-                                              // }
-                                            },
-                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: MainShade),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                  // side: BorderSide(
-                                                  //     color:
-                                                  //         Colors.blueAccent)
-                                                ),
-                                                backgroundColor: isdefaulter
-                                                    ? Colors.red
-                                                    : MainShade,
-                                                elevation: 12.0,
-                                                textStyle: const TextStyle(
-                                                    color: Colors.white)),
-                                            child: const Text(
-                                              'Defaulter Table',
-                                              style: TextStyle(
-                                                  fontFamily: "Montserrat",
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                       // Expanded(
                                       //   flex: 2,
                                       //   child: Padding(
@@ -281,7 +233,7 @@ class _DeskTableState extends State<DeskTable> {
                                         BorderRadius.all(Radius.circular(12))),
                                 child: Column(
                                   children: [
-                                    TableHeaderRow(
+                                    STableHeaderRow(
                                       sw: widget.sw,
                                       rowColor: Colors.white10,
                                     ),
@@ -295,10 +247,10 @@ class _DeskTableState extends State<DeskTable> {
                                                 documentSnapshot =
                                                 streamSnapshot
                                                     .data!.docs[index];
-                                            return MTableRow(
+                                            return STableRow(
                                                 context: context,
                                                 documentsnap: documentSnapshot,
-                                                membersclass: membercol,
+                                                membersclass: staffcol,
                                                 rowColor: LightShade,
                                                 id: documentSnapshot["ID"],
                                                 sw: widget.sw,
@@ -310,14 +262,12 @@ class _DeskTableState extends State<DeskTable> {
                                                         "Last name"],
                                                 gender:
                                                     documentSnapshot["Gender"],
-                                                package:
-                                                    documentSnapshot["Package"],
-                                                feestatus: documentSnapshot[
-                                                    "Fee Status"],
+                                                package: documentSnapshot[
+                                                    "Designation"],
                                                 platform: documentSnapshot[
                                                     "Platform"],
                                                 startingDate: documentSnapshot[
-                                                    "Start Date"],
+                                                    "Start Time"],
                                                 contact: documentSnapshot[
                                                     "Phone Number"],
                                                 email:
@@ -343,8 +293,8 @@ class _DeskTableState extends State<DeskTable> {
   }
 }
 
-class TableHeaderRow extends StatelessWidget {
-  const TableHeaderRow({
+class STableHeaderRow extends StatelessWidget {
+  const STableHeaderRow({
     super.key,
     required this.rowColor,
     required this.sw,
@@ -377,7 +327,7 @@ class TableHeaderRow extends StatelessWidget {
               child: const TableCell(
                 LineTru: false,
                 Titlecolor: Colors.white70,
-                Title: "MEMBER",
+                Title: "STAFF",
               ),
             ),
           ),
@@ -402,15 +352,7 @@ class TableHeaderRow extends StatelessWidget {
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
-              Title: "PACKAGE",
-            ),
-          ),
-          const Expanded(
-            flex: 2,
-            child: TableCell(
-              LineTru: false,
-              Titlecolor: Colors.white70,
-              Title: "FEE",
+              Title: "DESIGNATION",
             ),
           ),
           const Expanded(
@@ -442,7 +384,7 @@ class TableHeaderRow extends StatelessWidget {
             child: TableCell(
               LineTru: false,
               Titlecolor: Colors.white70,
-              Title: "JOINING",
+              Title: "START DATE",
             ),
           ),
           const Expanded(
@@ -467,15 +409,14 @@ class TableHeaderRow extends StatelessWidget {
   }
 }
 
-class MTableRow extends StatelessWidget {
-  MTableRow({
+class STableRow extends StatelessWidget {
+  STableRow({
     super.key,
     required this.rowColor,
     required this.id,
     required this.member,
     required this.gender,
     required this.package,
-    required this.feestatus,
     required this.platform,
     required this.startingDate,
     required this.contact,
@@ -493,7 +434,6 @@ class MTableRow extends StatelessWidget {
       member,
       gender,
       package,
-      feestatus,
       platform,
       startingDate,
       contact,
@@ -509,21 +449,6 @@ class MTableRow extends StatelessWidget {
     await membersclass.doc(documentSnapshotid).delete();
     try {
       await activitycol.doc(documentSnapshotid).delete();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> _feestatus([String? documentSnapshotid, String? status]) async {
-    final jsonpaid = {"Fee Status": "Paid"};
-    final jsonunpaid = {"Fee Status": "Unpaid"};
-    await membersclass
-        .doc(documentSnapshotid)
-        .update(status == "Paid" ? jsonunpaid : jsonpaid);
-    try {
-      await activitycol
-          .doc(documentSnapshotid)
-          .update(status == "Paid" ? jsonunpaid : jsonpaid);
     } catch (e) {
       print(e);
     }
@@ -595,14 +520,6 @@ class MTableRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
-            child: TableCell(
-              LineTru: true,
-              Titlecolor: feestatus == "Paid" ? Colors.green : Colors.red,
-              Title: feestatus,
-            ),
-          ),
-          Expanded(
             flex: 3,
             child: TableCell(
               LineTru: true,
@@ -648,18 +565,11 @@ class MTableRow extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                    onPressed: () => _feestatus(documentsnap.id, feestatus),
-                    icon: Icon(
-                      UniconsLine.dollar_sign_alt,
-                      color: feestatus == "Paid" ? Colors.green : MainShade,
-                    ),
-                  ),
-                  IconButton(
                     onPressed: () => Navigator.of(context)
                         .push(HeroDialogRoute(builder: (context) {
                       return UpdateUser(
                         docsnap: documentsnap,
-                        Mode:"M"
+                        Mode: "S",
                       );
                     })),
                     icon: Icon(

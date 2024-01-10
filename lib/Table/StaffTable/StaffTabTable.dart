@@ -11,20 +11,20 @@ import 'package:s_a_m_s/SharedComponent.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/crudpopup.dart';
 import 'package:s_a_m_s/Crud%20operation/popUp/pop_dialog.dart';
 import 'package:s_a_m_s/Crud%20operation/UpdatePage.dart';
-import 'package:s_a_m_s/Table/MemberTable/MemberTable.dart';
+import 'package:s_a_m_s/Table/StaffTable/StaffTable.dart';
 import 'package:s_a_m_s/main.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:unicons/unicons.dart';
 
-class MobTable extends StatefulWidget {
-  MobTable({super.key, required this.sw});
+class STabTable extends StatefulWidget {
+  STabTable({super.key, required this.sw});
   final double sw;
 
   @override
-  State<MobTable> createState() => _MobTableState();
+  State<STabTable> createState() => _STabTableState();
 }
 
-class _MobTableState extends State<MobTable> {
+class _STabTableState extends State<STabTable> {
   ScrollController con = ScrollController();
 
   bool isdefaulter = false;
@@ -48,11 +48,11 @@ class _MobTableState extends State<MobTable> {
                   child: SizedBox(
                     width: 1400,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               ClipRRect(
@@ -61,7 +61,7 @@ class _MobTableState extends State<MobTable> {
                                       sigmaX: 10.0, sigmaY: 10.0),
                                   child: Container(
                                     height: 200,
-                                    width: widget.sw * 0.80,
+                                    width: 350,
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color: Color.fromARGB(
@@ -97,7 +97,7 @@ class _MobTableState extends State<MobTable> {
                                           height: 10,
                                         ),
                                         Text(
-                                          "MEMBERS",
+                                          "STAFF",
                                           style: TextStyle(
                                               fontFamily: "Montserrat",
                                               fontWeight: FontWeight.w600,
@@ -116,22 +116,22 @@ class _MobTableState extends State<MobTable> {
                             height: 20,
                           ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 4.0),
+                                    vertical: 10, horizontal: 8.0),
                                 child: SizedBox(
-                                  width: 120,
+                                  width: 150,
                                   height: 40,
                                   child: ElevatedButton(
                                     onPressed: () => Navigator.of(context).push(
                                         HeroDialogRoute(builder: (context) {
                                       return AddUser(
-                                        mode: "Members",
-                                        modeletter: "M",
-                                        colref: membercol,
+                                        mode: "Staff",
+                                        modeletter: "S",
+                                        colref: staffcol,
                                       );
                                     })),
                                     // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
@@ -145,63 +145,17 @@ class _MobTableState extends State<MobTable> {
                                         textStyle: const TextStyle(
                                             color: Colors.white)),
                                     child: const Text(
-                                      'Add Member',
+                                      'Add Staff',
                                       style: TextStyle(
                                           fontFamily: "Montserrat",
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
-                                          fontSize: 12),
+                                          fontSize: 14),
                                     ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 4.0),
-                                child: SizedBox(
-                                  width: 120,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        isdefaulter
-                                            ? isdefaulter = false
-                                            : isdefaulter = true;
-                                      });
 
-                                      // if (isdefaulter == false) {
-                                      //   isdefaulter = true;
-                                      // } else {
-                                      //   isdefaulter = false;
-                                      // }
-                                    },
-                                    // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: MainShade),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          // side: BorderSide(
-                                          //     color:
-                                          //         Colors.blueAccent)
-                                        ),
-                                        backgroundColor: isdefaulter
-                                            ? Colors.red
-                                            : MainShade,
-                                        elevation: 12.0,
-                                        textStyle: const TextStyle(
-                                            color: Colors.white)),
-                                    child: const Text(
-                                      'Defaulter',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ),
                               // Expanded(
                               //   flex: 2,
                               //   child: Padding(
@@ -249,7 +203,7 @@ class _MobTableState extends State<MobTable> {
                                         BorderRadius.all(Radius.circular(12))),
                                 child: Column(
                                   children: [
-                                    TableHeaderRow(
+                                    STableHeaderRow(
                                       sw: widget.sw,
                                       rowColor: Colors.white10,
                                     ),
@@ -263,11 +217,10 @@ class _MobTableState extends State<MobTable> {
                                                 documentSnapshot =
                                                 streamSnapshot
                                                     .data!.docs[index];
-                                            return
-                                             MTableRow(
+                                            return STableRow(
                                                 context: context,
                                                 documentsnap: documentSnapshot,
-                                                membersclass: membercol,
+                                                membersclass: staffcol,
                                                 rowColor: LightShade,
                                                 id: documentSnapshot["ID"],
                                                 sw: widget.sw,
@@ -281,8 +234,6 @@ class _MobTableState extends State<MobTable> {
                                                     documentSnapshot["Gender"],
                                                 package:
                                                     documentSnapshot["Package"],
-                                                feestatus: documentSnapshot[
-                                                    "Fee Status"],
                                                 platform: documentSnapshot[
                                                     "Platform"],
                                                 startingDate: documentSnapshot[
@@ -311,4 +262,3 @@ class _MobTableState extends State<MobTable> {
     );
   }
 }
-
