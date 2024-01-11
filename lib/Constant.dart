@@ -129,7 +129,7 @@ var packagecol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Packages");
 var defaultercol = FirebaseFirestore.instance
     .collection("/$colname/$clientplat/Members")
-    .where("Defaulters", isEqualTo: true);
+    .where("defaulters", isEqualTo: true);
 DateFormat currentmonth = DateFormat.MMM();
 DateFormat currentyear = DateFormat.y();
 var recordscol = FirebaseFirestore.instance.collection(

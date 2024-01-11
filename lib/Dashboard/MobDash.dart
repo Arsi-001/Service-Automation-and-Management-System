@@ -41,7 +41,7 @@ class _MobDashState extends State<MobDash> {
     for (var document in data) {
       var snap = await FirebaseFirestore.instance
           .collection('/$colname/$clientplat/Members')
-          .where("Package", isEqualTo: document["name"])
+          .where("package", isEqualTo: document["name"])
           .get();
       print(document["name"]);
 
@@ -75,7 +75,8 @@ class _MobDashState extends State<MobDash> {
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat dateformat2 = DateFormat.d();
-  Future addMember({
+  String mode = "M";
+  Future addActiveMember({
     required id,
   }) async {
     try {
@@ -88,14 +89,50 @@ class _MobDashState extends State<MobDash> {
         final docUser2 = recordscol.doc(data?["ID"]);
 
         final json = {
-          "Name": data?["First name"] + " " + data?["Last name"],
-          "Fee Status": data?["Fee Status"],
-          "Package": data?["Package"],
-          "Platform": data?["Platform"],
-          "Time In": DateFormat.jm().format(DateTime.now()),
-          "Defaulter": data?["Defaulter"],
-          "Date": dateFormat.format(DateTime.now()),
-          "Day": (dateformat2.format(DateTime.now()))
+          "name": data?["firstName"] + " " + data?["lastName"],
+          "feeStatus": data?["feeStatus"],
+          "package": data?["package"],
+          "platform": data?["platform"],
+          "timeIn": DateFormat.jm().format(DateTime.now()),
+          "defaulter": data?["defaulter"],
+          "date": dateFormat.format(DateTime.now()),
+          "day": (dateformat2.format(DateTime.now())),
+          "locker": "",
+          "status": "Member",
+          "idnum": int.parse(id),
+        };
+
+        await docUser.set(json);
+        await docUser2.set(json);
+      } else {
+        print('Document $id does not exist in the collection.');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  Future addActiveStaff({
+    required id,
+  }) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await staffcol.doc("$initials-S-$id").get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data();
+        final docUser = activitycol.doc(data?["ID"]);
+        final docUser2 = recordscol.doc(data?["ID"]);
+
+        final json = {
+          "name": data?["firstName"] + " " + data?["lastName"],
+          "designation": data?["designation"],
+          "platform": data?["platform"],
+          "status": "Staff",
+          "timeIn": DateFormat.jm().format(DateTime.now()),
+          "date": dateFormat.format(DateTime.now()),
+          "day": (dateformat2.format(DateTime.now())),
+          "idnum": int.parse(id),
         };
 
         await docUser.set(json);
@@ -112,7 +149,6 @@ class _MobDashState extends State<MobDash> {
   final int closingHour = 1; // 5:00 PM
   final int closingMinute = 0;
   int touchedIndex = -1;
-  String mode = "M";
   // int endTime = closingTimeToday.millisecondsSinceEpoch -
   //     DateTime.now().millisecondsSinceEpoch;
   Map<String, double> dataMap = {
@@ -592,7 +628,10 @@ class _MobDashState extends State<MobDash> {
                           borderRadius: BorderRadius.circular(16),
                           gradient: darkGlassMorphismGradient()),
                       child: StreamBuilder(
-                          stream: activitycol.snapshots(),
+                          stream: activitycol
+                              .where("status",
+                                  isEqualTo: mode == "S" ? "Staff" : "Member")
+                              .snapshots(),
                           builder: (context,
                               AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                             if (streamSnapshot.hasData) {
@@ -656,10 +695,10 @@ class _MobDashState extends State<MobDash> {
                                                           }
                                                         });
                                                       },
-                                                      icon:
-                                                          Icon(Icons.refresh)),
+                                                      icon: Icon(Icons.refresh,
+                                                          color: MainShade)),
                                                   Text(
-                                                    "$initials" + "-M-",
+                                                    "$initials" + "-$mode-",
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.white,
@@ -698,8 +737,11 @@ class _MobDashState extends State<MobDash> {
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
-                                                addMember(
-                                                    id: activitycont.text);
+                                                mode == "S"
+                                                    ? addActiveStaff(
+                                                        id: activitycont.text)
+                                                    : addActiveMember(
+                                                        id: activitycont.text);
                                                 activitycont.clear();
                                               },
 
@@ -802,7 +844,7 @@ class _MobDashState extends State<MobDash> {
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
-                                                addMember(
+                                                addActiveMember(
                                                     id: activitycont.text);
                                                 activitycont.clear();
                                               },
@@ -869,20 +911,20 @@ class _MobDashState extends State<MobDash> {
                                           return SizeScreenW < 480
                                               ? MobActivityProfileBubble(
                                                   locker: documentSnapshot[
-                                                      "Locker"],
+                                                      "locker"],
                                                   id: documentSnapshot.id,
                                                   name:
-                                                      documentSnapshot["Name"],
+                                                      documentSnapshot["name"],
                                                   feestatus: documentSnapshot[
-                                                      "Fee Status"],
+                                                      "feeStatus"],
                                                   package: documentSnapshot[
-                                                      "Package"],
+                                                      "package"],
                                                   platform: documentSnapshot[
-                                                      "Platform"],
+                                                      "platform"],
                                                   defaulters: documentSnapshot[
-                                                      "Defaulter"],
+                                                      "defaulter"],
                                                   timein: documentSnapshot[
-                                                          "Time In"]
+                                                          "timeIn"]
                                                       .toString(),
                                                   sw: 1080,
                                                 )
@@ -890,19 +932,19 @@ class _MobDashState extends State<MobDash> {
                                                   mode: mode,
                                                   id: documentSnapshot.id,
                                                   locker: documentSnapshot[
-                                                      "Locker"],
+                                                      "locker"],
                                                   name:
-                                                      documentSnapshot["Name"],
+                                                      documentSnapshot["name"],
                                                   feestatus: documentSnapshot[
-                                                      "Fee Status"],
+                                                      "feeStatus"],
                                                   package: documentSnapshot[
-                                                      "Package"],
+                                                      "package"],
                                                   platform: documentSnapshot[
-                                                      "Platform"],
+                                                      "platform"],
                                                   defaulters: documentSnapshot[
-                                                      "Defaulter"],
+                                                      "defaulter"],
                                                   timein: documentSnapshot[
-                                                          "Time In"]
+                                                          "timeIn"]
                                                       .toString(),
                                                   sw: 1080,
                                                 );

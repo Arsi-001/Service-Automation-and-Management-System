@@ -222,28 +222,28 @@ class _STabTableState extends State<STabTable> {
                                                 documentsnap: documentSnapshot,
                                                 membersclass: staffcol,
                                                 rowColor: LightShade,
-                                                id: documentSnapshot["ID"],
+                                                id: documentSnapshot["id"],
                                                 sw: widget.sw,
-                                                age: documentSnapshot["Age"],
+                                                age: documentSnapshot["age"],
                                                 member: documentSnapshot[
-                                                        "First name"] +
+                                                        "firstName"] +
                                                     " " +
                                                     documentSnapshot[
-                                                        "Last name"],
+                                                        "lastName"],
                                                 gender:
-                                                    documentSnapshot["Gender"],
-                                                package:
-                                                    documentSnapshot["Package"],
+                                                    documentSnapshot["gender"],
+                                                package: documentSnapshot[
+                                                    "designation"],
                                                 platform: documentSnapshot[
-                                                    "Platform"],
+                                                    "platform"],
                                                 startingDate: documentSnapshot[
-                                                    "Start Date"],
+                                                    "startTime"],
                                                 contact: documentSnapshot[
-                                                    "Phone Number"],
+                                                    "phoneNumber"],
                                                 email:
-                                                    documentSnapshot["Email"],
+                                                    documentSnapshot["email"],
                                                 address: documentSnapshot[
-                                                    "Address"]);
+                                                    "address"]);
                                           },
                                         )),
                                   ],

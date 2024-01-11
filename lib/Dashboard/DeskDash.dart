@@ -55,7 +55,7 @@ class _DeskDashState extends State<DeskDash> {
     for (var document in data) {
       var snap = await FirebaseFirestore.instance
           .collection('/$colname/$clientplat/Members')
-          .where("Package", isEqualTo: document["name"])
+          .where("package", isEqualTo: document["name"])
           .get();
       print(document["name"]);
 
@@ -103,17 +103,17 @@ class _DeskDashState extends State<DeskDash> {
         final docUser2 = recordscol.doc(data?["ID"]);
 
         final json = {
-          "Name": data?["First name"] + " " + data?["Last name"],
-          "Fee Status": data?["Fee Status"],
-          "Package": data?["Package"],
-          "Platform": data?["Platform"],
-          "Time In": DateFormat.jm().format(DateTime.now()),
-          "Defaulter": data?["Defaulter"],
-          "Date": dateFormat.format(DateTime.now()),
-          "Day": (dateformat2.format(DateTime.now())),
-          "Locker": "",
-          "Status": "Member",
-          "Idnum": int.parse(id),
+          "name": data?["firstName"] + " " + data?["lastName"],
+          "feeStatus": data?["feeStatus"],
+          "package": data?["package"],
+          "platform": data?["platform"],
+          "timeIn": DateFormat.jm().format(DateTime.now()),
+          "defaulter": data?["defaulter"],
+          "date": dateFormat.format(DateTime.now()),
+          "day": (dateformat2.format(DateTime.now())),
+          "locker": "",
+          "status": "Member",
+          "idnum": int.parse(id),
         };
 
         await docUser.set(json);
@@ -139,14 +139,14 @@ class _DeskDashState extends State<DeskDash> {
         final docUser2 = recordscol.doc(data?["ID"]);
 
         final json = {
-          "Name": data?["First name"] + " " + data?["Last name"],
-          "Designation": data?["Designation"],
-          "Platform": data?["Platform"],
-          "Status": "Staff",
-          "Time In": DateFormat.jm().format(DateTime.now()),
-          "Date": dateFormat.format(DateTime.now()),
-          "Day": (dateformat2.format(DateTime.now())),
-          "Idnum": int.parse(id),
+          "name": data?["firstName"] + " " + data?["lastName"],
+          "designation": data?["designation"],
+          "platform": data?["platform"],
+          "status": "Staff",
+          "timeIn": DateFormat.jm().format(DateTime.now()),
+          "date": dateFormat.format(DateTime.now()),
+          "day": (dateformat2.format(DateTime.now())),
+          "idnum": int.parse(id),
         };
 
         await docUser.set(json);
@@ -335,7 +335,7 @@ class _DeskDashState extends State<DeskDash> {
                                         }),
                                     StreamBuilder(
                                         stream: membercol
-                                            .where("Defaulter", isEqualTo: true)
+                                            .where("defaulter", isEqualTo: true)
                                             .snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
@@ -426,7 +426,7 @@ class _DeskDashState extends State<DeskDash> {
                           gradient: darkGlassMorphismGradient()),
                       child: StreamBuilder(
                           stream: activitycol
-                              .where("Status",
+                              .where("status",
                                   isEqualTo: mode == "S" ? "Staff" : "Member")
                               .snapshots(),
                           builder: (context,
@@ -514,10 +514,13 @@ class _DeskDashState extends State<DeskDash> {
                                                     contentPadding:
                                                         EdgeInsets.only(
                                                             left: 5),
-                                                    border: OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors.white,
-                                                            width: 1))),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                              color: MainShade,
+                                                              width: 1.0),
+                                                    )),
                                               ),
                                             ),
                                           ],
@@ -596,33 +599,33 @@ class _DeskDashState extends State<DeskDash> {
                                                   id: documentSnapshot.id,
                                                   sw: 1080,
                                                   name:
-                                                      documentSnapshot["Name"],
+                                                      documentSnapshot["name"],
                                                   platform: documentSnapshot[
-                                                      "Platform"],
+                                                      "platform"],
                                                   timein: documentSnapshot[
-                                                      "Time In"],
+                                                      "timeIn"],
                                                   time: documentSnapshot[
-                                                      "Time In"],
+                                                      "timeIn"],
                                                   designation: documentSnapshot[
-                                                      "Designation"])
+                                                      "designation"])
                                               : DeskActivityProfileBubble(
                                                   mode: mode,
                                                   id: documentSnapshot.id,
                                                   locker: documentSnapshot[
-                                                      "Locker"],
+                                                      "locker"],
                                                   name:
-                                                      documentSnapshot["Name"],
+                                                      documentSnapshot["name"],
                                                   feestatus: documentSnapshot[
-                                                      "Fee Status"],
+                                                      "feeStatus"],
                                                   package: documentSnapshot[
-                                                      "Package"],
+                                                      "package"],
                                                   platform: documentSnapshot[
-                                                      "Platform"],
+                                                      "platform"],
                                                   defaulters: documentSnapshot[
-                                                      "Defaulter"],
-                                                  timein: documentSnapshot[
-                                                          "Time In"]
-                                                      .toString(),
+                                                      "defaulter"],
+                                                  timein:
+                                                      documentSnapshot["timeIn"]
+                                                          .toString(),
                                                   sw: 1080,
                                                 );
                                         },

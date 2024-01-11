@@ -51,19 +51,19 @@ class _UpdateUserState extends State<UpdateUser> {
 
   @override
   void initState() {
-    selectedplatform = widget.docsnap["Platform"];
+    selectedplatform = widget.docsnap["platform"];
     selectedpackage = widget.Mode == "S"
-        ? widget.docsnap["Designation"]
-        : widget.docsnap["Package"];
-    widget.Mode == "S" ? desigCont.text = widget.docsnap["Designation"] : "";
-    Selectedgender = widget.docsnap["Gender"];
-    fNameCont.text = widget.docsnap["First name"];
-    lNameCont.text = widget.docsnap["Last name"];
-    emailCont.text = widget.docsnap["Email"];
-    addressCont.text = widget.docsnap["Address"];
-    numberCont.text = widget.docsnap["Phone Number"];
-    ageCont.text = widget.docsnap["Age"];
-    selectedDate = (widget.docsnap['Date'] as Timestamp).toDate();
+        ? widget.docsnap["designation"]
+        : widget.docsnap["package"];
+    widget.Mode == "S" ? desigCont.text = widget.docsnap["designation"] : "";
+    Selectedgender = widget.docsnap["gender"];
+    fNameCont.text = widget.docsnap["firstName"];
+    lNameCont.text = widget.docsnap["lastName"];
+    emailCont.text = widget.docsnap["email"];
+    addressCont.text = widget.docsnap["address"];
+    numberCont.text = widget.docsnap["phoneNumber"];
+    ageCont.text = widget.docsnap["age"];
+    selectedDate = (widget.docsnap['date'] as Timestamp).toDate();
     ;
     super.initState();
   }
@@ -705,19 +705,18 @@ class _UpdateUserState extends State<UpdateUser> {
         .doc(id);
 
     final json = {
-      "Fee Status": "Paid",
-      "First name": fname,
-      "Last name": lname,
-      "Gender": gender,
-      "Age": age,
-      "Designation": desig,
-      "Platform": platform,
-      "Phone Number": number,
-      "Email": email,
-      "Address": address,
-      "Start Date": startdate,
-      "Start Time": time,
-      "Date": date
+      "firstName": fname,
+      "lastName": lname,
+      "gender": gender,
+      "age": age,
+      "designation": desig,
+      "platform": platform,
+      "phoneNumber": number,
+      "email": email,
+      "address": address,
+      "startDate": startdate,
+      "startTime": time,
+      "date": date
     };
     await docUser.update(json);
   }
@@ -741,18 +740,18 @@ class _UpdateUserState extends State<UpdateUser> {
         .doc(id);
 
     final json = {
-      "Fee Status": "Paid",
-      "First name": fname,
-      "Last name": lname,
-      "Gender": gender,
-      "Age": age,
-      "Package": package,
-      "Platform": platform,
-      "Phone Number": number,
-      "Email": email,
-      "Address": address,
-      "Start Date": startdate,
-      "Date": date
+      "feeStatus": "Paid",
+      "firstame": fname,
+      "lastName": lname,
+      "gender": gender,
+      "age": age,
+      "package": package,
+      "platform": platform,
+      "phone Number": number,
+      "email": email,
+      "address": address,
+      "startDate": startdate,
+      "date": date
     };
     await docUser.update(json);
   }

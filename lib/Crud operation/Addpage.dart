@@ -791,21 +791,21 @@ class _AddUserState extends State<AddUser> {
 
     final json = {
       "idnum": idnum + 1,
-      "ID": id + (idnum + 1).toString(),
-      "Age": age,
-      "Status": "Staff",
-      "First name": fname,
-      "Last name": lname,
-      "Gender": gender,
-      "Designation": designation,
-      "Platform": platform,
-      "Phone Number": number,
-      "Email": email,
-      "Address": address,
-      "Start Date": startdate,
-      "Start Time": time,
-      "Defaulter": false,
-      "Date": date
+      "id": id + (idnum + 1).toString(),
+      "age": age,
+      "status": "Staff",
+      "firstName": fname,
+      "lastName": lname,
+      "gender": gender,
+      "designation": designation,
+      "platform": platform,
+      "phoneNumber": number,
+      "email": email,
+      "address": address,
+      "startDate": startdate,
+      "startTime": time,
+      "defaulter": false,
+      "date": date
     };
     await docUser.set(json);
   }
@@ -830,21 +830,21 @@ class _AddUserState extends State<AddUser> {
 
     final json = {
       "idnum": idnum + 1,
-      "ID": id + (idnum + 1).toString(),
-      "Age": age,
-      "Status": "Member",
-      "Fee Status": "Paid",
-      "First name": fname,
-      "Last name": lname,
-      "Gender": gender,
-      "Package": package,
-      "Platform": platform,
-      "Phone Number": number,
-      "Email": email,
-      "Address": address,
-      "Start Date": startdate,
-      "Defaulter": false,
-      "Date": date
+      "id": id + (idnum + 1).toString(),
+      "age": age,
+      "status": "Member",
+      "feeStatus": "Paid",
+      "firstName": fname,
+      "lastName": lname,
+      "gender": gender,
+      "package": package,
+      "platform": platform,
+      "phoneNumber": number,
+      "email": email,
+      "address": address,
+      "startDate": startdate,
+      "defaulter": false,
+      "date": date
     };
     await docUser.set(json);
   }

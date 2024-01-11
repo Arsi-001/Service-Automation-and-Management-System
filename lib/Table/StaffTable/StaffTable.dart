@@ -252,28 +252,28 @@ class _SDeskTableState extends State<SDeskTable> {
                                                 documentsnap: documentSnapshot,
                                                 membersclass: staffcol,
                                                 rowColor: LightShade,
-                                                id: documentSnapshot["ID"],
+                                                id: documentSnapshot["id"],
                                                 sw: widget.sw,
-                                                age: documentSnapshot["Age"],
+                                                age: documentSnapshot["age"],
                                                 member: documentSnapshot[
-                                                        "First name"] +
+                                                        "firstName"] +
                                                     " " +
                                                     documentSnapshot[
-                                                        "Last name"],
+                                                        "lastName"],
                                                 gender:
-                                                    documentSnapshot["Gender"],
+                                                    documentSnapshot["gender"],
                                                 package: documentSnapshot[
-                                                    "Designation"],
+                                                    "designation"],
                                                 platform: documentSnapshot[
-                                                    "Platform"],
+                                                    "platform"],
                                                 startingDate: documentSnapshot[
-                                                    "Start Time"],
+                                                    "startTime"],
                                                 contact: documentSnapshot[
-                                                    "Phone Number"],
+                                                    "phoneNumber"],
                                                 email:
-                                                    documentSnapshot["Email"],
+                                                    documentSnapshot["email"],
                                                 address: documentSnapshot[
-                                                    "Address"]);
+                                                    "address"]);
                                           },
                                         )),
                                   ],
