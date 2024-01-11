@@ -515,8 +515,8 @@ class MTableRow extends StatelessWidget {
   }
 
   Future<void> _feestatus([String? documentSnapshotid, String? status]) async {
-    final jsonpaid = {"Fee Status": "Paid"};
-    final jsonunpaid = {"Fee Status": "Unpaid"};
+    final jsonpaid = {"feeStatus": "Paid"};
+    final jsonunpaid = {"feeStatus": "Unpaid"};
     await membersclass
         .doc(documentSnapshotid)
         .update(status == "Paid" ? jsonunpaid : jsonpaid);
