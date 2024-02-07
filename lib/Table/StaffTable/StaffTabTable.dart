@@ -129,6 +129,7 @@ class _STabTableState extends State<STabTable> {
                                     onPressed: () => Navigator.of(context).push(
                                         HeroDialogRoute(builder: (context) {
                                       return AddUser(
+                                       
                                         mode: "Staff",
                                         modeletter: "S",
                                         colref: staffcol,

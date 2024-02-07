@@ -137,7 +137,7 @@ var recordscol = FirebaseFirestore.instance.collection(
 var staffcol =
     FirebaseFirestore.instance.collection("/$colname/$clientplat/Staff");
 
-var clientName = "Test";
+String clientName = "Test";
 
 LinearGradient darkGlassMorphismGradient() {
   return LinearGradient(

@@ -50,7 +50,8 @@ class _DeskTableState extends State<DeskTable> {
   bool isdefaulter = false;
   String result = "";
   final _qrBarCodeScannerDialogPlugin = QrBarCodeScannerDialog();
-
+  String SearchItem = "";
+  TextEditingController idcont = TextEditingController();
   @override
   Widget build(BuildContext context) {
     print("THIS IS THE COLLECTION: " + "$membercol");
@@ -141,6 +142,56 @@ class _DeskTableState extends State<DeskTable> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Expanded(
+                                        child: TextField(
+                                          controller: idcont,
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              prefixIcon: Icon(Icons.search),
+                                              hintText: 'Search...'),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 100,
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).push(
+                                                    HeroDialogRoute(
+                                                        builder: (context) {
+                                              return UpdateUser(
+                                                docsnap: streamSnapshot
+                                                    .data!.docs
+                                                    .contains("78"),
+                                                Mode: "M",
+                                              );
+                                            })),
+                                            // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                    side: BorderSide(
+                                                        color: MainShade)),
+                                                backgroundColor: MainShade,
+                                                elevation: 12.0,
+                                                textStyle: const TextStyle(
+                                                    color: Colors.white)),
+                                            child: const Text(
+                                              'Search',
+                                              style: TextStyle(
+                                                  fontFamily: "Montserrat",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
@@ -153,6 +204,7 @@ class _DeskTableState extends State<DeskTable> {
                                                     HeroDialogRoute(
                                                         builder: (context) {
                                               return AddUser(
+                                                
                                                 mode: "Members",
                                                 modeletter: "M",
                                                 colref: membercol,
@@ -285,7 +337,7 @@ class _DeskTableState extends State<DeskTable> {
                                       sw: widget.sw,
                                       rowColor: Colors.white10,
                                     ),
-                                    Container(
+                                    SizedBox(
                                         height: 400,
                                         child: ListView.builder(
                                           itemCount: streamSnapshot.data!.docs
@@ -295,6 +347,7 @@ class _DeskTableState extends State<DeskTable> {
                                                 documentSnapshot =
                                                 streamSnapshot
                                                     .data!.docs[index];
+
                                             return MTableRow(
                                                 context: context,
                                                 documentsnap: documentSnapshot,
@@ -657,10 +710,7 @@ class MTableRow extends StatelessWidget {
                   IconButton(
                     onPressed: () => Navigator.of(context)
                         .push(HeroDialogRoute(builder: (context) {
-                      return UpdateUser(
-                        docsnap: documentsnap,
-                        Mode:"M"
-                      );
+                      return UpdateUser(docsnap: documentsnap, Mode: "M");
                     })),
                     icon: Icon(
                       UniconsLine.edit,

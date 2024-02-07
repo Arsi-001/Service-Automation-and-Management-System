@@ -136,7 +136,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
   }
 
-  Widget _showPage = new Dash();
+  Widget _showPage = Dash();
   Widget _pageSelect(int page) {
     switch (page) {
       case 0:
@@ -145,13 +145,11 @@ class _HomepageState extends State<Homepage> {
         return _membertable;
       case 2:
         return _altDash;
-      case 3:
-        return _stafftable;
 
       default:
         return Container(
           height: 500,
-          child: Center(
+          child: const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -233,7 +231,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               );
             } else {
-              return ProgressBar();
+              return const ProgressBar();
             }
           }),
     );

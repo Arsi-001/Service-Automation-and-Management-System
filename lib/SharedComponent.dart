@@ -1425,69 +1425,69 @@ class crudTxtfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(left: 5),
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontFamily: "Montserrat",
-              fontSize: 12,
-              //fontWeight: FontWeight.w600
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 5),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontFamily: "Montserrat",
+                fontSize: 14,
+                //fontWeight: FontWeight.w600
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        Container(
-          height: 40,
-          width: widht,
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: TextFormField(
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(bottom: 8),
-                border: InputBorder.none,
-                errorMaxLines: 1,
-                errorStyle: TextStyle(
-                  fontSize: 10,
-                )),
-            keyboardType: txtinput,
-            inputFormatters: format,
-            textInputAction: TextInputAction.next,
-            validator: (value) {
-              if (title == "First Name" ||
-                  title == "Last Name" ||
-                  title == "Username" ||
-                  title == "Password") {
-                if (value == "") {
-                  return "Name Required";
-                }
-              }
-
-              if (title == "Email") {
-                if (value != "") {
-                  final RegExp emailRegex = RegExp(
-                      r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$');
-                  if (emailRegex.hasMatch(value.toString())) {
-                  } else {
-                    return "Invalid Format";
+          SizedBox(
+            height: 12,
+          ),
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
+                color: Colors.white12,
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                  border: InputBorder.none,
+                  errorMaxLines: 1,
+                  errorStyle: TextStyle(
+                    fontSize: 10,
+                  )),
+              keyboardType: txtinput,
+              inputFormatters: format,
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                if (title == "First Name" ||
+                    title == "Last Name" ||
+                    title == "Username" ||
+                    title == "Password") {
+                  if (value == "") {
+                    return "Name Required";
                   }
                 }
-              }
-            },
-            controller: controller,
-            cursorColor: MainShade,
-            style: TextStyle(color: Colors.white),
-          ),
-        )
-      ],
+
+                if (title == "Email") {
+                  if (value != "") {
+                    final RegExp emailRegex = RegExp(
+                        r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$');
+                    if (emailRegex.hasMatch(value.toString())) {
+                    } else {
+                      return "Invalid Format";
+                    }
+                  }
+                }
+              },
+              controller: controller,
+              cursorColor: MainShade,
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

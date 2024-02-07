@@ -150,7 +150,7 @@ class LockerPopUp extends StatelessWidget {
     try {
       final docUser = activitycol.doc("$id");
 
-      final json = {"Locker": locker};
+      final json = {"locker": locker};
       print(locker);
       print(id);
       await docUser.update(json);

@@ -144,7 +144,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                               height: 6,
                                             ),
                                             Container(
-                                              height: 40,
+                                              height: 50,
                                               width: 100,
                                               decoration: BoxDecoration(
                                                   color: Colors.white12,
